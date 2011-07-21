@@ -1,0 +1,95 @@
+<Trilobite>
+	<World>
+		<Render>
+			<DefaultSize>0.01</DefaultSize>
+			<CircleSections>32</CircleSections>
+			<DefaultLayer>0</DefaultLayer>
+		</Render>
+		<Rules>
+			<Gravity>0.02</Gravity>
+		</Rules>
+	</World>
+	
+	<Player>
+		<Ship>
+			<Speed>0.3</Speed>
+			<Shape>
+				<Circle x="0" y="0" z="2" radius="0.013">
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</Circle>
+				<Rectangle x="0" y="0.02" z="1" sizex="0.015" sizey="0.022">
+					<Color r="0.75" g="0.75" b="0.75"/>
+				</Rectangle>
+			</Shape>
+		</Ship>
+		<Gun>
+			<Cooldown>0.3</Cooldown>
+			<Point x="0" y="-0.02"/>
+		</Gun>
+		<Shield>
+			<Time>2</Time>
+			<Cooldown>5</Cooldown>
+			<Scale>1.3</Scale>
+			<Color r="0.75" g="0.75" b="1"/>
+		</Shield>
+	</Player>
+	
+	<Ships>
+		<Green>
+			<Point x="0.5" y="0.9"/>
+			<Color r="0" g="1" b="0"/>
+		</Green>
+		<Dumb>
+			<RotationSpeed>1.5</RotationSpeed> <!--  -->
+			<RotationStart>0</RotationStart> <!--  -->
+			<RotationMax>4.71</RotationMax> <!--  -->
+			<Point x="0.5" y="0.3"/> <!--  -->
+			<Speed>0.15</Speed>
+			<Gravity>0.01</Gravity>
+			<Acceleration>0.1</Acceleration>
+			<KillDistance>0.5</KillDistance>
+			<Color r="0" g="1" b="0"/>
+			<Shape>
+				<Circle x="0" y="0" z="1" radius="0.027">
+					<Color r="0.75" g="0.75" b="0.75"/>
+					<Texture>alien.gif</Texture>
+				</Circle>
+			</Shape>
+		</Dumb>
+		<Spawner>
+			<Wait>1</Wait>
+			<Gravity>0.01</Gravity>
+			<KillDistance>0.1</KillDistance>
+			<Point x="0.1" y="0"/>
+			<Color r="1" g="1" b="0"/>
+			<Shape>
+				<Circle x="0" y="0" z="1" radius="0.04">
+					<Color r="0.75" g="0.75" b="0.75"/>
+				</Circle>
+				<Rectangle x="0.033" y="0" z="2" sizex="0.05" sizey="0.03">
+					<Color r="0.85" g="0.85" b="0.85"/>
+				</Rectangle>
+			</Shape> 
+			<Sequence>CrossedDumb</Sequence> <!--  -->
+			<Count>5</Count> <!--  -->
+			<Frequency>1</Frequency> <!--  -->
+		</Spawner>
+	</Ships>
+	
+	<Effects>
+		<Bullet>
+			<KillDistance>0.01</KillDistance>
+			<Speed>0.6</Speed>
+			<Color r="1" g="1" b="0"/>
+		</Bullet>
+		<Explosion>
+			<Duration>1</Duration>
+			<Color r="1" g="0" b="0"/>
+			<Shape>
+				<Circle x="0" y="0" z="3" radius="0.03"/>
+			</Shape> 
+		</Explosion>
+	</Effects>
+
+
+</Trilobite>
