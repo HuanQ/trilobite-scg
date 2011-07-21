@@ -2,7 +2,7 @@ package components;
 
 import java.util.Map;
 
-import javax.vecmath.Vector2f;
+import geometry.Vec2;
 
 import managers.Component;
 import managers.Constant;
@@ -11,7 +11,7 @@ import managers.Constant;
 public class CanBeKilled {
 	private final int											me;
 	
-	public CanBeKilled(final int m) {
+	public CanBeKilled( int m ) {
 		me = m;
 	}
 	
@@ -21,8 +21,10 @@ public class CanBeKilled {
 		
 		for (Map.Entry<Integer, CanKill> entry : Component.canKill.entrySet()) {
 			Integer him = entry.getKey();
+
 			if( him != me ) {
 				Shape hisShape = Component.shape.get(him);
+
 				if( myShape == null) {
 					// I don't have a Shape
 					if( hisShape == null) {
@@ -54,7 +56,7 @@ public class CanBeKilled {
 			Integer id = Component.getID();
 			
 			Component.timedObject.put( id, new TimedObject(id, Constant.getFloat("Explosion_Duration")) );
-			Component.placement.put( id, new Placement( new Vector2f( p.getPosition().x, p.getPosition().y ) ) );
+			Component.placement.put( id, new Placement( new Vec2( p.getPosition().x, p.getPosition().y ) ) );
 			Component.drawer.put( id, new Drawer(id, Constant.getVector("Explosion_Color") ) );
 			Component.shape.put( id, Constant.getShape("Explosion_Shape")  );
 			

@@ -1,6 +1,6 @@
 package components;
 
-import javax.vecmath.Vector2f;
+import geometry.Vec2;
 
 import managers.Component;
 import managers.Constant;
@@ -8,25 +8,19 @@ import managers.Screen;
 import managers.Timer;
 
 
-
 public class Bullet {
-	private final Vector2f												direction;
+	private final Vec2													direction;
 	private final int													me;
 
-	public Bullet(final int m, final Vector2f v) {
+	public Bullet( int m, final Vec2 v ) {
 		me = m;
 		direction = v;
 	}
 	
 	public void Update() {
-		//TODO: Fer-me el meu propi vector2 i fer-me les meves funcions (return amb operació, etc...)
-		//TODO: Mirar totes les variables creades a cada mètode i veure si s'hi pot posar final (cal lo anterior)
-		Vector2f travelDistance = new Vector2f(direction);
-		travelDistance.scale( Timer.getDelta() );
+		Component.placement.get(me).addPosition( direction.getScaled( Timer.getDelta() ) );
 		
-		Component.placement.get(me).addPosition(travelDistance);
-		
-		// Selfkill a certa distància de la screen
+		// Selfkill at a certain distance from the screen limit
 		float killDist = Constant.getFloat("Bullet_KillDistance");
 		if(Component.shape.get(me) != null) {
 			killDist += Component.shape.get(me).getRadius();

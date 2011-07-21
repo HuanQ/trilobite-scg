@@ -18,7 +18,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 import javax.swing.ImageIcon;
 
@@ -209,10 +208,10 @@ public class TextureLoader {
         // for a texture
         if (bufferedImage.getColorModel().hasAlpha()) {
             raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,4,null);
-            texImage = new BufferedImage(glAlphaColorModel,raster,false,new Hashtable());
+            texImage = new BufferedImage(glAlphaColorModel,raster,false, null);
         } else {
             raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,3,null);
-            texImage = new BufferedImage(glColorModel,raster,false,new Hashtable());
+            texImage = new BufferedImage(glColorModel,raster,false, null);
         }
 
         // copy the source image into the produced image

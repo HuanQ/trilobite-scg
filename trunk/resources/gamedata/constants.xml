@@ -41,7 +41,6 @@
 		</Green>
 		<Dumb>
 			<RotationSpeed>1.5</RotationSpeed> <!--  -->
-			<RotationStart>0</RotationStart> <!--  -->
 			<RotationMax>4.71</RotationMax> <!--  -->
 			<Point x="0.5" y="0.3"/> <!--  -->
 			<Speed>0.15</Speed>
@@ -73,6 +72,7 @@
 			<Sequence>CrossedDumb</Sequence> <!--  -->
 			<Count>5</Count> <!--  -->
 			<Frequency>1</Frequency> <!--  -->
+			<RotationStart>0</RotationStart> <!--  -->
 		</Spawner>
 	</Ships>
 	
@@ -90,6 +90,4 @@
 			</Shape> 
 		</Explosion>
 	</Effects>
-
-
 </Trilobite>

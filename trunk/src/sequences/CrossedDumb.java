@@ -1,6 +1,6 @@
 package sequences;
 
-import javax.vecmath.Vector2f;
+import geometry.Vec2;
 
 import managers.Component;
 import managers.Constant;
@@ -24,7 +24,7 @@ public class CrossedDumb implements Sequence {
 		lastTime = 0;
 	}
 	
-	public void Spawn( final long time, final float rotStart, final Vector2f spawnPoint ) {
+	public void Spawn( final long time, final float rotStart, final Vec2 spawnPoint ) {
 		if(counter > 0 && time > lastTime + spawnRate * Constant.timerResolution) {
 			lastTime = time;
 			counter--;

@@ -1,6 +1,6 @@
 package components;
 
-import javax.vecmath.Vector2f;
+import geometry.Vec2;
 
 import managers.Component;
 import managers.Constant;
@@ -9,17 +9,18 @@ import managers.Constant;
 public class Gun {
 
 	private final int											me;
-	private final Vector2f										gunPoint;
+	private final Vec2											gunPoint;
 	
-	public Gun(final int m, final Vector2f p) {
+	public Gun( int m, final Vec2 p ) {
 		me = m;
 		gunPoint = p;
 	}
-	public void Shoot(Vector2f dir) {
-		Vector2f myPos = Component.placement.get(me).getPosition();
-		Vector2f exitPoint = new Vector2f( myPos.x + gunPoint.x, myPos.y + gunPoint.y);
+	public void Shoot( final Vec2 dir ) {
+		Vec2 myPos = Component.placement.get(me).getPosition();
+		Vec2 exitPoint = new Vec2( myPos.x + gunPoint.x, myPos.y + gunPoint.y);
 		Integer id = Component.getID();
 		
+		// Create a bullet
 		Component.bullet.put( id, new Bullet(id, dir) );
 		Component.placement.put( id, new Placement( exitPoint ) );
 		Component.drawer.put( id, new Drawer(id, Constant.getVector("Bullet_Color") ) );

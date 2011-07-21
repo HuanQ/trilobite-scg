@@ -7,10 +7,10 @@ import geometry.Rectangle;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.vecmath.Vector2f;
+import geometry.Vec2;
 
 
-public class Shape implements Cloneable {
+public class Shape {
 	private Vector<Polygon>										polygons;
 	// Internal data
 	private float												radius;
@@ -24,10 +24,12 @@ public class Shape implements Cloneable {
 		polygons = new Vector<Polygon>();
 		for (Iterator<Polygon> iter = shp.polygons.iterator(); iter.hasNext();) {
 			Polygon next = (Polygon) iter.next();
-			if( next.whoAmI() == 0 )
+			if( next.whoAmI() == 0 ) {
 				polygons.add( new Circle( (Circle) next ) );
-			else if( next.whoAmI() == 1 )
+			}
+			else if( next.whoAmI() == 1 ) {
 				polygons.add( new Rectangle( (Rectangle) next ) );
+			}
 		}
 		radius = shp.radius;
 	}
@@ -43,39 +45,28 @@ public class Shape implements Cloneable {
 	public void add(final Polygon p) {
 		polygons.add(p);
 		
-		//TODO: En serio, aixo no pot ser xD
-		float newMaxRadius = (float) ( Math.sqrt( Math.pow(p.getOffset().x,2) + Math.pow(p.getOffset().y,2) ) + Math.sqrt(p.getSqRadius()) );
+		float newMaxRadius = p.getOffset().XYlength() + (float) Math.sqrt(p.getSqRadius());
 		if(radius < newMaxRadius) {
 			radius = newMaxRadius;
 		}
 	}
 	
-	public boolean Collides(final Vector2f myPos, final Shape him, final Vector2f hisPos) {
+	public boolean Collides(final Vec2 myPos, final Shape him, final Vec2 hisPos) {
 
-		float hisRadius;
+		float hisRadius = him == null ? 0 : him.radius;
 		
-		if(him == null)
-			hisRadius = 0;
-		else
-			hisRadius = him.radius;
-
 		// Envolving circle check
-		Vector2f sqdist = new Vector2f(myPos.x - hisPos.x, myPos.y - hisPos.y);
-		if( sqdist.lengthSquared() > Math.pow(radius + hisRadius, 2) ) {
+		if( myPos.distanceSquared(hisPos) > Math.pow(radius + hisRadius, 2) ) {
 			return false;
 		}
 		
 		// Check shape to shape
 		if(radius == 0) {
 			// I am shapeless
-			if(hisRadius == 0) {
-				// Collision impossible
-			}
-			else {
+			if(hisRadius != 0) {
 				// Check my position to all his shapes
 				for (Iterator<Polygon> iter = him.polygons.iterator(); iter.hasNext();) {
-					Polygon next = (Polygon) iter.next();
-					if( next.Collides(hisPos, (Polygon) null, myPos) ) {
+					if( iter.next().Collides(hisPos, (Polygon) null, myPos) ) {
 						return true;
 					}
 				}
@@ -85,8 +76,7 @@ public class Shape implements Cloneable {
 			if(hisRadius == 0) {
 				// Check his position to all my shapes
 				for (Iterator<Polygon> iter = polygons.iterator(); iter.hasNext();) {
-					Polygon next = (Polygon) iter.next();
-					if( next.Collides(myPos, (Polygon) null, hisPos) ) {
+					if( iter.next().Collides(myPos, (Polygon) null, hisPos) ) {
 						return true;
 					}
 				}
@@ -94,10 +84,9 @@ public class Shape implements Cloneable {
 			else {
 				// Check all my shapes to all his shapes
 				for (Iterator<Polygon> iter = polygons.iterator(); iter.hasNext();) {
-					Polygon nextMine = (Polygon) iter.next();
+					Polygon myPoly = (Polygon) iter.next();
 					for (Iterator<Polygon> iter2 = him.polygons.iterator(); iter2.hasNext();) {
-						Polygon nextHis = (Polygon) iter2.next();
-						if( nextMine.Collides(myPos, nextHis, hisPos) ) {
+						if( myPoly.Collides(myPos, iter2.next(), hisPos) ) {
 							return true;
 						}
 					}

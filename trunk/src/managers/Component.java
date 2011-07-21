@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.*;
 
 
 import components.*;
@@ -102,7 +102,7 @@ public class Component {
 	
 	static public void Render() {
 		// Clear the screen and depth buffer
-	    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	    
 		for (Map.Entry<Integer, Drawer> entry : drawer.entrySet()) {
 			entry.getValue().Render();

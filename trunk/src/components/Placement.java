@@ -2,28 +2,28 @@ package components;
 
 import geometry.Angle;
 
-import javax.vecmath.*;
+import geometry.Vec2;
 
 public class Placement {
-	private Vector2f											position;
+	private Vec2												position;
 	private Angle												angle;
 	
 	public Placement() {
-		position = new Vector2f();
+		position = new Vec2();
 		angle = new Angle();
 	}
 	
-	public Placement(final Vector2f p) {
+	public Placement( final Vec2 p ) {
 		position = p;
 		angle = new Angle();
 	}
 	
-	public void addPosition(final Vector2f v) {
+	public void addPosition( final Vec2 v ) {
 		position.x += v.x;
 		position.y += v.y;
 	}
 	
-	public Vector2f getPosition() {
+	public Vec2 getPosition() {
 		return position;
 	}
 	
@@ -31,11 +31,11 @@ public class Placement {
 		return angle.getRotation();
 	}
 
-	public void setRotation(final float r) {
+	public void setRotation( float r ) {
 		angle.setRotation(r);
 	}
 	
-	public void addRotation(final float r) {
+	public void addRotation( float r ) {
 		angle.addRotation(r);
 	}
 }

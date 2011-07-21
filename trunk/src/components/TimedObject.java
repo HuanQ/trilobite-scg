@@ -9,7 +9,7 @@ public class TimedObject {
 	private final int											me;
 	private final float											duration;
 	
-	public TimedObject(final int m, final float dur) {
+	public TimedObject( int m, float dur) {
 		me = m;
 		duration = Timer.getTime() + dur * Constant.timerResolution;
 	}
