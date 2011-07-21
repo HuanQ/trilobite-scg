@@ -1,4 +1,4 @@
-package Trilobite;
+package game;
 
 import geometry.Vec2;
 import geometry.Vec3;
