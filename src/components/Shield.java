@@ -9,11 +9,10 @@ import managers.Constant;
 import managers.Timer;
 
 
-
 public class Shield {
 	private final int											me;
 
-	public Shield(final int m) {
+	public Shield( int m) {
 		me = m;
 	}
 	
@@ -22,8 +21,8 @@ public class Shield {
 	}
 	
 	public void Raise() {
-		// Dibuixar shield amb shapes
 		
+		// Draw a bigger self below me
 		Integer id = Component.getID();
 		Component.timedObject.put( id, new TimedObject(id, Constant.getFloat("Shield_Time")) );
 		Component.shape.put( id, new Shape(Component.shape.get(me)) );

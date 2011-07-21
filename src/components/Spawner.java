@@ -2,7 +2,7 @@ package components;
 
 import geometry.Angle;
 
-import javax.vecmath.Vector2f;
+import geometry.Vec2;
 
 import managers.Component;
 import managers.Constant;
@@ -22,7 +22,7 @@ public class Spawner {
 	// Internal data
 	private final Sequence										mySeq;
 	
-	public Spawner(final int m, final float dir, final String seq ) {
+	public Spawner( int m, float dir, final String seq ) {
 		me = m;
 		spawnDirection = new Angle(dir);
 		wait = 0;
@@ -35,7 +35,7 @@ public class Spawner {
 	}
 	
 	public void Update() {
-		Vector2f myPos = Component.placement.get(me).getPosition();
+		Vec2 myPos = Component.placement.get(me).getPosition();
 		
 		// Check if i am in screen
 		if( Screen.inScreen(myPos, 0) ) {
@@ -43,19 +43,18 @@ public class Spawner {
 				wait = Timer.getTime() + (int) Constant.getFloat("Spawner_Wait") * Constant.timerResolution;
 			}
 			else if(Timer.getTime() > wait) {
-				Vector2f spawnPoint = new Vector2f();
-				spawnPoint.x += Component.placement.get(me).getPosition().x + Constant.getPoint("Spawner_Point").x;
-				spawnPoint.y += Component.placement.get(me).getPosition().y + Constant.getPoint("Spawner_Point").y;
-				mySeq.Spawn( Timer.getTime(), Constant.getFloat("Dumb_RotationStart"), spawnPoint );
+				Vec2 spawnPoint = new Vec2();
+				spawnPoint.add(Component.placement.get(me).getPosition(), Constant.getPoint("Spawner_Point"));
+				mySeq.Spawn( Timer.getTime(), Constant.getFloat("Spawner_RotationStart"), spawnPoint );
 			}
 		}
 		
-		// Selfkill a certa distància de la screen
+		// Selfkill at a certain distance from the screen limit
 		float killDist = Constant.getFloat("Spawner_KillDistance");
 		if(Component.shape.get(me) != null) {
 			killDist += Component.shape.get(me).getRadius();
 		}
-		if( !Screen.inScreen(Component.placement.get(me).getPosition(), killDist) ) {
+		if( myPos.x > 1+killDist && myPos.x < -killDist && myPos.y < 1+killDist ) {
 			Component.deadObjects.add(me);
 		}
 	}

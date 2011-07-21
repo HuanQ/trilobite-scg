@@ -9,8 +9,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
+import geometry.Vec2;
+import geometry.Vec3;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -22,21 +22,22 @@ import org.w3c.dom.NodeList;
 
 import components.Shape;
 
+
 public class Constant {
 	static private Map<String, Float>							myFloats;
-	static private Map<String, Vector2f>						myPoints;
-	static private Map<String, Vector3f>						myVectors;
+	static private Map<String, Vec2>							myPoints;
+	static private Map<String, Vec3>							myVectors;
 	static private Map<String, Shape>							myShapes;
 	static private Map<String, String>							myStrings;
 	
-	static public Vector2f										gravity; 
+	static public Vec2											gravity; 
 	static public long											timerResolution;
 	static public TextureLoader									textureLoader;
 	
 	static public void Init() {
 		myFloats = new HashMap<String, Float>();
-		myPoints = new HashMap<String, Vector2f>();
-		myVectors = new HashMap<String, Vector3f>();
+		myPoints = new HashMap<String, Vec2>();
+		myVectors = new HashMap<String, Vec3>();
 		myShapes = new HashMap<String, Shape>();
 		myStrings = new HashMap<String, String>();
 		textureLoader = new TextureLoader();
@@ -49,15 +50,15 @@ public class Constant {
 			doc.getDocumentElement().normalize();
 			loadXML( doc.getDocumentElement().getChildNodes() );
 			
-			/*doc = (Document) db.parse( new File("bin/resources/gamedata/english.xml") );
+			doc = (Document) db.parse( new File("resources/gamedata/english.xml") );
 			doc.getDocumentElement().normalize();
-			loadXML( doc.getDocumentElement().getChildNodes() );*/
+			loadXML( doc.getDocumentElement().getChildNodes() );
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		gravity = new Vector2f(0, getFloat("Rules_Gravity"));
+		gravity = new Vec2(0, getFloat("Rules_Gravity"));
 		timerResolution = Sys.getTimerResolution();
 	}
 	
@@ -121,8 +122,8 @@ public class Constant {
 	}
 	
 	static public Rectangle readRectangle(  final Node node ) {
-		Vector3f myPoint = new Vector3f();
-		Vector2f mySize = new Vector2f();
+		Vec3 myPoint = new Vec3();
+		Vec2 mySize = new Vec2();
 		NamedNodeMap attr = node.getAttributes();
     	myPoint.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
     	myPoint.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
@@ -150,7 +151,7 @@ public class Constant {
 	}
 	
 	static public Circle readCircle(  final Node node ) {
-		Vector3f myPoint = new Vector3f();
+		Vec3 myPoint = new Vec3();
 		float radius;
 		NamedNodeMap attr = node.getAttributes();
 		myPoint.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
@@ -161,16 +162,16 @@ public class Constant {
     	return (Circle) readSubShape( node, new Circle(radius, myPoint) );
 	}
 	
-	static public Vector2f readPoint(  final Node node ) {
-		Vector2f myPoint = new Vector2f();
+	static public Vec2 readPoint(  final Node node ) {
+		Vec2 myPoint = new Vec2();
     	NamedNodeMap attr = node.getAttributes();
     	myPoint.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
     	myPoint.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
     	return myPoint;
 	}
 	
-	static public Vector3f readColor( final Node node ) {
-		Vector3f myColor = new Vector3f();
+	static public Vec3 readColor( final Node node ) {
+		Vec3 myColor = new Vec3();
     	NamedNodeMap attr = node.getAttributes();
     	myColor.x = Float.valueOf( attr.getNamedItem("r").getTextContent() );
     	myColor.y = Float.valueOf( attr.getNamedItem("g").getTextContent() );
@@ -182,11 +183,11 @@ public class Constant {
 		return (float) myFloats.get(str);
 	}
 	
-	static public Vector2f getPoint( final String str ) {
+	static public Vec2 getPoint( final String str ) {
 		return myPoints.get(str);
 	}
 	
-	static public Vector3f getVector( final String str ) {
+	static public Vec3 getVector( final String str ) {
 		return myVectors.get(str);
 	}
 	

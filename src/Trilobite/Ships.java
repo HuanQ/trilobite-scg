@@ -1,7 +1,7 @@
 package Trilobite;
 
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
+import geometry.Vec2;
+import geometry.Vec3;
 
 import managers.Component;
 import managers.Constant;
@@ -31,7 +31,7 @@ public class Ships {
 		Integer id = Component.getID();
 		
 		float rotSpeed = Constant.getFloat("Dumb_RotationSpeed");
-		float rotStart = Constant.getFloat("Dumb_RotationStart");
+		float rotStart = Constant.getFloat("Spawner_RotationStart");
 
 		if(!leftExit)
 		{
@@ -50,7 +50,7 @@ public class Ships {
 		return id;
 	}
 	
-	static public Integer AddWall(Vector2f pos, Vector2f size) {
+	static public Integer AddWall(Vec2 pos, Vec2 size) {
 		Integer id = Component.getID();
 		
 		Component.placement.put( id, new Placement( pos ) );
@@ -59,7 +59,7 @@ public class Ships {
 		Component.canKill.put( id, new CanKill() );
 		Component.mover.put( id, new Mover( id, 0, false, false, 0 ) );
 		
-		Component.shape.get(id).add( new geometry.Rectangle(size, new Vector3f(0,0,0) ));
+		Component.shape.get(id).add( new geometry.Rectangle(size, new Vec3(0,0,0) ));
 		
 		// TODO: Crear component Impassable (impassable terrain)
 		return id;
@@ -68,7 +68,7 @@ public class Ships {
 	static public Integer AddSpawner() {
 		Integer id = Component.getID();
 
-		Component.placement.put( id, new Placement( new Vector2f( 0.5f, 0.1f ) ) );
+		Component.placement.put( id, new Placement( new Vec2( 0.5f, -0.1f ) ) );
 		Component.spawner.put( id, new Spawner(id, 0, Constant.getString("Spawner_Sequence")) );
 		Component.mover.put( id, new Mover( id, 0, false, false, Constant.getFloat("Spawner_Gravity") ) );
 		Component.drawer.put( id, new Drawer(id, Constant.getVector("Spawner_Color") ) );
