@@ -2,6 +2,8 @@ package graphics;
 
 import java.io.IOException;
 
+import managers.Constant;
+
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -17,23 +19,19 @@ public class Sprite {
 	/** The texture that stores the image for this sprite */
 	private Texture	texture;
 
-	/** The width in pixels of this sprite */
+	/** The height and width in pixels of this sprite */
 	private int			width;
-
-	/** The height in pixels of this sprite */
 	private int			height;
-
+	
 	/**
 	 * Create a new sprite from a specified image.
 	 *
 	 * @param loader the texture loader to use
 	 * @param ref A reference to the image on which this sprite should be based
 	 */
-	public Sprite(TextureLoader loader, String ref) {
+	public Sprite( String ref ) {
     try {
-		texture = loader.getTexture("\\..\\resources\\textures\\" + ref);
-		width = texture.getImageWidth();
-		height = texture.getImageHeight();
+		texture = Constant.textureLoader.getTexture("\\..\\resources\\textures\\" + ref);
     } catch (IOException ioe) {
     	ioe.printStackTrace();
     	System.exit(-1);
@@ -41,21 +39,19 @@ public class Sprite {
 	}
 
 	/**
-	 * Get the width of this sprite in pixels
+	 * Set the width of this sprite
 	 *
-	 * @return The width of this sprite in pixels
 	 */
-	public int getWidth() {
-		return texture.getImageWidth();
+	public void setWidth( int w ) {
+		width = w;
 	}
 
 	/**
-	 * Get the height of this sprite in pixels
+	 * Set the height of this sprite
 	 *
-	 * @return The height of this sprite in pixels
 	 */
-	public int getHeight() {
-		return texture.getImageHeight();
+	public void setHeight( int h ) {
+		height = h;
 	}
 
 	/**
@@ -71,6 +67,8 @@ public class Sprite {
 		// bind to the appropriate texture for this sprite
 		texture.bind();
 
+		glColor4f(1, 1, 1, 1);
+		
 		// translate to the right location and prepare to draw
 		glTranslatef(x, y, z);
 

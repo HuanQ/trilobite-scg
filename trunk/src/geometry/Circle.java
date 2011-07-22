@@ -11,6 +11,7 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import geometry.Vec2;
 import geometry.Vec3;
+import graphics.Sprite;
 
 import managers.Constant;
 import managers.Screen;
@@ -47,26 +48,29 @@ public class Circle extends Polygon {
 		Vec2 myPos = Screen.reposition( new Vec2(pos.x + offset.x, pos.y + offset.y) );
 		float myRadius = Screen.rescale( radius );
 
-	    // Draw placeholder
-		glDisable(GL_TEXTURE_2D);
-		if( color == null ) {
-			glColor4f(defColor.x, defColor.y, defColor.z, 1.f);
+		if(texture == null) {
+		    // Draw placeholder
+			glDisable(GL_TEXTURE_2D);
+			if( color == null ) {
+				glColor4f(defColor.x, defColor.y, defColor.z, 1.f);
+			}
+			else {
+				glColor4f(color.x * defColor.x, color.y * defColor.y, color.z * defColor.z, 1);
+			}
+			glBegin(GL_TRIANGLE_FAN);
+			glVertex3f(myPos.x, myPos.y, offset.z);
+			int sect = (int) Constant.getFloat("Render_CircleSections");
+			for(int i = 0; i <= sect; ++i) {
+				float slice = i * (float) (2 * Math.PI) / (float) sect; 
+				glVertex3f( myPos.x + (float) Math.sin(slice) * myRadius, myPos.y + (float) Math.cos(slice) * myRadius, offset.z);
+			}
+			glEnd();
 		}
 		else {
-			glColor4f(color.x * defColor.x, color.y * defColor.y, color.z * defColor.z, 1);
-		}
-		glBegin(GL_TRIANGLE_FAN);
-		glVertex3f(myPos.x, myPos.y, offset.z);
-		int sect = (int) Constant.getFloat("Render_CircleSections");
-		for(int i = 0; i <= sect; ++i) {
-			float slice = i * (float) (2 * Math.PI) / (float) sect; 
-			glVertex3f( myPos.x + (float) Math.sin(slice) * myRadius, myPos.y + (float) Math.cos(slice) * myRadius, offset.z);
-		}
-		glEnd();
-	    
-	    // Draw sprites
-	    if(texture != null) {
+			// Draw sprites
 	    	glEnable(GL_TEXTURE_2D);
+	    	texture.setWidth( (int) Screen.rescale(radius*2) );
+			texture.setHeight( (int) Screen.rescale(radius*2) );
 	    	texture.draw(myPos.x, myPos.y, offset.z + 0.5f);
 	    }
 	}

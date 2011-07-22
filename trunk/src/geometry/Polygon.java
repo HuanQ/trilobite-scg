@@ -6,9 +6,6 @@ import graphics.Sprite;
 import geometry.Vec2;
 import geometry.Vec3;
 
-import managers.Constant;
-
-
 public abstract class Polygon {
 	protected final Vec3												offset;
 	protected Vec3														color;
@@ -51,12 +48,8 @@ public abstract class Polygon {
 		color = col;
 	}
 
-	public final Sprite getTexture() {
-		return texture;
-	}
-	
 	public final void setTexture( final String tex ) {
-		texture = new Sprite(Constant.textureLoader, tex);
+		texture = new Sprite( tex );
 	}
 	
 	public final Vec3 getColor() {

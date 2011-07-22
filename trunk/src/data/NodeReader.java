@@ -31,6 +31,7 @@ public class NodeReader {
 	    	if(nextShape.getNodeName() == "Rectangle") {
 	    		myShape.add( NodeReader.readRectangle(nextShape) );
 	    	}
+	    	
 	    }
 	    
 	    return myShape;

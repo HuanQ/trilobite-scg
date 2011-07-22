@@ -19,15 +19,16 @@
 		</Wall>
 		
 		<Wall>
-			<Point x="0.02" y="0.65"/>
+			<Point x="0.02" y="0.5"/>
 			<Shape>
-				<Circle x="0" y="0" z="2" radius="0.15">
+				<Circle x="0.1" y="0" z="2" radius="0.15">
 					<Color r="0.85" g="0.85" b="0.85"/>
 				</Circle>
-				<Rectangle x="0" y="0" z="1" sizex="0.04" sizey="1.7">
+				<Rectangle x="0.8" y="0" z="1" sizex="0.14" sizey="0.7">
 					<Color r="0.75" g="0.75" b="0.75"/>
+					<Texture>Ridge.gif</Texture>
 				</Rectangle>
-				<Circle x="-0.05" y="-0.85" z="2" radius="0.1">
+				<Circle x="0.15" y="-0.85" z="2" radius="0.1">
 					<Color r="0.85" g="0.85" b="0.85"/>
 				</Circle>
 			</Shape>

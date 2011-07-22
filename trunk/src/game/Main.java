@@ -46,9 +46,6 @@ public class Main {
 		
 		Level.AddPlayer();
 		Level.Init("resources/gamedata/level1.xml");
-		//Ships.AddDumb(true, 0);
-		//Ships.AddWall( new Vec2(0.17f, 0.4f), new Vec2(0.13f, 0.6f) );
-		//Ships.AddSpawner();
 		
 		while (!Display.isCloseRequested()) {
 			Component.Update();

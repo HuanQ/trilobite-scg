@@ -45,6 +45,7 @@ public class Mover {
 		
 		nextMovement.zero();
 		
+		//TODO: No accelerar amb la gravetat propia si no estem dins de la pantalla (o en radius distance, vaja) aixi podem fer efecte background
 		// Gravity pull
 		if(!stayInScreeen) {
 			Vec2 grav = new Vec2();
