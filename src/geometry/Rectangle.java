@@ -38,25 +38,28 @@ public class Rectangle extends Polygon {
 	public void draw( final Vec2 pos, final Vec3 defColor ) {
 		Vec2 myPos = Screen.reposition( new Vec2(pos.x + offset.x, pos.y + offset.y) );
 		Vec2 mySize = Screen.rescale( new Vec2( size ) );
-
-	    // Draw placeholder
-		glDisable(GL_TEXTURE_2D);
-		if( color == null ) {
-			glColor4f(defColor.x, defColor.y, defColor.z, 1.f);
+		
+		if(texture == null) {
+		    // Draw placeholder
+			glDisable(GL_TEXTURE_2D);
+			if( color == null ) {
+				glColor4f(defColor.x, defColor.y, defColor.z, 1.f);
+			}
+			else {
+				glColor4f(color.x * defColor.x, color.y * defColor.y, color.z * defColor.z, 1);
+			}
+			glBegin(GL_QUADS);
+		    glVertex3f(myPos.x - mySize.x/2, myPos.y - mySize.y/2, offset.z);
+			glVertex3f(myPos.x + mySize.x/2, myPos.y - mySize.y/2, offset.z);
+			glVertex3f(myPos.x + mySize.x/2, myPos.y + mySize.y/2, offset.z);
+			glVertex3f(myPos.x - mySize.x/2, myPos.y + mySize.y/2, offset.z);
+		    glEnd();
 		}
 		else {
-			glColor4f(color.x * defColor.x, color.y * defColor.y, color.z * defColor.z, 1);
-		}
-		glBegin(GL_QUADS);
-	    glVertex3f(myPos.x - mySize.x/2, myPos.y - mySize.y/2, offset.z);
-		glVertex3f(myPos.x + mySize.x/2, myPos.y - mySize.y/2, offset.z);
-		glVertex3f(myPos.x + mySize.x/2, myPos.y + mySize.y/2, offset.z);
-		glVertex3f(myPos.x - mySize.x/2, myPos.y + mySize.y/2, offset.z);
-	    glEnd();
-	    
-	    // Draw sprites
-	    if(texture != null) {
+			// Draw sprites
 	    	glEnable(GL_TEXTURE_2D);
+	    	texture.setWidth( (int) Screen.rescale(size.x) );
+			texture.setHeight( (int) Screen.rescale(size.y) );
 	    	texture.draw(myPos.x, myPos.y, offset.z + 0.5f);
 	    }
 	}

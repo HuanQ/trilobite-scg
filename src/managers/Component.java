@@ -103,6 +103,7 @@ public class Component {
 	static public void Render() {
 		// Clear the screen and depth buffer
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	    glClearColor(0.4f, 0.5f, 0.8f, 1);
 	    
 		for (Map.Entry<Integer, Drawer> entry : drawer.entrySet()) {
 			entry.getValue().Render();

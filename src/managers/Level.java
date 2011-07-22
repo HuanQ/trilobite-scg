@@ -24,6 +24,9 @@ public class Level {
 	
 	static public void Init( final String levelName ) {
 		try {
+			
+			//TODO: Carregar diferents xml per a fer un nivell, aixi tenim un que es diu background que es pot reutilitzar i podem separar-los per parts.
+			//... Intro, Lasers, etc (podrem canviar-ne l'ordre etc), caldra canviar la coordenada y amb un offset per a empalmar-los
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc;
 			
