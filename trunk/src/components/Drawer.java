@@ -51,7 +51,7 @@ public class Drawer {
 			else {
 				// Every shape draws itself
 				for (Iterator<Polygon> iter = myShape.getPolygons().iterator(); iter.hasNext();) {
-					Polygon next = (Polygon) iter.next();
+					Polygon next = iter.next();
 					next.draw( Component.placement.get(me).getPosition(), color );
 				}
 			}

@@ -28,13 +28,13 @@ public class Timer {
 	static private int											fps;
 	static private long											startTime;
 	// Saved data 
-	static private long											time;
+	static private int											time;
 	static private float										delta;
 	// Game timers
 	static private Map<String, Counter>							timers;
 	
 	static public void Init() {
-		startTime = Sys.getTime() * 1000 / Sys.getTimerResolution();
+		startTime = Sys.getTime() * Constant.timerResolution / Sys.getTimerResolution();
 		lastFrame = 0;
 		fps = 0;
 		lastFPS = lastFrame;
@@ -70,7 +70,7 @@ public class Timer {
 		timers.put(str, new Counter(time, newRefresh));
 	}
 	
-	static public long getTime() {
+	static public int getTime() {
 		return time;
 	}
 	
@@ -79,13 +79,13 @@ public class Timer {
 	}
 	
 	static public void Update() {
-		time = Sys.getTime() * 1000 / Constant.timerResolution - startTime;
-	    delta = (float) (time - lastFrame) / 1000.f;
+		time = (int) (Sys.getTime() * Constant.timerResolution / Sys.getTimerResolution() - startTime);
+	    delta = (float) (time - lastFrame) / Constant.timerResolution;
 	    lastFrame = time;
-	    if (time - lastFPS > 1000) {
+	    if (time - lastFPS > Constant.timerResolution) {
 	        Display.setTitle("FPS: " + fps); 
 	        fps = 0;
-	        lastFPS += 1000;
+	        lastFPS += Constant.timerResolution;
 	    }
 	    fps++;
 	}

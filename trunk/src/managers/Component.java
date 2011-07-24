@@ -32,12 +32,15 @@ public class Component {
 		static public Map<Integer, CanBeKilled>					canBeKilled;
 		static public Map<Integer, TimedObject>					timedObject;
 		static public Map<Integer, Spawner>						spawner;
+		static public Map<Integer, Record>						record;
+		static public Map<Integer, Actor>						actor;
 	
 	static public Integer getID() {
 		return myIDcounter++;
 	}
 	
 	static public void Init() {
+		
 		myIDcounter = 0;
 		drawer = new HashMap<Integer, Drawer>();
 		gun = new HashMap<Integer, Gun>();
@@ -52,6 +55,8 @@ public class Component {
 		canBeKilled = new HashMap<Integer, CanBeKilled>();
 		timedObject = new HashMap<Integer, TimedObject>();
 		spawner = new HashMap<Integer, Spawner>();
+		record = new HashMap<Integer, Record>();
+		actor = new HashMap<Integer, Actor>();
 		
 		deadObjects = new HashSet<Integer>();
 	}
@@ -70,30 +75,40 @@ public class Component {
 		canBeKilled = null;
 		timedObject = null;
 		spawner = null;
+		record = null;
+		actor = null;
 	}
 	
 	static public void Update() {
 		Timer.Update();
 
+		// Input 
+		for (Map.Entry<Integer, Actor> entry : actor.entrySet()) {
+			entry.getValue().Update();
+		}
+		for (Map.Entry<Integer, KeyboardInput> entry : keyboard.entrySet()) {
+			entry.getValue().Update();
+		}		
 		for (Map.Entry<Integer, Spawner> entry : spawner.entrySet()) {
-			entry.getValue().Update();
-		}
-		for (Map.Entry<Integer, TimedObject> entry : timedObject.entrySet()) {
-			entry.getValue().Update();
-		}
-		for (Map.Entry<Integer, CanBeKilled> entry : canBeKilled.entrySet()) {
 			entry.getValue().Update();
 		}
 		for (Map.Entry<Integer, Dumb> entry : dumb.entrySet()) {
 			entry.getValue().Update();
 		}
+		for (Map.Entry<Integer, Bullet> entry : bullet.entrySet()) {
+			entry.getValue().Update();
+		}
 		for (Map.Entry<Integer, Mover> entry : mover.entrySet()) {
 			entry.getValue().Update();
 		}
-		for (Map.Entry<Integer, KeyboardInput> entry : keyboard.entrySet()) {
+		for (Map.Entry<Integer, CanBeKilled> entry : canBeKilled.entrySet()) {
 			entry.getValue().Update();
 		}
-		for (Map.Entry<Integer, Bullet> entry : bullet.entrySet()) {
+		for (Map.Entry<Integer, TimedObject> entry : timedObject.entrySet()) {
+			entry.getValue().Update();
+		}
+		// Record is always updated last
+		for (Map.Entry<Integer, Record> entry : record.entrySet()) {
 			entry.getValue().Update();
 		}
 		
@@ -113,7 +128,7 @@ public class Component {
 	static private void DestroyObjects() {
 
 		for (Iterator<Integer> iter = deadObjects.iterator(); iter.hasNext();) {
-		   Integer next = (Integer) iter.next();
+		   Integer next = iter.next();
 		   placement.remove(next);
 		   gun.remove(next);
 		   shape.remove(next);
@@ -127,6 +142,14 @@ public class Component {
 		   canBeKilled.remove(next);
 		   timedObject.remove(next);
 		   spawner.remove(next);
+		   actor.remove(next);
+		   
+		   // Save to file
+		   Record rec = record.get(next); 
+		   if( rec != null) {
+			   record.get(next).save();
+			   record.remove(next);
+		   }
 		}
 		deadObjects.clear();
 	}

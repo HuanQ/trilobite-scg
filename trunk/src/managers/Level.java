@@ -97,6 +97,25 @@ public class Level {
 		Component.shape.put( id, Constant.getShape("Ship_Shape") );
 		Component.canBeKilled.put( id, new CanBeKilled(id) );
 		Component.canKill.put( id, new CanKill() );
+		Component.record.put( id, new Record(id) );
+
+		Component.placement.get(id).setRotation( (float) Math.PI / 2 );
+
+		return id;
+	}
+	
+	static public Integer AddActor() {
+		Integer id = Component.getID();
+
+		Component.actor.put( id, new Actor(id) );
+		Component.placement.put( id, new Placement( Constant.getPoint("Green_Point") ) );
+		Component.drawer.put( id, new Drawer(id, Constant.getVector("Green_Color") ) );
+		Component.gun.put( id, new Gun(id, Constant.getPoint("Gun_Point")) );
+		Component.shield.put( id, new Shield(id) );
+		Component.mover.put( id, new Mover(id, Constant.getFloat("Ship_Speed"), true, 0) );
+		Component.shape.put( id, Constant.getShape("Ship_Shape") );
+		Component.canBeKilled.put( id, new CanBeKilled(id) );
+		Component.canKill.put( id, new CanKill() );
 
 		Component.placement.get(id).setRotation( (float) Math.PI / 2 );
 
