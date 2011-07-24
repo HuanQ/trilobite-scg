@@ -3,7 +3,6 @@ package components;
 import geometry.Vec2;
 
 import managers.Component;
-import managers.Constant;
 import managers.Timer;
 
 import org.lwjgl.input.Keyboard;
@@ -33,7 +32,7 @@ public class KeyboardInput {
 		{
 			if( Keyboard.isKeyDown(Keyboard.KEY_SPACE) && Timer.isReady("GunCooldown"))
 			{
-				Component.gun.get(me).Shoot( new Vec2(0, -Constant.getFloat("Bullet_Speed")) );
+				Component.gun.get(me).Shoot();
 				Timer.exhaust("GunCooldown");
 			}
 		}

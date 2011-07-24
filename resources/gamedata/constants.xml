@@ -9,6 +9,10 @@
 		<Rules>
 			<Gravity>0.02</Gravity>
 		</Rules>
+		<Performance>
+			<TimerResolution>1000</TimerResolution>
+			<RecordTick>0.05</RecordTick>
+		</Performance>
 	</World>
 	
 	<Player>
@@ -36,6 +40,7 @@
 			<Time>2</Time>
 			<Cooldown>5</Cooldown>
 			<Scale>1.3</Scale>
+			<Layer>-1</Layer>
 			<Color r="0.75" g="0.75" b="1"/>
 			
 		</Shield>

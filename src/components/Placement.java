@@ -20,6 +20,10 @@ public class Placement {
 		angle = new Angle();
 	}
 	
+	public void interpPosition( final Vec2 start, final Vec2 end, float step ) {
+		position.interpolate(start, end, step);
+	}
+	
 	public void addPosition( final Vec2 v ) {
 		position.x += v.x;
 		position.y += v.y;

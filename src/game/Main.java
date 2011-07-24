@@ -40,12 +40,14 @@ public class Main {
 		glViewport(0, 0, 1024, 800);
 		
 		Constant.Init();
-		Component.Init();
-		Timer.Init();
 		Screen.Init();
 		
-		Level.AddPlayer();
+		Component.Init();
+		Timer.Init();
+
 		Level.Init("resources/gamedata/level1.xml");
+		//Level.AddPlayer();
+		Level.AddActor();
 		
 		while (!Display.isCloseRequested()) {
 			Component.Update();

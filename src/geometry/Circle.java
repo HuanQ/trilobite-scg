@@ -11,7 +11,6 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import geometry.Vec2;
 import geometry.Vec3;
-import graphics.Sprite;
 
 import managers.Constant;
 import managers.Screen;

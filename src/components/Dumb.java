@@ -9,6 +9,10 @@ import managers.Timer;
 
 
 public class Dumb {
+	// Route types
+	static public final int										shortRoute = 0;
+	static public final int										longRoute = 1;
+
 	private final int											me;
 	// Behaviour
 	private final float											rotSpeed;

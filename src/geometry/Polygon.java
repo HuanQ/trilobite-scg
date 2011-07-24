@@ -28,6 +28,7 @@ public abstract class Polygon {
 		texture = null;
 	}
 	
+	// TODO: Estalviar-se aixo per a poder afegir formes mes facilment
 	public abstract int whoAmI();
 	
 	public abstract void multSize( float m );

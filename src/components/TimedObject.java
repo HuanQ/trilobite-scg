@@ -7,11 +7,11 @@ import managers.Timer;
 public class TimedObject {
 
 	private final int											me;
-	private final float											duration;
+	private final int											duration;
 	
 	public TimedObject( int m, float dur) {
 		me = m;
-		duration = Timer.getTime() + dur * Constant.timerResolution;
+		duration = Timer.getTime() + (int) (dur * Constant.timerResolution );
 	}
 	
 	public void Update() {

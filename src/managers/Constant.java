@@ -11,7 +11,6 @@ import geometry.Vec3;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.lwjgl.Sys;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -28,10 +27,11 @@ public class Constant {
 	static private Map<String, String>							myStrings;
 	
 	static public float											gravity; 
-	static public long											timerResolution;
+	static public int											timerResolution;
 	static public TextureLoader									textureLoader;
 	
 	static public void Init() {
+		// TODO: http://download.oracle.com/javase/tutorial/java/javaOO/initial.html
 		myFloats = new HashMap<String, Float>();
 		myPoints = new HashMap<String, Vec2>();
 		myVectors = new HashMap<String, Vec3>();
@@ -55,8 +55,10 @@ public class Constant {
 			e.printStackTrace();
 		}
 		
+		//TODO: Sanitize per a aillar els packages de manera que cada joc pugui tenir els seus (amb uns de basics compartits com Placement o Shape)
+		//... Evitar les crides creuades entre packages
 		gravity = getFloat("Rules_Gravity");
-		timerResolution = Sys.getTimerResolution();
+		timerResolution = (int) getFloat("Performance_TimerResolution");
 	}
 	
 	static private void loadXML(final NodeList section) {

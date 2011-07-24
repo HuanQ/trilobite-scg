@@ -22,22 +22,33 @@ public class Shield {
 	
 	public void Raise() {
 		
-		// Draw a bigger self below me
-		Integer id = Component.getID();
-		Component.timedObject.put( id, new TimedObject(id, Constant.getFloat("Shield_Time")) );
-		Component.shape.put( id, new Shape(Component.shape.get(me)) );
-		Component.placement.put( id, Component.placement.get(me) );
-		Component.drawer.put( id, new Drawer(id) );
-		
-		Shape shp = Component.shape.get(id);
-		
-		for (Iterator<Polygon> iter = shp.getPolygons().iterator(); iter.hasNext();) {
-			Polygon next = (Polygon) iter.next();
-			next.multSize( Constant.getFloat("Shield_Scale") );
-			next.getOffset().z = -1;
-			next.setColor( Constant.getVector("Shield_Color") );
+		// Record
+		Record rec = Component.record.get(me);
+		if( rec != null) {
+			rec.event( Record.shield, null );
 		}
 		
+		Shape shp = Component.shape.get(me);
+		if( shp == null || shp.getPolygons().isEmpty()) {
+			//TODO: Shield for shapeless objects
+		}
+		else {
+			// Draw a bigger self below me
+			Integer id = Component.getID();
+			Component.timedObject.put( id, new TimedObject(id, Constant.getFloat("Shield_Time")) );
+			Component.shape.put( id, new Shape(Component.shape.get(me)) );
+			Component.placement.put( id, Component.placement.get(me) );
+			Component.drawer.put( id, new Drawer(id) );
+			
+			shp = Component.shape.get(id);
+			
+			for (Iterator<Polygon> iter = shp.getPolygons().iterator(); iter.hasNext();) {
+				Polygon next = iter.next();
+				next.multSize( Constant.getFloat("Shield_Scale") );
+				next.getOffset().z = Constant.getFloat("Shield_Layer");
+				next.setColor( Constant.getVector("Shield_Color") );
+			}
+		}
 		Timer.exhaust("ShieldTime");
 	}
 }

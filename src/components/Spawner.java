@@ -42,12 +42,12 @@ public class Spawner {
 		// Check if i am in screen
 		if( Screen.inScreen(myPos, 0) ) {
 			if(wait == 0) {
-				wait = Timer.getTime() + (int) Constant.getFloat("Spawner_Wait") * Constant.timerResolution;
+				wait = Timer.getTime() + (int) (Constant.getFloat("Spawner_Wait") * Constant.timerResolution);
 			}
 			else if(Timer.getTime() > wait) {
 				Vec2 spawnPoint = new Vec2();
 				spawnPoint.add(Component.placement.get(me).getPosition(), Constant.getPoint("Spawner_Point"));
-				mySeq.Spawn( Timer.getTime(), spawnDirection, spawnPoint, rotationSpeed );
+				mySeq.Spawn( spawnDirection, spawnPoint, rotationSpeed );
 			}
 		}
 	}

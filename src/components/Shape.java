@@ -23,7 +23,7 @@ public class Shape {
 	public Shape(final Shape shp) {
 		polygons = new Vector<Polygon>();
 		for (Iterator<Polygon> iter = shp.polygons.iterator(); iter.hasNext();) {
-			Polygon next = (Polygon) iter.next();
+			Polygon next = iter.next();
 			if( next.whoAmI() == 0 ) {
 				polygons.add( new Circle( (Circle) next ) );
 			}
@@ -84,7 +84,7 @@ public class Shape {
 			else {
 				// Check all my shapes to all his shapes
 				for (Iterator<Polygon> iter = polygons.iterator(); iter.hasNext();) {
-					Polygon myPoly = (Polygon) iter.next();
+					Polygon myPoly = iter.next();
 					for (Iterator<Polygon> iter2 = him.polygons.iterator(); iter2.hasNext();) {
 						if( myPoly.Collides(myPos, iter2.next(), hisPos) ) {
 							return true;

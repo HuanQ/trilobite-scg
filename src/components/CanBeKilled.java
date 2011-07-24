@@ -32,10 +32,7 @@ public class CanBeKilled {
 					}
 					else if ( hisShape.Collides( Component.placement.get(him).getPosition(), null, Component.placement.get(me).getPosition() ) ) {
 						// We have collided
-						if( Component.shield.get(me) == null || !Component.shield.get(me).isUp() ) {
-							// I didn't have my shields up
-							drawExplosion = true;
-						}
+						drawExplosion = true;
 					}
 				}
 				else {
@@ -45,6 +42,9 @@ public class CanBeKilled {
 						if( Component.shield.get(me) == null || !Component.shield.get(me).isUp() ) {
 							// I didn't have my shields up
 							drawExplosion = true;
+						}
+						else if ( hisShape != null ) {
+							// TODO: Impassable terrain
 						}
 					}
 				}

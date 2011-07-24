@@ -40,7 +40,12 @@ public class Mover {
 			nextMovement.normalize();
 			nextMovement.scale(speed * dt);
 			Component.placement.get(me).addPosition(nextMovement);
-			//TODO: posar el nas en la direcció que toca
+			
+			// Record
+			Record rec = Component.record.get(me);
+			if( rec != null) {
+				rec.event( Record.movement, null );
+			}
 		}
 		
 		nextMovement.zero();
