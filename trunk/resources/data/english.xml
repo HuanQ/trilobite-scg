@@ -1,7 +1,10 @@
 <Trilobite>
 	<Interface>
 		<Text>
-			<Welcome>Trilobite</Welcome>
+			<Start>Start game</Start>
+			<Quit>Quit</Quit>
+			<Again>Go again</Again>
+			<Back>Back</Back>
 		</Text>
 	</Interface>
 </Trilobite>
