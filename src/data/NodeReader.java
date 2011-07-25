@@ -3,6 +3,7 @@ package data;
 import geometry.Circle;
 import geometry.Polygon;
 import geometry.Rectangle;
+import geometry.Text;
 import geometry.Vec2;
 import geometry.Vec3;
 
@@ -32,6 +33,9 @@ public class NodeReader {
 	    		myShape.add( NodeReader.readRectangle(nextShape) );
 	    	}
 	    	
+	    	if(nextShape.getNodeName() == "Text") {
+	    		myShape.add( NodeReader.readText(nextShape) );
+	    	}
 	    }
 	    
 	    return myShape;
@@ -43,6 +47,16 @@ public class NodeReader {
 	
 	static public float readFloat( final Node node ) {
 		return Float.valueOf(node.getTextContent());
+	}
+	
+	static public Text readText( final Node node ) {
+		Vec3 myPoint = new Vec3();
+		NamedNodeMap attr = node.getAttributes();
+    	myPoint.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
+    	myPoint.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
+    	myPoint.z = Float.valueOf( attr.getNamedItem("z").getTextContent() );
+    	String myText = attr.getNamedItem("txt").getTextContent();
+    	return (Text) readSubShape( node, new Text(myText, myPoint) );
 	}
 	
 	static public Rectangle readRectangle( final Node node ) {

@@ -6,18 +6,19 @@ import java.util.Iterator;
 
 import managers.Component;
 import managers.Constant;
-import managers.Timer;
 
 
 public class Shield {
 	private final int											me;
+	private int													lastShieldID;
 
 	public Shield( int m) {
 		me = m;
+		lastShieldID = Integer.MIN_VALUE;
 	}
 	
 	public boolean isUp() {
-		return !Timer.isReady("ShieldTime");
+		return Component.timedObject.get(lastShieldID) != null;
 	}
 	
 	public void Raise() {
@@ -48,7 +49,8 @@ public class Shield {
 				next.getOffset().z = Constant.getFloat("Shield_Layer");
 				next.setColor( Constant.getVector("Shield_Color") );
 			}
+			
+			lastShieldID = id;
 		}
-		Timer.exhaust("ShieldTime");
 	}
 }

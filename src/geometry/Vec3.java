@@ -39,7 +39,12 @@ import java.lang.Math;
  *
  */
 public class Vec3 implements java.io.Serializable, Cloneable {
-
+	public static final Vec3						white = new Vec3(1, 1, 1);
+	public static final Vec3						lightgray = new Vec3(0.75f, 0.75f, 0.75f);
+	public static final Vec3						gray = new Vec3(0.5f, 0.5f, 0.5f);
+	public static final Vec3						darkgray = new Vec3(0.25f, 0.25f, 0.25f);	
+	public static final Vec3						black = new Vec3(0, 0, 0);
+	
     /**
 	 * 
 	 */

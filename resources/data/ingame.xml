@@ -1,0 +1,29 @@
+<Trilobite>
+	<Menu>
+		<Button>
+			<Point x="0.7" y="0.2"/>
+			<Function>AGAIN</Function>
+			<Shape>
+				<Rectangle x="0" y="0" z="8" sizex="0.3" sizey="0.1">
+					<Color r="0" g="0" b="0"/>
+				</Rectangle>
+				<Text x="0" y="0" z="9" txt="Again">
+					<Color r="1" g="0" b="0"/>
+				</Text>
+			</Shape>
+		</Button>
+		
+		<Button>
+			<Point x="0.7" y="0.4"/>
+			<Function>BACK</Function>
+			<Shape>
+				<Rectangle x="0" y="0" z="8" sizex="0.3" sizey="0.1">
+					<Color r="0" g="0" b="0"/>
+				</Rectangle>
+				<Text x="0" y="0" z="9" txt="Back">
+					<Color r="1" g="0" b="0"/>
+				</Text>
+			</Shape>
+		</Button>
+	</Menu>>
+</Trilobite>

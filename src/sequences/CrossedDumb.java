@@ -7,8 +7,8 @@ import managers.Component;
 import managers.Constant;
 import managers.Timer;
 
-import components.CanBeKilled;
-import components.CanKill;
+import components.Killable;
+import components.Killer;
 import components.Dumb;
 import components.Mover;
 import components.Drawer;
@@ -41,8 +41,8 @@ public class CrossedDumb implements Sequence {
 			Component.placement.put( id, new Placement(spawnPoint) );
 			Component.drawer.put( id, new Drawer(id, Constant.getVector("Dumb_Color") ) );
 			Component.shape.put( id, Constant.getShape("Dumb_Shape") );
-			Component.canBeKilled.put( id, new CanBeKilled(id) );
-			Component.canKill.put( id, new CanKill() );
+			Component.canBeKilled.put( id, new Killable(id) );
+			Component.canKill.put( id, new Killer() );
 			
 			shortRoute = !shortRoute;
 		}

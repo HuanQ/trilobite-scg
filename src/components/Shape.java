@@ -24,16 +24,16 @@ public class Shape {
 		polygons = new Vector<Polygon>();
 		for (Iterator<Polygon> iter = shp.polygons.iterator(); iter.hasNext();) {
 			Polygon next = iter.next();
-			if( next.whoAmI() == 0 ) {
+			if( next.whoAmI() == Polygon.circle ) {
 				polygons.add( new Circle( (Circle) next ) );
 			}
-			else if( next.whoAmI() == 1 ) {
+			else if( next.whoAmI() == Polygon.rectangle ) {
 				polygons.add( new Rectangle( (Rectangle) next ) );
 			}
 		}
 		radius = shp.radius;
 	}
-	
+
 	public float getRadius() {
 		return radius;
 	}
@@ -52,7 +52,7 @@ public class Shape {
 	}
 	
 	public boolean Collides(final Vec2 myPos, final Shape him, final Vec2 hisPos) {
-
+		//TODO: donar id a Shape i que busqui hisPos y myPos i nomes ens passin ID per a colisionar
 		float hisRadius = him == null ? 0 : him.radius;
 		
 		// Envolving circle check

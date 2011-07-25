@@ -39,7 +39,10 @@ import java.lang.Math;
  *
  */
 public class Vec2 implements java.io.Serializable, Cloneable {
-
+	public static final Vec2						topLeft = new Vec2(0, 0);
+	public static final Vec2						topRight = new Vec2(1, 0);
+	public static final Vec2						bottomLeft = new Vec2(0, 1);
+	public static final Vec2						bottomRight = new Vec2(1, 1);
     /**
 	 * 
 	 */

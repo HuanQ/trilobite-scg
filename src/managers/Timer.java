@@ -40,13 +40,17 @@ public class Timer {
 		lastFPS = lastFrame;
 		timers = new HashMap<String, Counter>();
 		
+		Update();
+		
 		addTimer("GunCooldown", Constant.getFloat("Gun_Cooldown"));
-		ding("GunCooldown");
-		addTimer("ShieldTime", Constant.getFloat("Shield_Time"));
-		ding("ShieldTime");
 		addTimer("ShieldCooldown", Constant.getFloat("Shield_Cooldown"));
-		ding("ShieldCooldown");
+		addTimer("ClickCooldown", Constant.getFloat("Render_ClickCooldown"));
 	}
+	
+	static public void Release() {
+		timers.clear();
+	}
+	
 	static public void addTimer(final String str, final float refreshTime) {
 		timers.put( str, new Counter(time, refreshTime) );
 	}

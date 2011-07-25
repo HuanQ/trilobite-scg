@@ -40,7 +40,7 @@ public class Circle extends Polygon {
 	}
 	
 	public int whoAmI() {
-		return 0;
+		return Polygon.circle;
 	}
 	
 	public void draw( final Vec2 pos, final Vec3 defColor ) {
@@ -66,6 +66,7 @@ public class Circle extends Polygon {
 			glEnd();
 		}
 		else {
+			glColor4f(.5f, .5f, .5f, 1);
 			// Draw sprites
 	    	glEnable(GL_TEXTURE_2D);
 	    	texture.setWidth( (int) Screen.rescale(radius*2) );
@@ -83,11 +84,11 @@ public class Circle extends Polygon {
 		else {
 			Vec2 hisAbsPos = new Vec2(hisPos.x + p.offset.x, hisPos.y + p.offset.y);
 			
-			if( p.whoAmI() == 0 ) {
+			if( p.whoAmI() == Polygon.circle ) {
 				// Circle to circle
 				return myAbsPos.distanceSquared(hisAbsPos) < Math.pow(radius + ((Circle) p).radius, 2);
 			}
-			else if( p.whoAmI() == 1 ) {
+			else if( p.whoAmI() == Polygon.rectangle ) {
 				// Circle to rectangle
 				Rectangle r = (Rectangle) p;
 				// Find the closest point to the circle within the rectangle

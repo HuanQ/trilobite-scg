@@ -43,11 +43,11 @@ public class Constant {
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc;
 			
-			doc = (Document) db.parse( new File("resources/gamedata/constants.xml") );
+			doc = (Document) db.parse( new File("resources/data/constants.xml") );
 			doc.getDocumentElement().normalize();
 			loadXML( doc.getDocumentElement().getChildNodes() );
 			
-			doc = (Document) db.parse( new File("resources/gamedata/english.xml") );
+			doc = (Document) db.parse( new File("resources/data/english.xml") );
 			doc.getDocumentElement().normalize();
 			loadXML( doc.getDocumentElement().getChildNodes() );
 			
