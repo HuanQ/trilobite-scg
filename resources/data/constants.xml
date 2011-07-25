@@ -5,9 +5,22 @@
 			<CircleSections>32</CircleSections>
 			<DefaultLayer>0</DefaultLayer>
 			<DefaultKillDistance>0</DefaultKillDistance>
+			<ClickCooldown>0.3</ClickCooldown>
+			
 		</Render>
+		<Mouse>
+			<Shape>
+				<Rectangle x="0" y="0" z="10" sizex="0.015" sizey="0.003">
+					<Color r="1" g="1" b="0"/>
+				</Rectangle>
+				<Rectangle x="0" y="0" z="10" sizex="0.003" sizey="0.015">
+					<Color r="1" g="1" b="0"/>
+				</Rectangle>
+			</Shape>
+		</Mouse>
 		<Rules>
-			<Gravity>0.02</Gravity>
+			<Gravity>0.04</Gravity>
+			<SpawnpointsPerRow>11</SpawnpointsPerRow>
 		</Rules>
 		<Performance>
 			<TimerResolution>1000</TimerResolution>
@@ -21,10 +34,10 @@
 			<Speed>0.375</Speed>
 			<Shape>
 				<Circle x="0" y="0" z="2" radius="0.013">
-					<Color r="0.95" g="0.95" b="0.95"/>
+					<Color r="0" g="0.95" b="0"/>
 				</Circle>
 				<Rectangle x="0" y="0.02" z="1" sizex="0.015" sizey="0.022">
-					<Color r="0.75" g="0.75" b="0.75"/>
+					<Color r="0" g="0.75" b="0"/>
 				</Rectangle>
 			</Shape>
 			
@@ -38,7 +51,7 @@
 		<Shield>
 		
 			<Time>2</Time>
-			<Cooldown>5</Cooldown>
+			<Cooldown>10</Cooldown>
 			<Scale>1.3</Scale>
 			<Layer>-1</Layer>
 			<Color r="0.75" g="0.75" b="1"/>
@@ -52,11 +65,6 @@
 			<Gravity>0</Gravity>
 			<Color r="1" g="1" b="1"/>
 		</Wall>
-		
-		<Green>
-			<Point x="0.5" y="0.9"/>
-			<Color r="0" g="1" b="0"/>
-		</Green>
 		
 		<Dumb>
 			<Speed>0.13</Speed>
@@ -97,5 +105,12 @@
 			</Shape> 
 		</Explosion>
 		
+		<Phase>
+			<Duration>0.5</Duration>
+			<Color r="0" g="0" b="1"/>
+			<Shape>
+				<Circle x="0" y="0" z="3" radius="0.02"/>
+			</Shape> 
+		</Phase>
 	</Effects>
 </Trilobite>
