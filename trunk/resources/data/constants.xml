@@ -1,0 +1,101 @@
+<Trilobite>
+	<World>
+		<Render>
+			<DefaultSize>0.01</DefaultSize>
+			<CircleSections>32</CircleSections>
+			<DefaultLayer>0</DefaultLayer>
+			<DefaultKillDistance>0</DefaultKillDistance>
+		</Render>
+		<Rules>
+			<Gravity>0.02</Gravity>
+		</Rules>
+		<Performance>
+			<TimerResolution>1000</TimerResolution>
+			<RecordTick>0.05</RecordTick>
+		</Performance>
+	</World>
+	
+	<Player>
+		<Ship>
+		
+			<Speed>0.375</Speed>
+			<Shape>
+				<Circle x="0" y="0" z="2" radius="0.013">
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</Circle>
+				<Rectangle x="0" y="0.02" z="1" sizex="0.015" sizey="0.022">
+					<Color r="0.75" g="0.75" b="0.75"/>
+				</Rectangle>
+			</Shape>
+			
+		</Ship>
+		<Gun>
+		
+			<Cooldown>0.3</Cooldown>
+			<Point x="0" y="-0.02"/>
+			
+		</Gun>
+		<Shield>
+		
+			<Time>2</Time>
+			<Cooldown>5</Cooldown>
+			<Scale>1.3</Scale>
+			<Layer>-1</Layer>
+			<Color r="0.75" g="0.75" b="1"/>
+			
+		</Shield>
+	</Player>
+	
+	<Ships>
+	
+		<Wall>
+			<Gravity>0</Gravity>
+			<Color r="1" g="1" b="1"/>
+		</Wall>
+		
+		<Green>
+			<Point x="0.5" y="0.9"/>
+			<Color r="0" g="1" b="0"/>
+		</Green>
+		
+		<Dumb>
+			<Speed>0.13</Speed>
+			<Acceleration>0.1</Acceleration>
+			<Gravity>0.02</Gravity>
+			<KillDistance>0.5</KillDistance>
+			<Color r="0" g="1" b="0"/>
+			<Shape>
+				<Circle x="0" y="0" z="1" radius="0.018">
+					<Color r="0.75" g="0.75" b="0.75"/>
+					<Texture>alien.gif</Texture>
+				</Circle>
+			</Shape>
+		</Dumb>
+		
+		<Spawner>
+			<Wait>1</Wait>
+			<Gravity>0.01</Gravity>
+			<Point x="0.1" y="0"/>
+			<Color r="1" g="1" b="0"/>
+		</Spawner>
+		
+	</Ships>
+	
+	<Effects>
+	
+		<Bullet>
+			<KillDistance>0.01</KillDistance>
+			<Speed>0.525</Speed>
+			<Color r="1" g="1" b="0"/>
+		</Bullet>
+		
+		<Explosion>
+			<Duration>1</Duration>
+			<Color r="1" g="0" b="0"/>
+			<Shape>
+				<Circle x="0" y="0" z="3" radius="0.03"/>
+			</Shape> 
+		</Explosion>
+		
+	</Effects>
+</Trilobite>

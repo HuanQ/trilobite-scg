@@ -15,6 +15,11 @@ public class Screen {
 		extraSpace.y = ( extraSpace.y - screenSize ) / 2;
 	}
 	
+	static public Vec2 descale( final Vec2 p ) {
+		Vec2 newPoint = new Vec2( p.x/screenSize, p.y/screenSize);
+		return newPoint;
+	}
+	
 	static public Vec2 rescale( final Vec2 p ) {
 		Vec2 newPoint = new Vec2( screenSize * p.x, screenSize * p.y);
 		return newPoint;

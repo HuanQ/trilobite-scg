@@ -35,6 +35,11 @@ public class Mover {
 	public void Update() {
 		
 		float dt = Timer.getDelta();
+		float myRadius = 0;
+		if(Component.shape.get(me) != null) {
+			myRadius += Component.shape.get(me).getRadius();
+		}
+		
 		if(!nextMovement.isZero())
 		{
 			nextMovement.normalize();
@@ -50,9 +55,8 @@ public class Mover {
 		
 		nextMovement.zero();
 		
-		//TODO: No accelerar amb la gravetat propia si no estem dins de la pantalla (o en radius distance, vaja) aixi podem fer efecte background
 		// Gravity pull
-		if(!stayInScreeen) {
+		if(!stayInScreeen && Screen.inScreen(Component.placement.get(me).getPosition(), myRadius)) {
 			Vec2 grav = new Vec2();
 			grav.y = (gravity + Constant.gravity) * dt;
 			Component.placement.get(me).addPosition( grav );
@@ -74,10 +78,7 @@ public class Mover {
 		}
 		
 		// Selfkill at a certain distance from the screen limit
-		float killDist = Constant.getFloat("Render_DefaultKillDistance");
-		if(Component.shape.get(me) != null) {
-			killDist += Component.shape.get(me).getRadius();
-		}
+		float killDist = Constant.getFloat("Render_DefaultKillDistance") + myRadius;
 		if( !Screen.inScreenU(myPos, killDist) ) {
 			Component.deadObjects.add(me);
 		}

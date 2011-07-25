@@ -13,6 +13,7 @@ import org.w3c.dom.NodeList;
 
 import geometry.Angle;
 import geometry.Vec2;
+import geometry.Vec3;
 
 import components.*;
 import data.NodeReader;
@@ -21,7 +22,7 @@ import data.NodeReader;
 public class Level {
 	
 	static private Map<String, Node>						readNodes;
-	
+
 	static public void Init( final String levelName ) {
 		try {
 			
@@ -37,6 +38,10 @@ public class Level {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	static public void Release() {
+		// Level just creates components so we don't have to release anything yet
 	}
 
 	static private void loadXML(final NodeList section) {
@@ -65,6 +70,7 @@ public class Level {
 			    	readNodes.put(nextProperty.getNodeName(), nextProperty);
 			    }
 			    
+			    //TODO: Podem fer un tag d'afegir altres XML aixi un nivell carrega els seus backgrounds, etc
 			    // Add the items with the read nodes they need 
 				if(nextType.getNodeName() == "Wall") {
 					AddWall( NodeReader.readPoint( readNodes.get("Point") ),
@@ -81,43 +87,92 @@ public class Level {
 							(int) NodeReader.readFloat( readNodes.get("Count") )
 							);
 				}
+				else if(nextType.getNodeName() == "Button") {
+					AddButton( NodeReader.readPoint( readNodes.get("Point") ),
+							NodeReader.readShape( readNodes.get("Shape") ),
+							NodeReader.readString( readNodes.get("Function") )
+							);
+				}
+				
 			}
 		}
 	}
 	
-	static public Integer AddPlayer() {
+	static public Vec2 getSpawnPoint( int sp ) {
+		Vec2 pos = new Vec2();
+		int spawnsRow = (int) Constant.getFloat("Rules_SpawnpointsPerRow");
+		int counterX = sp % spawnsRow;
+		int place; 
+		if( (counterX & 1) > 0) {
+			place = (spawnsRow/2) + (counterX+1)/2;
+		}
+		else {
+			place = (spawnsRow/2) - (counterX+1)/2;
+		}
+		place %= spawnsRow;
+
+		pos.x = (float) place / (spawnsRow - 1);
+		pos.y = 1 - (float) (sp / spawnsRow) / (spawnsRow + 1); 
+		pos.x = pos.x * 0.90f + 0.05f;
+		pos.y -= 0.075f;
+		return pos;
+	}
+	
+	static public Integer AddPlayer( final String path, int spawnPoint ) {
 		Integer id = Component.getID();
 
 		Component.keyboard.put( id, new KeyboardInput(id) );
-		Component.placement.put( id, new Placement( Constant.getPoint("Green_Point") ) );
-		Component.drawer.put( id, new Drawer(id, Constant.getVector("Green_Color") ) );
+		Component.placement.put( id, new Placement( getSpawnPoint(spawnPoint) ) );
+		Component.drawer.put( id, new Drawer(id, Vec3.white ) );
 		Component.gun.put( id, new Gun(id, Constant.getPoint("Gun_Point")) );
 		Component.shield.put( id, new Shield(id) );
 		Component.mover.put( id, new Mover(id, Constant.getFloat("Ship_Speed"), true, 0) );
 		Component.shape.put( id, Constant.getShape("Ship_Shape") );
-		Component.canBeKilled.put( id, new CanBeKilled(id) );
-		Component.canKill.put( id, new CanKill() );
-		Component.record.put( id, new Record(id) );
+		Component.canBeKilled.put( id, new Killable(id) );
+		Component.canKill.put( id, new Killer() );
+		Component.record.put( id, new Record(id, path) );
+
+		Component.placement.get(id).setRotation( (float) Math.PI / 2 );
+		Component.shield.get(id).Raise();
+
+		return id;
+	}
+	
+	static public void AddMouse() {
+		Integer id = Component.getID();
+		Component.mouse = new Pointer(id);
+		Component.placement.put(id, new Placement() );
+		Component.drawer.put( id, new Drawer(id) );
+		Component.shape.put( id, Constant.getShape("Mouse_Shape") );
+		
+		Component.placement.get(id).interpPosition( Vec2.topLeft, Vec2.bottomRight, 0.5f);
+	}
+	
+	static public Integer AddActor( final String path ) {
+		Integer id = Component.getID();
+
+		Component.actor.put( id, new Actor(id, path) );
+		Component.placement.put( id, new Placement() );
+		Component.drawer.put( id, new Drawer(id, Vec3.gray ) );
+		Component.gun.put( id, new Gun(id, Constant.getPoint("Gun_Point")) );
+		Component.shield.put( id, new Shield(id) );
+		Component.mover.put( id, new Mover(id, Constant.getFloat("Ship_Speed"), true, 0) );
+		Component.shape.put( id, Constant.getShape("Ship_Shape") );
+		Component.canBeKilled.put( id, new Killable(id) );
+		Component.canKill.put( id, new Killer() );
 
 		Component.placement.get(id).setRotation( (float) Math.PI / 2 );
 
 		return id;
 	}
 	
-	static public Integer AddActor() {
+	static private Integer AddButton( final Vec2 pos, final Shape shp, final String func ) {
 		Integer id = Component.getID();
 
-		Component.actor.put( id, new Actor(id) );
-		Component.placement.put( id, new Placement( Constant.getPoint("Green_Point") ) );
-		Component.drawer.put( id, new Drawer(id, Constant.getVector("Green_Color") ) );
-		Component.gun.put( id, new Gun(id, Constant.getPoint("Gun_Point")) );
-		Component.shield.put( id, new Shield(id) );
-		Component.mover.put( id, new Mover(id, Constant.getFloat("Ship_Speed"), true, 0) );
-		Component.shape.put( id, Constant.getShape("Ship_Shape") );
-		Component.canBeKilled.put( id, new CanBeKilled(id) );
-		Component.canKill.put( id, new CanKill() );
-
-		Component.placement.get(id).setRotation( (float) Math.PI / 2 );
+		Component.placement.put( id, new Placement(pos) );
+		Component.drawer.put( id, new Drawer( id ) );
+		Component.shape.put( id, shp );
+		Component.clickable.put(id, new Clickable(func) );
 
 		return id;
 	}
@@ -125,11 +180,11 @@ public class Level {
 	static private Integer AddWall( final Vec2 pos, final Shape shp ) {
 		Integer id = Component.getID();
 
-		Component.placement.put( id, new Placement( pos ) );
-		Component.drawer.put( id, new Drawer( id ) );
+		Component.placement.put( id, new Placement(pos) );
+		Component.drawer.put( id, new Drawer(id) );
 		Component.shape.put( id, shp );
-		Component.canKill.put( id, new CanKill() );
-		Component.mover.put( id, new Mover( id, 0, false, 0 ) );
+		Component.canKill.put( id, new Killer() );
+		Component.mover.put( id, new Mover(id, 0, false, 0) );
 
 		return id;
 	}
@@ -139,10 +194,10 @@ public class Level {
 
 		Component.placement.put( id, new Placement( pos ) );
 		Component.spawner.put( id, new Spawner(id, shootDirection, sequence, rotSpeed, freq, count) );
-		Component.mover.put( id, new Mover( id, 0, false, Constant.getFloat("Spawner_Gravity") ) );
+		Component.mover.put( id, new Mover(id, 0, false, Constant.getFloat("Spawner_Gravity")) );
 		Component.drawer.put( id, new Drawer(id, Constant.getVector("Spawner_Color") ) );
 		Component.shape.put( id, shp );
-		Component.canKill.put( id, new CanKill() );
+		Component.canKill.put( id, new Killer() );
 		
 		return id;
 	}

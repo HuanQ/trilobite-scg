@@ -23,19 +23,24 @@ public class Record {
 	static final int													movement = 1;
 	static final int													gunShot = 2;
 	static final int													shield = 4;
-	//TODO: Canviar atributs publics (si es que existeixen) per default
 	
 	private final int													me;
 	// Internal data
-	private final Vector<Snapshot>									recordedData;
+	private final Vector<Snapshot>										recordedData;
 	private int															eventsThisFrame;
 	private boolean														needUpdate;
 	private Vec2														lastRecordedPosition;
 	private Vec2														lastRecordedDirection;
 	private float														tickAccumulatedTime;
+	private File														file;
 	
-	public Record( int m ) {
+	public Record( int m, final String path ) {
 		me = m;
+		int i = 1;
+		do {
+			file = new File(path + i + ".dat");
+			i++;
+		} while( file.exists() );		
 		// The first time we always need to update
 		needUpdate = true;
 		recordedData = new Vector<Snapshot>();
@@ -58,12 +63,12 @@ public class Record {
 	}
 	
 	public void save() {
-		System.out.println( recordedData );
+		// Save last position
+		recordedData.add( new Snapshot(Timer.getTime(), eventsThisFrame, new Vec2(Component.placement.get(me).getPosition())) );
 		
 		ObjectOutputStream outputStream = null;
 		try {
-			String file = "file.dat";
-	        FileOutputStream fileoutputstream = new FileOutputStream( new File(file) );
+	        FileOutputStream fileoutputstream = new FileOutputStream( file );
 		    //ByteArrayOutputStream b = new ByteArrayOutputStream();
 	        outputStream = new ObjectOutputStream( fileoutputstream );
 	        outputStream.writeObject(recordedData);
@@ -103,7 +108,6 @@ public class Record {
 					Vec2 newDirection = new Vec2( lastRecordedPosition );
 					newDirection.sub( myPos );
 					newDirection.scale( 1 / tickAccumulatedTime );
-					//System.out.println( "CALC: " + myPos + " " + newDirection + " " + Timer.getDelta());
 					if( !newDirection.epsilonEquals( lastRecordedDirection, 0.01f ) ) {
 						// If we had moved the same direction and speed as the last frame we wouldn't need to record, interpolation wouldpredict it correctly
 						needUpdate = true;

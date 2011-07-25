@@ -7,6 +7,10 @@ import geometry.Vec2;
 import geometry.Vec3;
 
 public abstract class Polygon {
+	static public final int												circle = 0;
+	static public final int												rectangle = 1;
+	static public final int												text = 2;
+	
 	protected final Vec3												offset;
 	protected Vec3														color;
 	protected Sprite													texture;

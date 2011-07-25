@@ -27,7 +27,7 @@ public class Rectangle extends Polygon {
 	}
 	
 	public int whoAmI() {
-		return 1;
+		return Polygon.rectangle;
 	}
 	
 	public void multSize( float m ) {
@@ -73,7 +73,7 @@ public class Rectangle extends Polygon {
 		else {
 			Vec2 hisAbsPos = new Vec2(hisPos.x + p.offset.x, hisPos.y + p.offset.y);
 			
-			if( p.whoAmI() == 0 ) {
+			if( p.whoAmI() == Polygon.circle ) {
 				// Rectangle to circle
 				Circle c = (Circle) p;
 				// Find the closest point to the circle within the rectangle
@@ -86,7 +86,7 @@ public class Rectangle extends Polygon {
 				float distanceSquared = distanceX*distanceX + distanceY*distanceY;
 				return distanceSquared < c.getRadius()*c.getRadius();
 			}
-			else if( p.whoAmI() == 1 ) {
+			else if( p.whoAmI() == Polygon.rectangle ) {
 				// Rectangle to rectangle
 				Rectangle r = (Rectangle) p;
 				return Math.abs(hisAbsPos.x - myAbsPos.x) < (size.x + r.size.x) / 2 && Math.abs(hisAbsPos.y - myAbsPos.y) < (size.y + r.size.y) / 2;

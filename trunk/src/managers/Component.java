@@ -14,75 +14,64 @@ import components.*;
 public class Component {
 
 	static Integer												myIDcounter;
-	static public Collection<Integer>							deadObjects;
+	static public Collection<Integer>							deadObjects = new HashSet<Integer>();
 	
 	// Components
-		static public Map<Integer, Placement>					placement;
-		static public Map<Integer, Gun>							gun;
-		static public Map<Integer, Shape>						shape;
-		static public Map<Integer, CanKill>						canKill;
-		static public Map<Integer, Shield>						shield;
+		static public Map<Integer, Placement>					placement = new HashMap<Integer, Placement>();
+		static public Map<Integer, Gun>							gun = new HashMap<Integer, Gun>();
+		static public Map<Integer, Shape>						shape = new HashMap<Integer, Shape>();
+		static public Map<Integer, Killer>						canKill = new HashMap<Integer, Killer>();
+		static public Map<Integer, Shield>						shield = new HashMap<Integer, Shield>();
+		static public Map<Integer, Clickable>					clickable = new HashMap<Integer, Clickable>();
 		// Render
-		static public Map<Integer, Drawer>						drawer;
+		static public Map<Integer, Drawer>						drawer = new HashMap<Integer, Drawer>();
 		// Update
-		static public Map<Integer, KeyboardInput>				keyboard;
-		static public Map<Integer, Bullet>						bullet;
-		static public Map<Integer, Mover>						mover;
-		static public Map<Integer, Dumb>						dumb;
-		static public Map<Integer, CanBeKilled>					canBeKilled;
-		static public Map<Integer, TimedObject>					timedObject;
-		static public Map<Integer, Spawner>						spawner;
-		static public Map<Integer, Record>						record;
-		static public Map<Integer, Actor>						actor;
+		static public Map<Integer, KeyboardInput>				keyboard = new HashMap<Integer, KeyboardInput>();
+		static public Map<Integer, Bullet>						bullet = new HashMap<Integer, Bullet>();
+		static public Map<Integer, Mover>						mover = new HashMap<Integer, Mover>();
+		static public Map<Integer, Dumb>						dumb = new HashMap<Integer, Dumb>();
+		static public Map<Integer, Killable>					canBeKilled = new HashMap<Integer, Killable>();
+		static public Map<Integer, TimedObject>					timedObject = new HashMap<Integer, TimedObject>();
+		static public Map<Integer, Spawner>						spawner = new HashMap<Integer, Spawner>();
+		static public Map<Integer, Record>						record = new HashMap<Integer, Record>();
+		static public Map<Integer, Actor>						actor = new HashMap<Integer, Actor>();
+		static public Pointer									mouse;
 	
 	static public Integer getID() {
 		return myIDcounter++;
 	}
 	
 	static public void Init() {
-		
 		myIDcounter = 0;
-		drawer = new HashMap<Integer, Drawer>();
-		gun = new HashMap<Integer, Gun>();
-		keyboard = new HashMap<Integer, KeyboardInput>();
-		placement = new HashMap<Integer, Placement>();
-		bullet = new HashMap<Integer, Bullet>();
-		shield = new HashMap<Integer, Shield>();
-		mover = new HashMap<Integer, Mover>();
-		dumb = new HashMap<Integer, Dumb>();
-		shape = new HashMap<Integer, Shape>();
-		canKill = new HashMap<Integer, CanKill>();
-		canBeKilled = new HashMap<Integer, CanBeKilled>();
-		timedObject = new HashMap<Integer, TimedObject>();
-		spawner = new HashMap<Integer, Spawner>();
-		record = new HashMap<Integer, Record>();
-		actor = new HashMap<Integer, Actor>();
-		
-		deadObjects = new HashSet<Integer>();
+		mouse = null;
 	}
 	
 	static public void Release() {
-		drawer = null;
-		gun = null;
-		keyboard = null;
-		placement = null;
-		bullet = null;
-		shield = null;
-		mover = null;
-		dumb = null;
-		shape = null;
-		canKill = null;
-		canBeKilled = null;
-		timedObject = null;
-		spawner = null;
-		record = null;
-		actor = null;
+		drawer.clear();
+		gun.clear();
+		keyboard.clear();
+		placement.clear();
+		bullet.clear();
+		shield.clear();
+		mover.clear();
+		dumb.clear();
+		shape.clear();
+		canKill.clear();
+		canBeKilled.clear();
+		timedObject.clear();
+		spawner.clear();
+		record.clear();
+		actor.clear();
+		clickable.clear();
+		mouse = null;
 	}
 	
 	static public void Update() {
 		Timer.Update();
-
-		// Input 
+		if(mouse != null) {
+			mouse.Update();
+		}
+		
 		for (Map.Entry<Integer, Actor> entry : actor.entrySet()) {
 			entry.getValue().Update();
 		}
@@ -101,7 +90,7 @@ public class Component {
 		for (Map.Entry<Integer, Mover> entry : mover.entrySet()) {
 			entry.getValue().Update();
 		}
-		for (Map.Entry<Integer, CanBeKilled> entry : canBeKilled.entrySet()) {
+		for (Map.Entry<Integer, Killable> entry : canBeKilled.entrySet()) {
 			entry.getValue().Update();
 		}
 		for (Map.Entry<Integer, TimedObject> entry : timedObject.entrySet()) {
@@ -129,6 +118,14 @@ public class Component {
 
 		for (Iterator<Integer> iter = deadObjects.iterator(); iter.hasNext();) {
 		   Integer next = iter.next();
+		   
+		   // Save to file
+		   Record rec = record.get(next); 
+		   if( rec != null) {
+			   record.get(next).save();
+			   record.remove(next);
+		   }
+		   
 		   placement.remove(next);
 		   gun.remove(next);
 		   shape.remove(next);
@@ -143,13 +140,6 @@ public class Component {
 		   timedObject.remove(next);
 		   spawner.remove(next);
 		   actor.remove(next);
-		   
-		   // Save to file
-		   Record rec = record.get(next); 
-		   if( rec != null) {
-			   record.get(next).save();
-			   record.remove(next);
-		   }
 		}
 		deadObjects.clear();
 	}

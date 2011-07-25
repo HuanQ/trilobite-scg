@@ -1,5 +1,7 @@
 package components;
 
+import geometry.Vec2;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,6 +11,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import managers.Component;
+import managers.Constant;
 import managers.Timer;
 
 import data.Snapshot;
@@ -22,12 +25,11 @@ public class Actor {
 	private Snapshot											nextSnap;
 
 	@SuppressWarnings("unchecked")
-	public Actor( int m ) {
+	public Actor( int m, final String file ) {
 		me = m;
 	    
 		ObjectInputStream inputStream = null;
 		try {
-			String file = "file.dat";
 	        FileInputStream fileinputstream = new FileInputStream( new File(file) );
 		    //ByteArrayOutputStream b = new ByteArrayOutputStream();
 	        inputStream = new ObjectInputStream( fileinputstream );
@@ -71,7 +73,17 @@ public class Actor {
 				}
 			}
 			else {
-				Component.deadObjects.add(me);				
+				// Draw dephasing
+				Placement p = Component.placement.get(me);
+				Integer id = Component.getID();
+				
+				Component.timedObject.put( id, new TimedObject(id, Constant.getFloat("Phase_Duration")) );
+				Component.placement.put( id, new Placement( new Vec2( p.getPosition().x, p.getPosition().y ) ) );
+				Component.drawer.put( id, new Drawer(id, Constant.getVector("Phase_Color") ) );
+				Component.shape.put( id, Constant.getShape("Phase_Shape")  );
+				
+				// Die
+				Component.deadObjects.add(me);
 			}
 		}
 		

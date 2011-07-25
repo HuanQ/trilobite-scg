@@ -30,8 +30,8 @@ public class Gun {
 		Component.bullet.put( id, new Bullet(id,  new Vec2(0, -Constant.getFloat("Bullet_Speed")) ) );
 		Component.placement.put( id, new Placement( exitPoint ) );
 		Component.drawer.put( id, new Drawer(id, Constant.getVector("Bullet_Color") ) );
-		Component.canBeKilled.put( id, new CanBeKilled(id) );
-		Component.canKill.put( id, new CanKill() );
+		Component.canBeKilled.put( id, new Killable(id) );
+		Component.canKill.put( id, new Killer() );
 	}
 
 }
