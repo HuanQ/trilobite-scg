@@ -18,16 +18,27 @@ public class Game {
 		if( !directory.exists() ) {
 			directory.mkdir();
 		}
+		
+		boolean firstPlay = false;
 		directoryName = firstDir + "/" + number + "/";
 		directory = new File( "resources/games/" + directoryName );
 		if( !directory.exists() ) {
 			directory.mkdir();
+			firstPlay = number == 1;
 		}
 		
 		// Initialize game
 		Component.Init();
 		Timer.Init();
 		Level.Init( "resources/data/" + name + ".xml" );
+		Level.Init( "resources/data/hud.xml" );
+		
+		// Helpers pop up the first time we play each level 
+		if(firstPlay) {
+			Level.Init( "resources/data/help.xml" );
+		}
+		
+		Component.fader.resetBlack();
 	}
 	
 	public void start() {
@@ -39,11 +50,13 @@ public class Game {
 			String nextFileName = "resources/games/" + directoryName + i + ".dat";
 			actorFile = new File(nextFileName);
 			if( actorFile.exists() ) {
-				Level.AddActor(nextFileName);
+				Level.AddActor(nextFileName, i);
 			}
 		} while( actorFile.exists() );
-		
+
 		int player = Level.AddPlayer( "resources/games/" + directoryName, i-1 );
+		
+		Component.fader.fadeToWhite();
 		
 		// Run the game 
 		while ( Component.placement.get(player) != null ) {

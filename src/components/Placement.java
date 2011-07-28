@@ -5,26 +5,33 @@ import geometry.Angle;
 import geometry.Vec2;
 
 public class Placement {
+	static public final int										gameSide = 0;
+	static public final int										fullScreen = 1;
+	static public final int										leftSide = 2;
+	static public final int										rightSide = 3;
+	static public final int										leftSideFull = 4;
+	static public final int										rightSideFull = 5;
+	
 	private Vec2												position;
 	private Angle												angle;
-	private boolean												gameElement;
+	private int													screenSide;
 	
 	//TODO: Afegir rotations a tots els objectes (draw rectangle i poster gunpoint i poc mes)
 	
-	public Placement( boolean gElem ) {
+	public Placement( int side ) {
 		position = new Vec2();
 		angle = new Angle();
-		gameElement = gElem;
+		screenSide = side;
 	}
 	
-	public Placement( final Vec2 p, boolean gElem ) {
+	public Placement( final Vec2 p, int side ) {
 		position = p;
 		angle = new Angle();
-		gameElement = gElem;
+		screenSide = side;
 	}
 	
-	public boolean isGameElement() {
-		return gameElement;
+	public int getScreenSide() {
+		return screenSide;
 	}
 	
 	public void interpPosition( final Vec2 start, final Vec2 end, float step ) {

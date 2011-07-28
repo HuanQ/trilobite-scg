@@ -11,6 +11,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import components.Placement;
 import components.Shape;
 
 public class NodeReader {
@@ -28,12 +29,10 @@ public class NodeReader {
 	    	if(nextShape.getNodeName() == "Circle") {
 	    		myShape.add( NodeReader.readCircle(nextShape) );
 	    	}
-	    	
-	    	if(nextShape.getNodeName() == "Rectangle") {
+	    	else if(nextShape.getNodeName() == "Rectangle") {
 	    		myShape.add( NodeReader.readRectangle(nextShape) );
 	    	}
-	    	
-	    	if(nextShape.getNodeName() == "Text") {
+	    	else if(nextShape.getNodeName() == "Text") {
 	    		myShape.add( NodeReader.readText(nextShape) );
 	    	}
 	    }
@@ -56,7 +55,17 @@ public class NodeReader {
     	myPoint.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
     	myPoint.z = Float.valueOf( attr.getNamedItem("z").getTextContent() );
     	String myText = attr.getNamedItem("txt").getTextContent();
-    	float size = Float.valueOf( attr.getNamedItem("size").getTextContent() );
+    	String str = attr.getNamedItem("size").getTextContent();
+    	int size = Text.mediumFont;
+    	if(str.equals("big")) {
+    		size = Text.bigFont;
+    	}
+    	else if(str.equals("medium")) {
+    		size = Text.mediumFont;
+    	}
+    	else if(str.equals("small")) {
+    		size = Text.smallFont;
+    	}
     	return (Text) readSubShape( node, new Text(myText, myPoint, size) );
 	}
 	
@@ -101,12 +110,31 @@ public class NodeReader {
     	return (Circle) readSubShape( node, new Circle(radius, myPoint) );
 	}
 	
-	static public Vec2 readPoint(  final Node node ) {
-		Vec2 myPoint = new Vec2();
+	static public Placement readPoint(  final Node node ) {
     	NamedNodeMap attr = node.getAttributes();
-    	myPoint.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
-    	myPoint.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
-    	return myPoint;
+    	Vec2 pos = new Vec2();
+    	pos.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
+    	pos.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
+    	int side = Placement.gameSide;
+    	if( attr.getNamedItem("side") != null ) {
+    		String str = attr.getNamedItem("side").getTextContent();
+    		if( str.equals("left") ) {
+    			side = Placement.leftSide;
+    		}
+    		else if( str.equals("right") ) {
+    			side = Placement.rightSide;
+    		}
+    		else if( str.equals("full") ) {
+    			side = Placement.fullScreen;
+    		}
+    		else if( str.equals("leftFull") ) {
+    			side = Placement.leftSideFull;
+    		}
+    		else if( str.equals("rightFull") ) {
+    			side = Placement.rightSideFull;
+    		}
+    	}
+    	return new Placement(pos, side );
 	}
 	
 	static public Vec3 readColor( final Node node ) {

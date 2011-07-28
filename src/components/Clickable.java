@@ -1,5 +1,6 @@
 package components;
 
+import data.Cleaner;
 import game.Start;
 
 public class Clickable {
@@ -21,6 +22,9 @@ public class Clickable {
 		}
 		else if( function.equals("BACK") ) {
 			Start.startMenu();
+		}
+		else if( function.equals("CLEAN") ) {
+			new Cleaner().cleanAll();
 		}
 	}
 }

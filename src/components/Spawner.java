@@ -18,7 +18,7 @@ public class Spawner {
 	private final int											me;
 	// Behaviour
 	private final Angle											spawnDirection;
-	private long												wait;
+	private int													wait;
 	private float												rotationSpeed;
 	// Internal data
 	private final Sequence										mySeq;

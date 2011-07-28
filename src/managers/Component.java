@@ -36,6 +36,7 @@ public class Component {
 	static public Map<Integer, Record>						record = new HashMap<Integer, Record>();
 	static public Map<Integer, Actor>						actor = new HashMap<Integer, Actor>();
 	static public Map<Integer, Planet>						planet = new HashMap<Integer, Planet>();
+	static public Map<Integer, Helper>						helper = new HashMap<Integer, Helper>();
 	// Global
 	static public Pointer									mouse;
 	static public Fader										fader = new Fader();
@@ -68,8 +69,9 @@ public class Component {
 		record.clear();
 		actor.clear();
 		clickable.clear();
+		helper.clear();
 		
-		fader.reset();
+		fader.resetWhite();
 		mouse = null;
 	}
 	
@@ -78,10 +80,8 @@ public class Component {
 		if(mouse != null) {
 			mouse.Update();
 		}
-		if(fader != null) {
-			fader.Update();
-		}
-		
+		fader.Update();
+				
 		for (Map.Entry<Integer, Actor> entry : actor.entrySet()) {
 			entry.getValue().Update();
 		}
@@ -98,6 +98,9 @@ public class Component {
 			entry.getValue().Update();
 		}
 		for (Map.Entry<Integer, Bullet> entry : bullet.entrySet()) {
+			entry.getValue().Update();
+		}
+		for (Map.Entry<Integer, Helper> entry : helper.entrySet()) {
 			entry.getValue().Update();
 		}
 		for (Map.Entry<Integer, Mover> entry : mover.entrySet()) {
@@ -121,7 +124,6 @@ public class Component {
 		// Clear the screen and depth buffer
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	    glClearColor(0, 0, 0, 1);
-	    
 		for (Map.Entry<Integer, Drawer> entry : drawer.entrySet()) {
 			entry.getValue().Render();
 		}
@@ -154,6 +156,8 @@ public class Component {
 		   timedObject.remove(next);
 		   spawner.remove(next);
 		   actor.remove(next);
+		   helper.remove(next);
+		   clickable.remove(next);
 		}
 		deadObjects.clear();
 	}

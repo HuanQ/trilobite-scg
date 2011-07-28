@@ -98,7 +98,13 @@ public class Level {
 							NodeReader.readShape( readNodes.get("Shape") )
 							);
 				}
-				
+				else if(nextType.getNodeName() == "Helper") {
+					AddHelper( NodeReader.readPoint( readNodes.get("Point") ),
+					NodeReader.readShape( readNodes.get("Shape") ),
+					NodeReader.readString( readNodes.get("Function") ),
+					NodeReader.readFloat( readNodes.get("Wait") )
+					);
+				}
 			}
 		}
 	}
@@ -123,11 +129,11 @@ public class Level {
 		return pos;
 	}
 	
-	static public Integer AddPlayer( final String path, int spawnPoint ) {
+	static public Integer AddPlayer( final String path, int number ) {
 		Integer id = Component.getID();
 
 		Component.keyboard.put( id, new KeyboardInput(id) );
-		Component.placement.put( id, new Placement( getSpawnPoint(spawnPoint), true ) );
+		Component.placement.put( id, new Placement( getSpawnPoint(number), Placement.gameSide ) );
 		Component.drawer.put( id, new Drawer(id, Vec3.white ) );
 		Component.gun.put( id, new Gun(id, Constant.getPoint("Gun_Point")) );
 		Component.shield.put( id, new Shield(id) );
@@ -139,6 +145,7 @@ public class Level {
 
 		Component.placement.get(id).setRotation( (float) Math.PI / 2 );
 		Component.shield.get(id).Raise();
+		Component.shape.get(id).setText(Integer.toString(number+1));
 
 		return id;
 	}
@@ -146,45 +153,57 @@ public class Level {
 	static public void AddMouse() {
 		Integer id = Component.getID();
 		Component.mouse = new Pointer(id);
-		Component.placement.put(id, new Placement(false) );
+		Component.placement.put(id, new Placement(Placement.fullScreen) );
 		Component.drawer.put( id, new Drawer(id) );
 		Component.shape.put( id, Constant.getShape("Mouse_Shape") );
 		
 		Component.placement.get(id).interpPosition( Vec2.topLeft, Vec2.bottomRight, 0.5f);
 	}
 	
-	static public Integer AddActor( final String path ) {
+	static public Integer AddActor( final String path, int number ) {
 		Integer id = Component.getID();
 
 		Component.actor.put( id, new Actor(id, path) );
-		Component.placement.put( id, new Placement(true) );
+		Component.placement.put( id, new Placement(Placement.gameSide) );
 		Component.drawer.put( id, new Drawer(id, Vec3.gray ) );
 		Component.gun.put( id, new Gun(id, Constant.getPoint("Gun_Point")) );
 		Component.shield.put( id, new Shield(id) );
 		Component.mover.put( id, new Mover(id, Constant.getFloat("Ship_Speed"), true, 0) );
-		Component.shape.put( id, Constant.getShape("Ship_Shape") );
+		Component.shape.put( id, new Shape(Constant.getShape("Ship_Shape")) );
 		Component.canBeKilled.put( id, new Killable(id) );
 		Component.canKill.put( id, new Killer() );
 
 		Component.placement.get(id).setRotation( (float) Math.PI / 2 );
+		Component.shape.get(id).setText(Integer.toString(number));
 
 		return id;
 	}
 	
-	static private Integer AddImage( final Vec2 pos, final Shape shp ) {
+	static private Integer AddImage( final Placement pos, final Shape shp ) {
 		Integer id = Component.getID();
 
-		Component.placement.put( id, new Placement(pos, false) );
+		Component.placement.put( id, pos );
 		Component.drawer.put( id, new Drawer( id ) );
 		Component.shape.put( id, shp );
 
 		return id;
 	}
 	
-	static private Integer AddButton( final Vec2 pos, final Shape shp, final String func ) {
+	static private Integer AddHelper( final Placement pos, final Shape shp, final String func, float wait ) {
 		Integer id = Component.getID();
 
-		Component.placement.put( id, new Placement(pos, false) );
+		Component.placement.put( id, pos );
+		Component.drawer.put( id, new Drawer( id ) );
+		Component.helper.put( id, new Helper( id, func, wait ) );
+		Component.shape.put( id, shp );
+
+		return id;
+	}
+	
+	static private Integer AddButton( final Placement pos, final Shape shp, final String func ) {
+		Integer id = Component.getID();
+
+		Component.placement.put( id, pos );
 		Component.drawer.put( id, new Drawer(id) );
 		Component.planet.put( id, new Planet(id) );
 		Component.shape.put( id, shp );
@@ -193,10 +212,10 @@ public class Level {
 		return id;
 	}
 	
-	static private Integer AddWall( final Vec2 pos, final Shape shp ) {
+	static private Integer AddWall( final Placement pos, final Shape shp ) {
 		Integer id = Component.getID();
 
-		Component.placement.put( id, new Placement(pos, true) );
+		Component.placement.put( id, pos );
 		Component.drawer.put( id, new Drawer(id) );
 		Component.shape.put( id, shp );
 		Component.canKill.put( id, new Killer() );
@@ -205,10 +224,10 @@ public class Level {
 		return id;
 	}
 	
-	static private Integer AddSpawner( final Vec2 pos, final Angle shootDirection, final String sequence, float rotSpeed, final Shape shp, float freq, int count ) {
+	static private Integer AddSpawner( final Placement pos, final Angle shootDirection, final String sequence, float rotSpeed, final Shape shp, float freq, int count ) {
 		Integer id = Component.getID();
 
-		Component.placement.put( id, new Placement(pos, true) );
+		Component.placement.put( id, pos );
 		Component.spawner.put( id, new Spawner(id, shootDirection, sequence, rotSpeed, freq, count) );
 		Component.mover.put( id, new Mover(id, 0, false, Constant.getFloat("Spawner_Gravity")) );
 		Component.drawer.put( id, new Drawer(id) );

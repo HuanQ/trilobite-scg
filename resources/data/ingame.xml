@@ -1,7 +1,17 @@
 <Trilobite>
 	<Menu>
 		<Button>
-			<Point x="0.7" y="0.2"/>
+			<Point x="0.05" y="1.05" side="full"/>
+			<Function>NONE</Function>
+			<Shape>
+				<Circle x="0" y="0" z="6.1" radius="0.45">
+					<Texture>planet2.gif</Texture>
+				</Circle>
+			</Shape>
+		</Button>
+		
+		<Button>
+			<Point x="0.7" y="0.2" side="full"/>
 			<Function>AGAIN</Function>
 			<Shape>
 				<Rectangle x="0" y="0" z="8" sizex="0.3" sizey="0.1">
@@ -14,7 +24,7 @@
 		</Button>
 		
 		<Button>
-			<Point x="0.7" y="0.4"/>
+			<Point x="0.7" y="0.4" side="full"/>
 			<Function>BACK</Function>
 			<Shape>
 				<Rectangle x="0" y="0" z="8" sizex="0.3" sizey="0.1">

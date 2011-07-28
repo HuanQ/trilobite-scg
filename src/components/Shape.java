@@ -3,6 +3,7 @@ package components;
 import geometry.Circle;
 import geometry.Polygon;
 import geometry.Rectangle;
+import geometry.Text;
 
 import java.util.Iterator;
 import java.util.Vector;
@@ -25,10 +26,13 @@ public class Shape {
 		for (Iterator<Polygon> iter = shp.polygons.iterator(); iter.hasNext();) {
 			Polygon next = iter.next();
 			if( next.whoAmI() == Polygon.circle ) {
-				polygons.add( new Circle( (Circle) next ) );
+				polygons.add( new Circle((Circle) next) );
 			}
 			else if( next.whoAmI() == Polygon.rectangle ) {
-				polygons.add( new Rectangle( (Rectangle) next ) );
+				polygons.add( new Rectangle((Rectangle) next) );
+			}
+			else if( next.whoAmI() == Polygon.text ) {
+				polygons.add( new Text((Text) next) );
 			}
 		}
 		radius = shp.radius;
@@ -36,6 +40,15 @@ public class Shape {
 
 	public float getRadius() {
 		return radius;
+	}
+	
+	public void setText( final String str ) {
+		for (Iterator<Polygon> iter = polygons.iterator(); iter.hasNext();) {
+			Polygon next = iter.next();
+			if( next.whoAmI() == Polygon.text ) {
+				((Text) next).setText(str);
+			}
+		}
 	}
 	
 	public Vector<Polygon> getPolygons() {

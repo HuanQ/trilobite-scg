@@ -21,7 +21,7 @@ public class Menu {
 	
 	public void start() {
 		// Run the game 
-		while ( active ) {
+		while ( active || !Component.fader.isDone() ) {
 			Component.Update();
 			Component.Render();
 			Display.update();
@@ -35,6 +35,7 @@ public class Menu {
 	}
 	
 	public void end() {
+		Component.fader.fadeToBlack();
 		active = false;
 	}
 }

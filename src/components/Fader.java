@@ -17,7 +17,12 @@ public class Fader {
 		direction = 0;
 	}
 	
-	public void reset() {
+	public void resetBlack() {
+		color = new Vec3(Vec3.black);
+		direction = 0;
+	}
+	
+	public void resetWhite() {
 		color.set(Vec3.white);
 		direction = 0;
 	}
@@ -39,20 +44,20 @@ public class Fader {
 	}
 	
 	public void Update() {
-		if(direction > 0) {
-			float dt = Timer.getDelta();
+		float dt = Timer.getDelta();
+		if(direction > 0 && dt > 0) {
 			Vec3 speed = new Vec3(dt, dt, dt);
 			speed.scale( Constant.getFloat("Fader_Speed"));
 			switch(direction) {
 				case toBlack:
-					color.add(speed);
+					color.sub(speed);
 				break;
 				case toWhite:
-					color.sub(speed);
+					color.add(speed);
 				break;
 			}
 			color.clamp(0, 1);
-			if( color.isZero() || color.isOnes() ) {
+			if( color.equals(Constant.getVector("Fader_Color")) || color.isOnes() ) {
 				direction = 0;
 			}
 		}

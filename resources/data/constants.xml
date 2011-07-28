@@ -1,12 +1,13 @@
 <Trilobite>
 	<World>
 		<Render>
-			<DefaultSize>0.01</DefaultSize>
+			<DefaultUnscaledSize>5</DefaultUnscaledSize>
 			<CircleSections>32</CircleSections>
 			<DefaultLayer>0</DefaultLayer>
 			<DefaultKillDistance>0</DefaultKillDistance>
 			<ClickCooldown>0.3</ClickCooldown>
 		</Render>
+		
 		<Mouse>
 			<Weight>10</Weight>
 			<Shape>
@@ -31,14 +32,17 @@
 	<Player>
 	
 		<Ship>
-			<Speed>0.375</Speed>
+			<Speed>0.35</Speed>
 			<Shape>
 				<Circle x="0" y="0" z="2" radius="0.013">
-					<Color r="0" g="0.95" b="0"/>
+					<Color r="1" g="0.95" b="0"/>
 				</Circle>
 				<Rectangle x="0" y="0.02" z="1" sizex="0.015" sizey="0.022">
-					<Color r="0" g="0.75" b="0"/>
+					<Color r="1" g="0.75" b="0"/>
 				</Rectangle>
+				<Text x="0" y="0" z="2.1" txt="Number" size="small">
+					<Color r="0" g="0" b="0"/>
+				</Text>
 			</Shape>
 		</Ship>
 		
@@ -87,10 +91,19 @@
 	
 	<Effects>
 	
-		<Fade>
-			<Speed>0.75</Speed>
+		<Helper>
+			<Duration>1.5</Duration>
+			<BlinkTime>0.5</BlinkTime>
+			<Color r="0" g="0.65" b="0"/>
+			<Shape>
+				<Circle x="0" y="0" z="8.1" radius="0.325"/>
+			</Shape> 
+		</Helper>
+		
+		<Fader>
+			<Speed>2.5</Speed>
 			<Color r="0" g="0" b="0"/>
-		</Fade>
+		</Fader>
 		
 		<Bullet>
 			<KillDistance>0.01</KillDistance>

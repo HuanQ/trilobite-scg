@@ -27,7 +27,7 @@ public class Circle extends Polygon {
 	}
 	
 	public Circle(final Circle c) {
-		super((Polygon) c);
+		super(c);
 		radius = c.getRadius();
 	}
 
@@ -44,8 +44,8 @@ public class Circle extends Polygon {
 		return Polygon.circle;
 	}
 	
-	public void draw( final Vec2 pos, final Vec3 defColor ) {
-		float myRadius = Screen.rescale( radius );
+	public void draw( final Vec2 pos, final Vec3 defColor, int side ) {
+		float myRadius = Screen.rescale( radius, side );
 		Vec3 finalColor = new Vec3(defColor);
 		finalColor.mult(color);
 		finalColor.mult(Component.fader.getColor());
@@ -67,8 +67,8 @@ public class Circle extends Polygon {
 		else {
 			// Draw sprites
 	    	glEnable(GL_TEXTURE_2D);
-	    	texture.setWidth( (int) Screen.rescale(radius*2) );
-			texture.setHeight( (int) Screen.rescale(radius*2) );
+	    	texture.setWidth( (int) Screen.rescale(radius*2, side) );
+			texture.setHeight( (int) Screen.rescale(radius*2, side) );
 	    	texture.draw(pos.x, pos.y, offset.z + 0.5f);
 	    }
 	}

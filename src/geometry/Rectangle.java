@@ -19,7 +19,7 @@ public class Rectangle extends Polygon {
 	}
 	
 	public Rectangle( final Rectangle r ) {
-		super((Polygon) r);
+		super(r);
 		size = new Vec2( r.size );
 	}
 	
@@ -36,8 +36,9 @@ public class Rectangle extends Polygon {
 		sqradius = (float) Math.pow(size.length()/2, 2);
 	}
 
-	public void draw( final Vec2 pos, final Vec3 defColor ) {
-		Vec2 mySize = Screen.gameRescale( size );
+	public void draw( final Vec2 pos, final Vec3 defColor, int side ) {
+		Vec2 mySize = new Vec2(size); 
+		Screen.rescale( mySize, side );
 		Vec3 finalColor = new Vec3(defColor);
 		finalColor.mult(color);
 		finalColor.mult(Component.fader.getColor());
@@ -57,8 +58,8 @@ public class Rectangle extends Polygon {
 		else {
 			// Draw sprites
 	    	glEnable(GL_TEXTURE_2D);
-	    	texture.setWidth( (int) Screen.rescale(size.x) );
-			texture.setHeight( (int) Screen.rescale(size.y) );
+	    	texture.setWidth( (int) mySize.x );
+			texture.setHeight( (int) mySize.y );
 	    	texture.draw(pos.x, pos.y, offset.z + 0.5f);
 	    }
 	}

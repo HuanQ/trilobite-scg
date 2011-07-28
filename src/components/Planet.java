@@ -35,10 +35,10 @@ public class Planet {
 			Vec2 mousePos = Component.mouse.getPosition();
 			float mass = Component.shape.get(me).getRadius();
 			//TODO: Weight by radius
-			float dist = (float) Math.pow(mousePos.distance(originalPos), 0.0015f/Math.pow(mass,1.2f) );
+			float dist = (float) Math.pow(mousePos.distance(originalPos), 0.0015f/mass );
 			myFuturePos.interpolate(mousePos, originalPos, Math.min(Math.max(dist,0),1) );
 			
-			float speed = (float) Math.min(myFuturePos.distance(myPos), 0.75f);
+			float speed = (float) Math.min(myFuturePos.distance(myPos), 0.5f);
 			Vec2 floatMov = new Vec2(myFuturePos);
 			floatMov.sub(myPos);
 			if( !floatMov.isZero() ) {

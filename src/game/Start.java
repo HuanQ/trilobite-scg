@@ -74,6 +74,7 @@ public class Start {
 		//TODO: Crear un manager de graphics i potser fins i tot buidar tot el reste del codi de OpenGL
 		try {
 			Display.setDisplayMode(new DisplayMode(1024, 800));
+			//Display.setDisplayMode( Display.getDesktopDisplayMode() );
 			Display.setFullscreen(false);
 			Display.create();
 		} catch (LWJGLException e) {
@@ -85,6 +86,7 @@ public class Start {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0, 1024, 800, 0, -10, 10);
+		//glOrtho(0, 1920, 1080, 0, -10, 10);
 		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_ALPHA_TEST);
@@ -95,5 +97,6 @@ public class Start {
         
 		Mouse.setGrabbed(true);
 		glViewport(0, 0, 1024, 800);
+		//glViewport(0, 0, 1920, 1080);
 	}
 }
