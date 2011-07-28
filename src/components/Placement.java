@@ -7,17 +7,24 @@ import geometry.Vec2;
 public class Placement {
 	private Vec2												position;
 	private Angle												angle;
+	private boolean												gameElement;
 	
 	//TODO: Afegir rotations a tots els objectes (draw rectangle i poster gunpoint i poc mes)
 	
-	public Placement() {
+	public Placement( boolean gElem ) {
 		position = new Vec2();
 		angle = new Angle();
+		gameElement = gElem;
 	}
 	
-	public Placement( final Vec2 p ) {
+	public Placement( final Vec2 p, boolean gElem ) {
 		position = p;
 		angle = new Angle();
+		gameElement = gElem;
+	}
+	
+	public boolean isGameElement() {
+		return gameElement;
 	}
 	
 	public void interpPosition( final Vec2 start, final Vec2 end, float step ) {

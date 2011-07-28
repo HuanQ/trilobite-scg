@@ -56,10 +56,10 @@
 			<RotationSpeed>1</RotationSpeed>
 			<Shape>
 				<Circle x="0" y="0" z="1" radius="0.04">
-					<Color r="0.75" g="0.75" b="0.75"/>
+					<Color r="0.75" g="0.4" b="0.4"/>
 				</Circle>
 				<Rectangle x="0.033" y="0" z="2" sizex="0.05" sizey="0.03">
-					<Color r="0.85" g="0.85" b="0.85"/>
+					<Color r="0.85" g="0.45" b="0.45"/>
 				</Rectangle>
 			</Shape>
 			<Count>10</Count>

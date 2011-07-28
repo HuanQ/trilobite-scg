@@ -4,6 +4,7 @@ package geometry;
 import geometry.Vec2;
 import geometry.Vec3;
 
+import managers.Component;
 import managers.Screen;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -36,23 +37,21 @@ public class Rectangle extends Polygon {
 	}
 
 	public void draw( final Vec2 pos, final Vec3 defColor ) {
-		Vec2 myPos = Screen.reposition( new Vec2(pos.x + offset.x, pos.y + offset.y) );
-		Vec2 mySize = Screen.rescale( new Vec2( size ) );
+		Vec2 mySize = Screen.gameRescale( size );
+		Vec3 finalColor = new Vec3(defColor);
+		finalColor.mult(color);
+		finalColor.mult(Component.fader.getColor());
+		glColor4f(finalColor.x, finalColor.y, finalColor.z, 1.f);
 		
 		if(texture == null) {
 		    // Draw placeholder
 			glDisable(GL_TEXTURE_2D);
-			if( color == null ) {
-				glColor4f(defColor.x, defColor.y, defColor.z, 1.f);
-			}
-			else {
-				glColor4f(color.x * defColor.x, color.y * defColor.y, color.z * defColor.z, 1);
-			}
+
 			glBegin(GL_QUADS);
-		    glVertex3f(myPos.x - mySize.x/2, myPos.y - mySize.y/2, offset.z);
-			glVertex3f(myPos.x + mySize.x/2, myPos.y - mySize.y/2, offset.z);
-			glVertex3f(myPos.x + mySize.x/2, myPos.y + mySize.y/2, offset.z);
-			glVertex3f(myPos.x - mySize.x/2, myPos.y + mySize.y/2, offset.z);
+		    glVertex3f(pos.x - mySize.x/2, pos.y - mySize.y/2, offset.z);
+			glVertex3f(pos.x + mySize.x/2, pos.y - mySize.y/2, offset.z);
+			glVertex3f(pos.x + mySize.x/2, pos.y + mySize.y/2, offset.z);
+			glVertex3f(pos.x - mySize.x/2, pos.y + mySize.y/2, offset.z);
 		    glEnd();
 		}
 		else {
@@ -60,7 +59,7 @@ public class Rectangle extends Polygon {
 	    	glEnable(GL_TEXTURE_2D);
 	    	texture.setWidth( (int) Screen.rescale(size.x) );
 			texture.setHeight( (int) Screen.rescale(size.y) );
-	    	texture.draw(myPos.x, myPos.y, offset.z + 0.5f);
+	    	texture.draw(pos.x, pos.y, offset.z + 0.5f);
 	    }
 	}
     

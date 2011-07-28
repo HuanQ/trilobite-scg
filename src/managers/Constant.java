@@ -5,6 +5,7 @@ import graphics.TextureLoader;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import geometry.Vec2;
 import geometry.Vec3;
@@ -26,9 +27,11 @@ public class Constant {
 	static private Map<String, Shape>							myShapes;
 	static private Map<String, String>							myStrings;
 	
+	//TODO: Crear global component screenspeed enlloc de gravity que NO ES UNA CONSTANT
 	static public float											gravity; 
 	static public int											timerResolution;
 	static public TextureLoader									textureLoader;
+	static public Random										rnd;
 	
 	static public void Init() {
 		// TODO: http://download.oracle.com/javase/tutorial/java/javaOO/initial.html
@@ -38,6 +41,7 @@ public class Constant {
 		myShapes = new HashMap<String, Shape>();
 		myStrings = new HashMap<String, String>();
 		textureLoader = new TextureLoader();
+		rnd = new Random();
 		
 		try {
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();

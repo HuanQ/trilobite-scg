@@ -20,7 +20,7 @@ public class Drawer {
 	
 	public Drawer( int m) {
 		me = m;
-		color = new Vec3(1.f, 1.f, 1.f);
+		color = Vec3.white;
 	}
 	
 	public Drawer( int m, final Vec3 c) {
@@ -34,7 +34,14 @@ public class Drawer {
 		
 		if( Screen.inScreen( Component.placement.get(me).getPosition(), radius ) ) {
 			if(myShape == null || myShape.getRadius() == 0) {
-				Vec2 myPos =  Screen.reposition( new Vec2( Component.placement.get(me).getPosition() ) );
+				Placement place = Component.placement.get(me);
+				Vec2 myPos = new Vec2( place.getPosition() );
+				if( place.isGameElement() ) {
+					myPos = Screen.gameReposition(myPos);
+				}
+				else {
+					myPos = Screen.screenRescale(myPos);
+				}
 				// Default placeholder
 				//TODO: tambe cal dibuixar el sprite si no te shape, pero no se on guardar-lo
 				float size = Screen.rescale( Constant.getFloat("Render_DefaultSize") );
@@ -49,10 +56,18 @@ public class Drawer {
 			    glEnd();
 			}
 			else {
-				// Every shape draws itself
+				// Each shape draws itself
 				for (Iterator<Polygon> iter = myShape.getPolygons().iterator(); iter.hasNext();) {
 					Polygon next = iter.next();
-					next.draw( Component.placement.get(me).getPosition(), color );
+					Placement place = Component.placement.get(me); 
+					Vec2 myPos = new Vec2(place.getPosition().x + next.getOffset().x, place.getPosition().y + next.getOffset().y);
+					if( place.isGameElement() ) {
+						myPos = Screen.gameReposition(myPos);
+					}
+					else {
+						myPos = Screen.screenRescale(myPos);
+					}
+					next.draw( myPos, color );
 				}
 			}
 		}

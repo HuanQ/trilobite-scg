@@ -133,12 +133,22 @@ public class Vec3 implements java.io.Serializable, Cloneable {
 
 
     /**
+     * Checks if it is all ones
+     * @returns true if it is ones
+     */
+    public boolean isOnes()
+    {
+    	return x == 1 && y == 1 && z == 1;
+    }
+
+
+    /**
      * Checks if it is zero
      * @returns true if it is zero
      */
     public boolean isZero()
     {
-    	return x == 0 && y == 0;
+    	return x == 0 && y == 0 && z == 0;
     }
 
 
@@ -149,6 +159,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
     {
     	x = 0;
     	y = 0;
+    	z = 0;
     }
 
   
@@ -174,6 +185,31 @@ public class Vec3 implements java.io.Serializable, Cloneable {
         this.x += t1.x;
         this.y += t1.y;
         this.z += t1.z;
+    }
+
+
+    /**
+     * Sets the value of this tuple to the vector multiplication of itself and tuple t1.
+     * @param t1 the other tuple
+     */  
+    public void mult(Vec3 t1)
+    {
+        this.x *= t1.x;
+        this.y *= t1.y;
+        this.z *= t1.z;
+    }
+
+    
+    /**
+     * Sets the value of this tuple to the vector multiplication of tuples t1 and t2.
+     * @param t1 the first tuple
+     * @param t2 the second tuple
+     */
+    public void mult(Vec3 t1, Vec3 t2)
+    {
+    	this.x = t1.x * t2.x;
+    	this.y = t1.y * t2.y;
+    	this.z = t1.z * t2.z;
     }
 
 
