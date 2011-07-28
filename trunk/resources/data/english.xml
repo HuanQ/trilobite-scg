@@ -1,10 +1,16 @@
 <Trilobite>
-	<Interface>
+	<Menu>
 		<Text>
 			<Start>Start game</Start>
 			<Quit>Quit</Quit>
 			<Again>Go again</Again>
 			<Back>Back</Back>
+			<Clean>Clean</Clean>
 		</Text>
-	</Interface>
+	</Menu>
+	<Game>
+		<Text>
+			<Number>10</Number>
+		</Text>
+	</Game>
 </Trilobite>

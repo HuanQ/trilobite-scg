@@ -1,8 +1,11 @@
 package managers;
 
-import graphics.TextureLoader;
-
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -12,14 +15,17 @@ import geometry.Vec3;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.newdawn.slick.TrueTypeFont;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import components.Placement;
 import components.Shape;
 import data.NodeReader;
 
 
+@SuppressWarnings("deprecation")
 public class Constant {
 	static private Map<String, Float>							myFloats;
 	static private Map<String, Vec2>							myPoints;
@@ -30,8 +36,8 @@ public class Constant {
 	//TODO: Crear global component screenspeed enlloc de gravity que NO ES UNA CONSTANT
 	static public float											gravity; 
 	static public int											timerResolution;
-	static public TextureLoader									textureLoader;
 	static public Random										rnd;
+	static public TrueTypeFont									font[];
 	
 	static public void Init() {
 		// TODO: http://download.oracle.com/javase/tutorial/java/javaOO/initial.html
@@ -40,21 +46,23 @@ public class Constant {
 		myVectors = new HashMap<String, Vec3>();
 		myShapes = new HashMap<String, Shape>();
 		myStrings = new HashMap<String, String>();
-		textureLoader = new TextureLoader();
 		rnd = new Random();
+		font = new TrueTypeFont[3];
+		font[0] = loadFont(64);
+		font[1] = loadFont(32);
+		font[2] = loadFont(16);
 		
 		try {
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc;
 			
-			doc = (Document) db.parse( new File("resources/data/constants.xml") );
-			doc.getDocumentElement().normalize();
-			loadXML( doc.getDocumentElement().getChildNodes() );
-			
 			doc = (Document) db.parse( new File("resources/data/english.xml") );
 			doc.getDocumentElement().normalize();
 			loadXML( doc.getDocumentElement().getChildNodes() );
 			
+			doc = (Document) db.parse( new File("resources/data/constants.xml") );
+			doc.getDocumentElement().normalize();
+			loadXML( doc.getDocumentElement().getChildNodes() );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,7 +101,8 @@ public class Constant {
 				    	myVectors.put( typeName + nextProperty.getNodeName(), NodeReader.readColor(nextProperty) );
 				    }
 				    else if(nextProperty.getNodeName() == "Point") {
-				    	myPoints.put( typeName + nextProperty.getNodeName(), NodeReader.readPoint(nextProperty) );
+				    	Placement tmp = NodeReader.readPoint(nextProperty);
+				    	myPoints.put( typeName + nextProperty.getNodeName(), tmp.getPosition() );
 				    }
 				    else if(nextProperty.getNodeName() == "Sequence" || nextType.getNodeName() == "Text" ) {
 				    	myStrings.put( typeName + nextProperty.getNodeName(), NodeReader.readString(nextProperty) );
@@ -128,4 +137,22 @@ public class Constant {
 	static public String getString( final String str ) {
 		return myStrings.get(str);
 	}
+	
+	static private TrueTypeFont loadFont( float size ) {
+		// Load font from file
+		try {
+			FileInputStream fis = new FileInputStream(new File("resources/fonts/HEMIHEAD.TTF"));
+			Font awtFont = Font.createFont(Font.TRUETYPE_FONT, fis );
+			return new TrueTypeFont(awtFont.deriveFont(size), true);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (FontFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

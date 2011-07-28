@@ -1,10 +1,9 @@
 package geometry;
 
 
-import graphics.Sprite;
-
 import geometry.Vec2;
 import geometry.Vec3;
+import graphics.Sprite;
 
 public abstract class Polygon {
 	static public final int												circle = 0;
@@ -21,13 +20,19 @@ public abstract class Polygon {
 		offset = off;
 		color = Vec3.white;
 		texture = null;
+		sqradius = 0;
 	}
 	
 	protected Polygon(final Polygon p) {
 		offset = new Vec3( p.getOffset() );
 		color = new Vec3( p.getColor() );
 		sqradius = p.getSqRadius();
-		texture = p.texture;
+		if( p.texture == null ) {
+			texture = null;
+		}
+		else {
+			texture = new Sprite( p.texture );
+		}
 	}
 	
 	// TODO: Estalviar-se aixo per a poder afegir formes mes facilment
@@ -35,7 +40,7 @@ public abstract class Polygon {
 	
 	public abstract void multSize( float m );
 	
-	public abstract void draw( final Vec2 pos, final Vec3 defColor );
+	public abstract void draw( final Vec2 pos, final Vec3 defColor, int side );
 	
 	public abstract boolean Collides( final Vec2 myPos, final Polygon p, Vec2 hisPos);
 	

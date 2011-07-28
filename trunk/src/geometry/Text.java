@@ -1,79 +1,62 @@
 package geometry;
 
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.*;
 
-import java.awt.Font;
-import java.io.File;
-import java.io.FileInputStream;
-
+import managers.Component;
 import managers.Constant;
 
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.TrueTypeFont;
 
 import geometry.Vec2;
 import geometry.Vec3;
 
-@SuppressWarnings("deprecation")
 public class Text extends Polygon {
+	public static final int												bigFont = 0;
+	public static final int												mediumFont = 1;
+	public static final int												smallFont = 2;
 	private String														text;
-	private TrueTypeFont												font;
-
-	public Text( final String str, final Vec3 off, float size) {
+	private int															size;
+	
+	public Text( final String str, final Vec3 off, int s) {
 		super(off);
 		text = Constant.getString("Text_" + str);
-		sqradius = 0;
-		
-		// Default Font
-		//Font awtFont = new Font("Times New Roman", Font.BOLD, 48);
-		//font = new TrueTypeFont(awtFont, true);
-
-		// Load font from file
-		try {
-			FileInputStream fis;
-			fis = new FileInputStream(new File("resources/fonts/HEMIHEAD.TTF"));
-			
-			Font awtFont = Font.createFont(Font.TRUETYPE_FONT, fis);
-			awtFont = awtFont.deriveFont(size); // set font size
-			font = new TrueTypeFont(awtFont, true);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		size = s;
 	}
 	
 	public Text(final Text t) {
-		super((Polygon) t);
+		super(t);
 		text = t.text;
-		font = t.font;
+		size = t.size;
 	}
 
 	public int whoAmI() {
-		return 3;
+		return Polygon.text;
 	}
 	
 	public void multSize( float f ) {}
 	
-	public void draw( final Vec2 pos, final Vec3 defColor ) {
-		Color col;
+	@SuppressWarnings("deprecation")
+	public void draw( final Vec2 pos, final Vec3 defColor, int side ) {
+		//TODO: Resize segons side, no fer-ho per pixels si es pot
 	    // Draw text
-		if( color == null ) {
-			col = new Color(defColor.x, defColor.y, defColor.z, 1.f);
-		}
-		else {
-			col = new Color(color.x * defColor.x, color.y * defColor.y, color.z * defColor.z, 1);
-		}
-		glEnable(GL_TEXTURE_2D);
+		Vec3 finalColor = new Vec3(defColor);
+		finalColor.mult(color);
+		finalColor.mult(Component.fader.getColor());
+		Color col = new Color(finalColor.x, finalColor.y, finalColor.z);
 
-		GL11.glTranslatef(0.f, 0.f, offset.z);
-		font.drawString(pos.x - font.getWidth(text)/2, pos.y - font.getHeight()/2, text, col);
+		glTranslatef(0.f, 0.f, offset.z);
+		glEnable(GL_TEXTURE_2D);
+		
+		Constant.font[size].drawString(pos.x - Constant.font[size].getWidth(text)/2, pos.y - Constant.font[size].getHeight()/2, text, col);
 		glLoadIdentity();
+	}
+	
+	public void setText( final String str ) {
+		text = str;
 	}
 	
 	public boolean Collides(final Vec2 myPos, final Polygon p, final Vec2 hisPos) {
 		return false;
 	}
+	
 }

@@ -78,7 +78,7 @@ public class Actor {
 				Integer id = Component.getID();
 				
 				Component.timedObject.put( id, new TimedObject(id, Constant.getFloat("Phase_Duration")) );
-				Component.placement.put( id, new Placement( new Vec2( p.getPosition().x, p.getPosition().y ), true ) );
+				Component.placement.put( id, new Placement( new Vec2( p.getPosition().x, p.getPosition().y ), Placement.gameSide ) );
 				Component.drawer.put( id, new Drawer(id) );
 				Component.shape.put( id, Constant.getShape("Phase_Shape")  );
 				

@@ -33,9 +33,7 @@ public class Pointer {
 	public void Update() {
 		Vec2 newPos = new Vec2( Mouse.getDX(), -Mouse.getDY() );
 		Component.placement.get(me).addPosition( Screen.descale(newPos) );
-		//TODO: Cambiar escala (canvi screen)
 		Component.placement.get(me).getPosition().clamp(0, 1);
-		
 		Vec2 myPos = Component.placement.get(me).getPosition();
 		
 		if( Mouse.isButtonDown(0) && Timer.isReady("ClickCooldown") ) {

@@ -1,8 +1,10 @@
 package graphics;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 
-import managers.Constant;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 
 import static org.lwjgl.opengl.GL11.*;
@@ -18,6 +20,8 @@ public class Sprite {
 
 	/** The texture that stores the image for this sprite */
 	private Texture	texture;
+	
+	private String textureName;
 
 	/** The height and width in pixels of this sprite */
 	private int			width;
@@ -30,12 +34,23 @@ public class Sprite {
 	 * @param ref A reference to the image on which this sprite should be based
 	 */
 	public Sprite( String ref ) {
-    try {
-		texture = Constant.textureLoader.getTexture("\\..\\resources\\textures\\" + ref);
-    } catch (IOException ioe) {
-    	ioe.printStackTrace();
-    	System.exit(-1);
-    }
+		textureName = ref;
+	    try {
+	    	texture = TextureLoader.getTexture("GIF", new FileInputStream("resources/textures/" + ref));
+	    } catch (IOException ioe) {
+	    	ioe.printStackTrace();
+	    	System.exit(-1);
+	    }
+	}
+
+	public Sprite(Sprite spr) {
+		textureName = spr.textureName;
+	    try {
+	    	texture = TextureLoader.getTexture("GIF", new FileInputStream("resources/textures/" + spr.textureName));
+	    } catch (IOException ioe) {
+	    	ioe.printStackTrace();
+	    	System.exit(-1);
+	    }	
 	}
 
 	/**
@@ -61,9 +76,6 @@ public class Sprite {
 	 * @param y The y location at which to draw this sprite
 	 */
 	public void draw(float x, float y, float z) {
-		// store the current model matrix
-		glPushMatrix();
-
 		// bind to the appropriate texture for this sprite
 		texture.bind();
 
@@ -86,8 +98,7 @@ public class Sprite {
 			glVertex2f(width/2, -height/2);
 		}
 		glEnd();
-
-		// restore the model view matrix to prevent contamination
-		glPopMatrix();
+		
+		glLoadIdentity();
 	}
 }

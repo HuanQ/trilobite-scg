@@ -1,0 +1,23 @@
+<Trilobite>
+	<HUD>
+		<Image>
+			<Point x="0.5" y="0.5" side="leftFull"/>
+			<Shape>
+				<Rectangle x="0" y="0" z="6" sizex="1" sizey="1">
+					<Color r="1" g="1" b="1"/>
+					<Texture>frame.gif</Texture>
+				</Rectangle>
+			</Shape>
+		</Image>
+		
+		<Image>
+			<Point x="0.5" y="0.5" side="rightFull"/>
+			<Shape>
+				<Rectangle x="0" y="0" z="6" sizex="1" sizey="1">
+					<Color r="1" g="1" b="1"/>
+					<Texture>frame2.gif</Texture>
+				</Rectangle>
+			</Shape>
+		</Image>
+	</HUD>
+</Trilobite>
