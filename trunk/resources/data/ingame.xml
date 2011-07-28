@@ -7,7 +7,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.3" sizey="0.1">
 					<Color r="0" g="0" b="0"/>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Again">
+				<Text x="0" y="0" z="9" txt="Again" size="64">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -20,7 +20,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.3" sizey="0.1">
 					<Color r="0" g="0" b="0"/>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Back">
+				<Text x="0" y="0" z="9" txt="Back" size="64">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>

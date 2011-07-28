@@ -67,8 +67,6 @@ public class Sprite {
 		// bind to the appropriate texture for this sprite
 		texture.bind();
 
-		glColor4f(1, 1, 1, 1);
-		
 		// translate to the right location and prepare to draw
 		glTranslatef(x, y, z);
 

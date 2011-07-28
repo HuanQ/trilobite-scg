@@ -1,15 +1,14 @@
 package geometry;
 
-
-
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 
 import java.awt.Font;
+import java.io.File;
+import java.io.FileInputStream;
 
 import managers.Constant;
-import managers.Screen;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
@@ -21,36 +20,35 @@ import geometry.Vec3;
 @SuppressWarnings("deprecation")
 public class Text extends Polygon {
 	private String														text;
-	private final Vec2													size;
 	private TrueTypeFont												font;
 
-	public Text( final String str, final Vec3 off) {
+	public Text( final String str, final Vec3 off, float size) {
 		super(off);
 		text = Constant.getString("Text_" + str);
-		size = new Vec2();
 		sqradius = 0;
-		Font awtFont = new Font("Times New Roman", Font.BOLD, 48);
-		font = new TrueTypeFont(awtFont, true);
-		/*
-		// load font from file
+		
+		// Default Font
+		//Font awtFont = new Font("Times New Roman", Font.BOLD, 48);
+		//font = new TrueTypeFont(awtFont, true);
+
+		// Load font from file
 		try {
-			
 			FileInputStream fis;
-			fis = new FileInputStream(new File("myfont.ttf"));
+			fis = new FileInputStream(new File("resources/fonts/HEMIHEAD.TTF"));
 			
-			Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, fis);
-			awtFont2 = awtFont2.deriveFont(24f); // set font size
-			font2 = new TrueTypeFont(awtFont2, antiAlias);
+			Font awtFont = Font.createFont(Font.TRUETYPE_FONT, fis);
+			awtFont = awtFont.deriveFont(size); // set font size
+			font = new TrueTypeFont(awtFont, true);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
+		}
 	}
 	
 	public Text(final Text t) {
 		super((Polygon) t);
 		text = t.text;
-		size = t.size;
+		font = t.font;
 	}
 
 	public int whoAmI() {
@@ -60,8 +58,6 @@ public class Text extends Polygon {
 	public void multSize( float f ) {}
 	
 	public void draw( final Vec2 pos, final Vec3 defColor ) {
-		Vec2 myPos = Screen.reposition( new Vec2(pos.x + offset.x, pos.y + offset.y) );
-
 		Color col;
 	    // Draw text
 		if( color == null ) {
@@ -73,7 +69,7 @@ public class Text extends Polygon {
 		glEnable(GL_TEXTURE_2D);
 
 		GL11.glTranslatef(0.f, 0.f, offset.z);
-		font.drawString(myPos.x - font.getWidth(text)/2, myPos.y - font.getHeight()/2, text, col);
+		font.drawString(pos.x - font.getWidth(text)/2, pos.y - font.getHeight()/2, text, col);
 		glLoadIdentity();
 	}
 	

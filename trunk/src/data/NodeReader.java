@@ -56,7 +56,8 @@ public class NodeReader {
     	myPoint.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
     	myPoint.z = Float.valueOf( attr.getNamedItem("z").getTextContent() );
     	String myText = attr.getNamedItem("txt").getTextContent();
-    	return (Text) readSubShape( node, new Text(myText, myPoint) );
+    	float size = Float.valueOf( attr.getNamedItem("size").getTextContent() );
+    	return (Text) readSubShape( node, new Text(myText, myPoint, size) );
 	}
 	
 	static public Rectangle readRectangle( final Node node ) {

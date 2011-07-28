@@ -19,17 +19,15 @@ public abstract class Polygon {
 	
 	protected Polygon(final Vec3 off) {
 		offset = off;
-		color = null;
+		color = Vec3.white;
 		texture = null;
 	}
 	
 	protected Polygon(final Polygon p) {
 		offset = new Vec3( p.getOffset() );
-		if(p.getColor() != null) {
-			color = new Vec3( p.getColor() );
-		}
+		color = new Vec3( p.getColor() );
 		sqradius = p.getSqRadius();
-		texture = null;
+		texture = p.texture;
 	}
 	
 	// TODO: Estalviar-se aixo per a poder afegir formes mes facilment

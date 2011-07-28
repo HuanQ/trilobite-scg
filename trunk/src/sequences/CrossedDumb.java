@@ -38,8 +38,8 @@ public class CrossedDumb implements Sequence {
 			Integer id = Component.getID();
 			Component.dumb.put( id, new Dumb(id, rotSpeed, rotStart, shortRoute ? Dumb.shortRoute : Dumb.longRoute ) );
 			Component.mover.put( id, new Mover(id, Constant.getFloat("Dumb_Speed"), false, Constant.getFloat("Dumb_Gravity") ) );
-			Component.placement.put( id, new Placement(spawnPoint) );
-			Component.drawer.put( id, new Drawer(id, Constant.getVector("Dumb_Color") ) );
+			Component.placement.put( id, new Placement(spawnPoint, true) );
+			Component.drawer.put( id, new Drawer(id) );
 			Component.shape.put( id, Constant.getShape("Dumb_Shape") );
 			Component.canBeKilled.put( id, new Killable(id) );
 			Component.canKill.put( id, new Killer() );
