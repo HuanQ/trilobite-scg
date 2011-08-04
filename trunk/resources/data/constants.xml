@@ -5,11 +5,10 @@
 			<CircleSections>32</CircleSections>
 			<DefaultLayer>0</DefaultLayer>
 			<DefaultKillDistance>0</DefaultKillDistance>
-			<ClickCooldown>0.3</ClickCooldown>
 		</Render>
 		
-		<Mouse>
-			<Weight>10</Weight>
+		<Interface>
+			<PlanetInertia>150</PlanetInertia>
 			<Shape>
 				<Rectangle x="0" y="0" z="10" sizex="0.015" sizey="0.003">
 					<Color r="1" g="1" b="0"/>
@@ -18,48 +17,102 @@
 					<Color r="1" g="1" b="0"/>
 				</Rectangle>
 			</Shape>
-		</Mouse>
+		</Interface>
+		
 		<Rules>
-			<Gravity>0.04</Gravity>
+			<ScreenSpeed>-0.05</ScreenSpeed>
 			<SpawnpointsPerRow>11</SpawnpointsPerRow>
 		</Rules>
+		
 		<Performance>
 			<TimerResolution>1000</TimerResolution>
 			<RecordTick>0.05</RecordTick>
 		</Performance>
 	</World>
 	
+	<Levels>
+		<Intro>
+			<Time>100</Time>
+		</Intro>
+	</Levels>
+	
 	<Player>
 	
+		<Actor>
+			<Color r="0.5" g="0.5" b="0.75"/>
+		</Actor>
+		
 		<Ship>
-			<Speed>0.35</Speed>
+			<Speed>0.2</Speed>
+			<GunCooldown>0.5</GunCooldown>
+			<Point x="0" y="-0.02"/>
+			<ShieldTime>2</ShieldTime>
+			<ShieldCooldown>10</ShieldCooldown>
+			<ShieldScale>1.6</ShieldScale>
+			<ShieldLayer>-1</ShieldLayer>
+			<Color r="0.35" g="0.25" b="1"/>
 			<Shape>
-				<Circle x="0" y="0" z="2" radius="0.013">
-					<Color r="1" g="0.95" b="0"/>
+				<Circle x="0" y="0" z="2" radius="0.0125">
+					<Color r="0.3" g="1" b="0.6"/>
+					<Texture>circle.gif</Texture>
 				</Circle>
-				<Rectangle x="0" y="0.02" z="1" sizex="0.015" sizey="0.022">
-					<Color r="1" g="0.75" b="0"/>
+				<Rectangle x="0" y="0.02" z="1" sizex="0.0125" sizey="0.02">
+					<Color r="0.3" g="1" b="0.45"/>
+					<Texture>rect1x2.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="2.1" txt="Number" size="small">
-					<Color r="0" g="0" b="0"/>
+				<Text x="0" y="0.0025" z="2.1" txt="" size="3">
+					<Color r="0.9" g="0.1" b="0.1"/>
 				</Text>
 			</Shape>
 		</Ship>
 		
-		<Gun>
-			<Cooldown>0.3</Cooldown>
-			<Point x="0" y="-0.02"/>
-		</Gun>
-		
-		<Shield>
-			<Time>2</Time>
-			<Cooldown>10</Cooldown>
-			<Scale>1.3</Scale>
-			<Layer>-1</Layer>
-			<Color r="0.75" g="0.75" b="1"/>
-		</Shield>
-		
 	</Player>
+	
+	<Sequences>
+		<Blaster135>
+			<Type>SimpleBlaster</Type>
+			<Arc>1.57</Arc>
+			<Frequency>1.2</Frequency>
+			<Time>7.0</Time>
+			<NumBullets>6</NumBullets>
+		</Blaster135>
+		
+		<LeftDumb>
+			<Type>SimpleDumb</Type>
+			<MaxRotate>4.71</MaxRotate>
+			<RotationSpeed>-1</RotationSpeed>
+			<Wait>2</Wait>
+			<Frequency>1.0</Frequency>
+			<Count>5.0</Count>
+		</LeftDumb>
+		
+		<RightDumb>
+			<Type>SimpleDumb</Type>
+			<MaxRotate>5.28</MaxRotate>
+			<RotationSpeed>2</RotationSpeed>
+			<Wait>1.25</Wait>
+			<Frequency>0.25</Frequency>
+			<Count>5.0</Count>
+		</RightDumb>
+		
+		<UpDumb>
+			<Type>SimpleDumb</Type>
+			<MaxRotate>0</MaxRotate>
+			<RotationSpeed>0</RotationSpeed>
+			<Wait>1</Wait>
+			<Frequency>1.0</Frequency>
+			<Count>15.0</Count>
+		</UpDumb>
+		
+		<DownDumb>
+			<Type>SimpleDumb</Type>
+			<MaxRotate>3.14</MaxRotate>
+			<RotationSpeed>-1.2</RotationSpeed>
+			<Wait>1</Wait>
+			<Frequency>0.35</Frequency>
+			<Count>4.0</Count>
+		</DownDumb>
+	</Sequences>
 	
 	<Ships>
 	
@@ -68,24 +121,29 @@
 			<Color r="1" g="1" b="1"/>
 		</Wall>
 		
+		<Spawner>
+			<DisableTime>1</DisableTime>
+		</Spawner>
+		
+		<Blaster>
+			<BulletSpeed>0.225</BulletSpeed>
+		</Blaster>
+		
 		<Dumb>
 			<Speed>0.13</Speed>
 			<Acceleration>0.1</Acceleration>
-			<Gravity>0.02</Gravity>
 			<KillDistance>0.5</KillDistance>
+			<StopDistance>0.015</StopDistance>
+			<StopWait>0.1</StopWait>
+			<NumBullets>8</NumBullets>
+			<BulletSpeed>0.225</BulletSpeed>
 			<Shape>
 				<Circle x="0" y="0" z="1" radius="0.018">
-					<Color r="0" g="0.75" b="0"/>
-					<Texture>alien.gif</Texture>
+					<Color r="0.2" g="0" b="0.75"/>
+					<Texture>circle.gif</Texture>
 				</Circle>
 			</Shape>
 		</Dumb>
-		
-		<Spawner>
-			<Wait>1</Wait>
-			<Gravity>0.01</Gravity>
-			<Point x="0.1" y="0"/>
-		</Spawner>
 		
 	</Ships>
 	
@@ -96,7 +154,7 @@
 			<BlinkTime>0.5</BlinkTime>
 			<Color r="0" g="0.65" b="0"/>
 			<Shape>
-				<Circle x="0" y="0" z="8.1" radius="0.325"/>
+				<Circle x="0" y="0" z="7.9" radius="0.125"/>
 			</Shape> 
 		</Helper>
 		
@@ -106,15 +164,14 @@
 		</Fader>
 		
 		<Bullet>
-			<KillDistance>0.01</KillDistance>
 			<Speed>0.525</Speed>
 			<Color r="1" g="1" b="0"/>
 		</Bullet>
 		
 		<Explosion>
-			<Duration>1</Duration>
+			<Duration>0.25</Duration>
 			<Shape>
-				<Circle x="0" y="0" z="3" radius="0.03">
+				<Circle x="0" y="0" z="3" radius="0.02">
 					<Color r="1" g="0" b="0"/>
 				</Circle>
 			</Shape> 

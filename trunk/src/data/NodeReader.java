@@ -7,83 +7,89 @@ import geometry.Text;
 import geometry.Vec2;
 import geometry.Vec3;
 
+import managers.Screen;
+
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import components.Placement;
 import components.Shape;
 
 public class NodeReader {
-	
 
-	static public Shape readShape(  final Node node ) {
-		Shape myShape = new Shape();
+	static public final Shape readShape(  final Node node, final String zone ) {
+		Shape myShape = null;
 		
-		NodeList shape = node.getChildNodes();
-	    for (int shp = 0; shp < shape.getLength(); ++shp) {
-	    	Node nextShape = shape.item(shp);
-	    	if(nextShape.getNodeType() != Node.ELEMENT_NODE)
-				continue;
-	    	
-	    	if(nextShape.getNodeName() == "Circle") {
-	    		myShape.add( NodeReader.readCircle(nextShape) );
-	    	}
-	    	else if(nextShape.getNodeName() == "Rectangle") {
-	    		myShape.add( NodeReader.readRectangle(nextShape) );
-	    	}
-	    	else if(nextShape.getNodeName() == "Text") {
-	    		myShape.add( NodeReader.readText(nextShape) );
-	    	}
-	    }
-	    
+		if(node != null) {
+			myShape = new Shape();
+			NodeList shape = node.getChildNodes();
+		    for(int shp = 0; shp < shape.getLength(); ++shp) {
+		    	Node nextShape = shape.item(shp);
+		    	if(nextShape.getNodeType() != Node.ELEMENT_NODE)
+					continue;
+		    	
+		    	if(nextShape.getNodeName() == "Circle") {
+		    		myShape.add( NodeReader.readCircle(nextShape, zone) );
+		    	}
+		    	else if(nextShape.getNodeName() == "Rectangle") {
+		    		myShape.add( NodeReader.readRectangle(nextShape, zone) );
+		    	}
+		    	else if(nextShape.getNodeName() == "Text") {
+		    		myShape.add( NodeReader.readText(nextShape, zone) );
+		    	}
+		    }
+		}
+		
 	    return myShape;
 	}
 	
-	static public String readString( final Node node ) {
+	static public final String readString( final Node node ) {
 		return node.getTextContent();
 	}
 	
-	static public float readFloat( final Node node ) {
+	static public final float readFloat( final Node node ) {
 		return Float.valueOf(node.getTextContent());
 	}
 	
-	static public Text readText( final Node node ) {
-		Vec3 myPoint = new Vec3();
+	static public final Text readText( final Node node, final String zone ) {
+		Vec2 myPoint = new Vec2();
 		NamedNodeMap attr = node.getAttributes();
     	myPoint.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
     	myPoint.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
-    	myPoint.z = Float.valueOf( attr.getNamedItem("z").getTextContent() );
+    	float layer = Float.valueOf( attr.getNamedItem("z").getTextContent() );
     	String myText = attr.getNamedItem("txt").getTextContent();
-    	String str = attr.getNamedItem("size").getTextContent();
-    	int size = Text.mediumFont;
-    	if(str.equals("big")) {
-    		size = Text.bigFont;
-    	}
-    	else if(str.equals("medium")) {
-    		size = Text.mediumFont;
-    	}
-    	else if(str.equals("small")) {
-    		size = Text.smallFont;
-    	}
-    	return (Text) readSubShape( node, new Text(myText, myPoint, size) );
+    	int size = (int) (float) Float.valueOf(attr.getNamedItem("size").getTextContent());
+    	
+    	Screen.rescale(zone, myPoint, false);
+    	
+    	return (Text) readSubShape( node, new Text(myText, myPoint, layer, size) );
 	}
 	
-	static public Rectangle readRectangle( final Node node ) {
-		Vec3 myPoint = new Vec3();
+	static public final Rectangle readRectangle( final Node node, final String zone ) {
+		Vec2 myPoint = new Vec2();
 		Vec2 mySize = new Vec2();
 		NamedNodeMap attr = node.getAttributes();
     	myPoint.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
     	myPoint.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
-    	myPoint.z = Float.valueOf( attr.getNamedItem("z").getTextContent() );
+    	float layer = Float.valueOf( attr.getNamedItem("z").getTextContent() );
     	mySize.x = Float.valueOf( attr.getNamedItem("sizex").getTextContent() );
     	mySize.y = Float.valueOf( attr.getNamedItem("sizey").getTextContent() );
-    	return (Rectangle) readSubShape( node, new Rectangle(mySize, myPoint) );
+    	
+    	
+    	Node str = attr.getNamedItem("stretch");
+    	boolean stretch = false;
+    	if(str != null) {
+    		stretch = Boolean.valueOf(str.getTextContent());
+    	}
+    	Screen.rescale(zone, mySize, stretch);
+    	Screen.rescale(zone, myPoint, false);
+    	
+    	return (Rectangle) readSubShape( node, new Rectangle(mySize, myPoint, layer, stretch) );
 	}
 	
-	static public Polygon readSubShape( final Node node, Polygon p ) {
+	static public final Polygon readSubShape( final Node node, Polygon p ) {
 		NodeList color = node.getChildNodes();
-	    for (int col = 0; col < color.getLength(); ++col) {
+	    for(int col = 0; col < color.getLength(); ++col) {
 	    	Node nextCol = color.item(col);
 	    	if(nextCol.getNodeType() != Node.ELEMENT_NODE)
 				continue;
@@ -98,46 +104,38 @@ public class NodeReader {
 	    return p;
 	}
 	
-	static public Circle readCircle(  final Node node ) {
-		Vec3 myPoint = new Vec3();
-		float radius;
+	static public final Circle readCircle( final Node node, final String zone ) {
+		Vec2 myPoint = new Vec2();
 		NamedNodeMap attr = node.getAttributes();
 		myPoint.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
 		myPoint.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
-		myPoint.z = Float.valueOf( attr.getNamedItem("z").getTextContent() );
-		radius = Float.valueOf( attr.getNamedItem("radius").getTextContent() );
+		float layer = Float.valueOf( attr.getNamedItem("z").getTextContent() );
+		float radius = Float.valueOf( attr.getNamedItem("radius").getTextContent() );
 		
-    	return (Circle) readSubShape( node, new Circle(radius, myPoint) );
+		radius = Screen.rescale(zone, radius);
+		Screen.rescale(zone, myPoint, false);
+    	return (Circle) readSubShape( node, new Circle(radius, myPoint, layer) );
 	}
 	
-	static public Placement readPoint(  final Node node ) {
+	static public final Vec2 readPoint( final Node node ) {
+		NamedNodeMap attr = node.getAttributes();
+    	Vec2 pos = new Vec2();
+    	pos.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
+    	pos.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
+    	return pos;
+	}
+	
+	static public final Vec2 readPlace( final Node node, final String zone ) {
     	NamedNodeMap attr = node.getAttributes();
     	Vec2 pos = new Vec2();
     	pos.x = Float.valueOf( attr.getNamedItem("x").getTextContent() );
     	pos.y = Float.valueOf( attr.getNamedItem("y").getTextContent() );
-    	int side = Placement.gameSide;
-    	if( attr.getNamedItem("side") != null ) {
-    		String str = attr.getNamedItem("side").getTextContent();
-    		if( str.equals("left") ) {
-    			side = Placement.leftSide;
-    		}
-    		else if( str.equals("right") ) {
-    			side = Placement.rightSide;
-    		}
-    		else if( str.equals("full") ) {
-    			side = Placement.fullScreen;
-    		}
-    		else if( str.equals("leftFull") ) {
-    			side = Placement.leftSideFull;
-    		}
-    		else if( str.equals("rightFull") ) {
-    			side = Placement.rightSideFull;
-    		}
-    	}
-    	return new Placement(pos, side );
+    	Screen.reposition(zone, pos);
+
+    	return pos;
 	}
 	
-	static public Vec3 readColor( final Node node ) {
+	static public final Vec3 readColor( final Node node ) {
 		Vec3 myColor = new Vec3();
     	NamedNodeMap attr = node.getAttributes();
     	myColor.x = Float.valueOf( attr.getNamedItem("r").getTextContent() );

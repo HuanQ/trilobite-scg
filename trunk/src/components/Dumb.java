@@ -1,133 +1,111 @@
 package components;
 
 import geometry.Angle;
+import geometry.Vec2;
 
 import managers.Component;
 import managers.Constant;
+import managers.Clock;
 import managers.Screen;
-import managers.Timer;
 
 
 public class Dumb {
 	// Route types
-	static public final int										shortRoute = 0;
+	static public final int										normal = 0;
 	static public final int										longRoute = 1;
 
 	private final int											me;
 	// Behaviour
 	private final float											rotSpeed;
 	private final int											route;
+	private final float											rotateGoal;
 	// Internal data
-	Angle														movementRotation;
-	float														rotatedDistance;
+	private Angle												movementRotation;
+	private float												rotatedDistance = 0;
+	private int													phase = 0;
+	private final float											radius;
+	private int													wait;
+	// 0: Go straight for a while
+	// 1: Doing my route
+	// 2: Stopping and spinning
+	// 3: Explode and shoot bullets everywhere
 
-	public Dumb( int m, float rspeed, final Angle rstart, int rt ) {
+	public Dumb( int m, float rspeed, final Angle rstart, int rt, float rg, float wt ) {
 		me = m;
 		rotSpeed = rspeed;
 		movementRotation = new Angle( rstart );
-		rotatedDistance = 0;
 		route = rt;
+		rotateGoal = rg;
+		radius = Component.shape.get(me) == null ? 0 : Component.shape.get(me).getRadius();
+		wait = Clock.getTime(Clock.game) + (int) (wt * Constant.timerResolution);
 	}
 	
-	public void Update() {
+	public final void Update() {
 		//TODO: Sempre ha de donar voltes
-		
-		float dt = Timer.getDelta();
-		Mover mover = Component.mover.get(me);
-		float nextRotate;
-		switch(route) {
+		switch(phase) {
+		case 0:
+			Component.mover.get(me).move( movementRotation.getDirection() );
+			if( Clock.getTime(Clock.game) > wait) {
+				phase = 1;
+			}
+			break;
+		case 1:
+			// Follow the route untill we reach the top of the screen
+			switch(route) {
 			case 0:
-				// Short route
-				if( Math.abs(rotatedDistance) < 1.57f ) {
-					nextRotate = rotSpeed * dt / 2.f;
-					
-					rotatedDistance += nextRotate;
-					movementRotation.addRotation( nextRotate );
-					
-					mover.move( movementRotation.getDirection() );
-				}
-				else if( Math.abs(rotatedDistance) < 4.71f ) {
-					nextRotate = rotSpeed * dt;
-					
-					rotatedDistance += nextRotate;
-					movementRotation.addRotation( nextRotate );
-					
-					mover.move( movementRotation.getDirection() );
-				}
-				else if( Math.abs(rotatedDistance) < 4.71f + 0.78f ) {
-					nextRotate = rotSpeed * dt / 2.f;
-					
-					rotatedDistance += nextRotate;
-					movementRotation.addRotation( nextRotate );
-					
-					mover.move( movementRotation.getDirection() );
-					mover.addSpeed( Constant.getFloat("Dumb_Acceleration") * dt );
-				}
-				else if( Math.abs(rotatedDistance) < 6.28f ) {
-					nextRotate = -rotSpeed * dt / 1.5f;
-					
-					rotatedDistance -= nextRotate;
-					movementRotation.addRotation( nextRotate );
-					
-					mover.move( movementRotation.getDirection() );
-					mover.addSpeed( Constant.getFloat("Dumb_Acceleration") * dt );
-				}
-				else {
-					mover.move( movementRotation.getDirection() );
-					mover.addSpeed( Constant.getFloat("Dumb_Acceleration") * dt );
-				}
+				doNormal();
+				break;
+			}
+			if( Component.placement.get(me).position.y-radius-Constant.getFloat("Dumb_StopDistance") < Screen.up.y ) {
+				phase = 2;
+				wait = Clock.getTime(Clock.game) + (int) (Constant.getFloat("Dumb_StopWait") * Constant.timerResolution);
+			}
 			break;
-			
-			case 1:
-				// Long route
-				if( Math.abs(rotatedDistance) < 1.57f ) {
-					nextRotate = rotSpeed * dt / 1.25f;
-					
-					rotatedDistance += nextRotate;
-					movementRotation.addRotation( nextRotate );
-					
-					mover.move( movementRotation.getDirection() );
-				}
-				else if( Math.abs(rotatedDistance) < 4.71f - 1.57f ) {
-					nextRotate = rotSpeed * dt;
-					
-					rotatedDistance += nextRotate;
-					movementRotation.addRotation( nextRotate );
-					
-					mover.move( movementRotation.getDirection() );
-				}
-				else if( Math.abs(rotatedDistance) < 4.71f ) {
-					nextRotate = rotSpeed * dt / 2.f;
-					
-					rotatedDistance += nextRotate;
-					movementRotation.addRotation( nextRotate );
-					
-					mover.move( movementRotation.getDirection() );
-					mover.addSpeed( Constant.getFloat("Dumb_Acceleration") * dt );
-				}
-				else if( Math.abs(rotatedDistance) < 4.71f + 1.57f ) {
-					nextRotate = -rotSpeed * dt / 5.f;
-					
-					rotatedDistance -= nextRotate;
-					movementRotation.addRotation( nextRotate );
-					
-					mover.move( movementRotation.getDirection() );
-					mover.addSpeed( Constant.getFloat("Dumb_Acceleration") * dt );
-				}
-				else {
-					mover.move( movementRotation.getDirection() );
-					mover.addSpeed( Constant.getFloat("Dumb_Acceleration") * dt );
-				}
-			break;
-		}
 		
-		// Selfkill at a certain distance from the screen limit
-		float killDist = Constant.getFloat("Dumb_KillDistance");
-		if(Component.shape.get(me) != null) {
-			killDist += Component.shape.get(me).getRadius();
-		}
-		if( !Screen.inScreen(Component.placement.get(me).getPosition(), killDist) ) {
+		case 2:
+			// Stop and spin
+			if( Clock.getTime(Clock.game) > wait) {
+				phase = 3;
+			}
+			break;
+		
+		case 3:
+			// Explode
+			Angle a = new Angle((float) Math.PI);
+			for(int i=0;i<Constant.getFloat("Dumb_NumBullets");++i) {
+				a.add((float) -Math.PI / (Constant.getFloat("Dumb_NumBullets")+1));
+				
+				Vec2 bulletDirection = a.getDirection();
+				bulletDirection.scale(Constant.getFloat("Dumb_BulletSpeed"));
+				
+				Vec2 bulletPosition = new Vec2(Component.placement.get(me).position);
+
+				Integer id = Component.getID();
+				Component.bullet.put( id, new Bullet(id, bulletDirection) );
+				Component.placement.put( id, new Placement(bulletPosition) );
+				Component.drawer.put( id, new Drawer(id, Constant.getVector("Bullet_Color") ) );
+				Component.killable.put( id, new Killable(id, Killable.enemyTeam) );
+			}
 			Component.deadObjects.add(me);
+			break;
 		}
+	}
+	
+	private final void doNormal() {
+		float nextRotate = 0;
+		float dt = Clock.getDelta(Clock.game);
+		Mover mover = Component.mover.get(me);
+
+		if( Math.abs(rotatedDistance) < rotateGoal ) {
+			float rotAccel = 0.75f + Math.abs(rotatedDistance) / rotateGoal / 2;
+			nextRotate = rotSpeed * dt * rotAccel;
+			rotatedDistance += nextRotate;
+			movementRotation.add( nextRotate );
+		}
+		else {
+			nextRotate = 0;
+			mover.addSpeed( Constant.getFloat("Dumb_Acceleration") * dt );
+		}
+		mover.move( movementRotation.getDirection() );
 	}
 }

@@ -1,117 +1,114 @@
 package managers;
 
-import java.util.EmptyStackException;
+import java.util.HashMap;
+import java.util.Map;
 
 import geometry.Vec2;
 
 import org.lwjgl.opengl.Display;
 
-import components.Placement;
+import data.ScreenZone;
 
 public class Screen {
-	static float												extraSpaceLeft;
-	static float												extraSpaceRight;
-	static float												gameScreenSize;
-	static Vec2													screenSize;;
+	static private Vec2									screenSize = new Vec2();
+	static private Map<String, ScreenZone>				zones = new HashMap<String, ScreenZone>();
+	static public Vec2									up = new Vec2();
 	
-	static public void Init() {
-		screenSize = new Vec2( Display.getDisplayMode().getWidth(), Display.getDisplayMode().getHeight());
-		if ( screenSize.y > screenSize.x ) {
+	static public final void Init() {
+		zones.clear();
+		screenSize.set( Display.getDisplayMode().getWidth(), Display.getDisplayMode().getHeight());
+		up.zero();
+		
+		if( screenSize.y > screenSize.x ) {
 			// Not supported
-			throw new EmptyStackException();
 		}
-		
-		gameScreenSize = screenSize.y;
-		float totalExtraSpace = screenSize.x - gameScreenSize;
-		
-		// Extra space goes to the left untill it is half of it's height
-		extraSpaceLeft = Math.min(totalExtraSpace, gameScreenSize/2);
-		extraSpaceRight = totalExtraSpace - extraSpaceLeft;
+		else {
+			// Create different screen zones
+			float totalExtraSpace = screenSize.x - screenSize.y;
+
+			// Extra space goes to the left untill it is half of it's height
+			float spaceMiddle = screenSize.y;
+			float spaceLeft = Math.min(totalExtraSpace, screenSize.y/2);
+			float spaceRight = totalExtraSpace - spaceLeft;
+			
+			zones.put( "full", new ScreenZone(Vec2.zero, Vec2.ones) );
+			zones.put( "left", new ScreenZone(Vec2.zero, new Vec2((float) spaceLeft/screenSize.x, 1)) );
+			zones.put( "game", new ScreenZone(new Vec2((float) spaceLeft / screenSize.x, 0), new Vec2(spaceMiddle/screenSize.x, 1)) );
+			zones.put( "right", new ScreenZone(new Vec2((float) (spaceLeft+spaceMiddle) / screenSize.x, 0), new Vec2(spaceRight/screenSize.x, 1)) );
+			
+		}
 	}
 	
-	static public Vec2 descale( final Vec2 p ) {
+	static public final Vec2 decoords( final Vec2 p ) {
 		// Proportional to full screen
-		return new Vec2( p.x/screenSize.x, p.y/gameScreenSize);
+		return new Vec2( p.x/screenSize.x, p.y/screenSize.y);
 	}
 	
-	//TODO: No retornar mai classes, transformar-les. Especialment en les matematiques de vectors
-	static public void reposition( final Vec2 pos, int side ) {
-		switch(side) {
-		case Placement.fullScreen:
-			pos.x = pos.x * screenSize.x;
-			pos.y = pos.y * gameScreenSize;
-			break;
-			
-		case Placement.gameSide:
-			pos.x = pos.x * gameScreenSize + extraSpaceLeft;
-			pos.y = pos.y * gameScreenSize;
-			break;
-			
-		case Placement.leftSide:
-		case Placement.leftSideFull:
-			pos.x = pos.x * extraSpaceLeft;
-			pos.y = pos.y * gameScreenSize;
-			break;
-			
-		case Placement.rightSide:
-		case Placement.rightSideFull:
-			pos.x = pos.x * extraSpaceRight + extraSpaceLeft + gameScreenSize;
-			pos.y = pos.y * gameScreenSize;
-			break;
-		}
+	static public final void deposition( final String zone, final Vec2 pos ) {
+		ScreenZone z = zones.get(zone);
+		pos.x = (pos.x - z.offset.x) / z.size.x;
+		pos.y = (pos.y - z.offset.y) / z.size.y;
+	}
+	
+	static public final void reposition( final String zone, final Vec2 pos ) {
+		ScreenZone z = zones.get(zone);
+		pos.x = z.offset.x + pos.x * z.size.x;
+		pos.y = z.offset.y + pos.y * z.size.y;
+	}
+	
+	static public final float descale( final String zone, float radius ) {
+		ScreenZone z = zones.get(zone);
+		return radius / Math.min(z.size.x, z.size.y);
 	}
 
-	static public float rescale( float f, int side ) {
-		//TODO: Alinear be tots els switchos
-		switch(side) {
-		case Placement.fullScreen:
-		case Placement.gameSide:
-			return f * gameScreenSize;
-			
-		case Placement.leftSide:
-		case Placement.leftSideFull:
-			return f * extraSpaceLeft;
-		
-		case Placement.rightSide:
-		case Placement.rightSideFull:
-			return f * extraSpaceRight;
-		default:
-			return 0;
+	static public final void descale( final String zone, final Vec2 sz ) {
+		ScreenZone z = zones.get(zone);
+		sz.x = sz.x / Math.min(z.size.x, z.size.y);
+		sz.y = sz.y / Math.min(z.size.x, z.size.y);
+	}
+	
+	static public final float rescale( final String zone, float radius ) {
+		ScreenZone z = zones.get(zone);
+		return radius * Math.min(z.size.x, z.size.y);
+	}
+	
+	static public final void rescale( final String zone, final Vec2 sz, boolean stretch ) {
+		ScreenZone z = zones.get(zone);
+		if( stretch ) {
+			sz.x = sz.x * z.size.x;
+			sz.y = sz.y * z.size.y;
+		}
+		else {
+			sz.x = sz.x * Math.min(z.size.x, z.size.y);
+			sz.y = sz.y * Math.min(z.size.x, z.size.y);
 		}
 	}
 	
-	static public void rescale( final Vec2 v, int side ) {
-		switch(side){
-		case Placement.fullScreen:
-		case Placement.gameSide:
-			v.scale(gameScreenSize);
-			break;
-			
-		case Placement.leftSide:
-			v.scale(extraSpaceLeft);
-			break;
-		
-		case Placement.leftSideFull:
-			v.x *= extraSpaceLeft;
-			v.y *= gameScreenSize;
-			break;
-			
-		case Placement.rightSide:
-			v.scale(extraSpaceRight);
-			break;
-			
-		case Placement.rightSideFull:
-			v.x *= extraSpaceRight;
-			v.y *= gameScreenSize;
-			break;
+	static public final float coords( float radius ) {
+		return radius * Math.min(screenSize.x, screenSize.y);
+	}
+	
+	static public final Vec2 coords( final Vec2 pos ) {
+		// Returns the screen position of a pair of coodinates
+		Vec2 ret = new Vec2(pos);
+		ret.sub(up);
+		ret.mult(screenSize);
+		return ret;
+	}
+	
+	static public final Vec2 coords( final Vec2 sz, boolean stretch ) {
+		// Returns the size of a rectangle streched or not
+		if(stretch) {
+			return new Vec2( sz.x*screenSize.x, sz.y*screenSize.y );
+		}
+		else {
+			return new Vec2( sz.x*screenSize.x, sz.y*screenSize.x );
 		}
 	}
 	
-	static public boolean inScreen( final Vec2 pos, float inc ) {
-		return pos.x < 1+inc && pos.x > -inc && pos.y < 1+inc && pos.y > -inc;
-	}
-	
-	static public boolean inScreenU( final Vec2 pos, float inc ) {
-		return pos.x < 1+inc && pos.x > -inc && pos.y < 1+inc;
+	static public final boolean inScreen( final Vec2 pos, float inc ) {
+		Vec2 movedPos = new Vec2(pos);
+		movedPos.sub(up);
+		return movedPos.x <= 1+inc && movedPos.x >= -inc && movedPos.y <= 1+inc && movedPos.y >= -inc;
 	}
 }

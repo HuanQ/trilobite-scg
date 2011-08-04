@@ -13,7 +13,7 @@ import data.Snapshot;
 
 import managers.Component;
 import managers.Constant;
-import managers.Timer;
+import managers.Clock;
 
 
 
@@ -26,12 +26,12 @@ public class Record {
 	
 	private final int													me;
 	// Internal data
-	private final Vector<Snapshot>										recordedData;
+	private final Vector<Snapshot>										recordedData = new Vector<Snapshot>();
 	private int															eventsThisFrame;
-	private boolean														needUpdate;
-	private Vec2														lastRecordedPosition;
-	private Vec2														lastRecordedDirection;
-	private float														tickAccumulatedTime;
+	private boolean														needUpdate = true;
+	private Vec2														lastRecordedPosition = null;
+	private Vec2														lastRecordedDirection = null;
+	private float														tickAccumulatedTime = 0;
 	private File														file;
 	
 	public Record( int m, final String path ) {
@@ -41,30 +41,24 @@ public class Record {
 			file = new File(path + i + ".dat");
 			i++;
 		} while( file.exists() );		
-		// The first time we always need to update
-		needUpdate = true;
-		recordedData = new Vector<Snapshot>();
-		lastRecordedDirection = null;
-		lastRecordedPosition = null;
-		tickAccumulatedTime = 0;
 	}
 	
-	public void event( int event, int[] data ) {
+	public final void event( int event, int[] data ) {
 		eventsThisFrame = eventsThisFrame | event;
 		switch(event) {
-			case movement:
+		case movement:
 			break;
 			
-			case gunShot:
-			case shield:
-				needUpdate = true;
+		case gunShot:
+		case shield:
+			needUpdate = true;
 			break;
 		}
 	}
 	
-	public void save() {
+	public final void save() {
 		// Save last position
-		recordedData.add( new Snapshot(Timer.getTime(), eventsThisFrame, new Vec2(Component.placement.get(me).getPosition())) );
+		recordedData.add( new Snapshot(Clock.getTime(Clock.game), eventsThisFrame, new Vec2(Component.placement.get(me).position)) );
 		
 		ObjectOutputStream outputStream = null;
 		try {
@@ -80,7 +74,7 @@ public class Record {
 		} finally {
             //Close the ObjectOutputStream
             try {
-                if (outputStream != null) {
+                if(outputStream != null) {
                     outputStream.flush();
                     outputStream.close();
                 }
@@ -90,9 +84,9 @@ public class Record {
         }
 	}
 
-	public void Update() {
-		Vec2 myPos = Component.placement.get(me).getPosition();
-		float dt = Timer.getDelta();
+	public final void Update() {
+		Vec2 myPos = Component.placement.get(me).position;
+		float dt = Clock.getDelta(Clock.game);
 		tickAccumulatedTime += dt;
 		
 		if( tickAccumulatedTime > Constant.getFloat("Performance_RecordTick") ) {
@@ -115,9 +109,9 @@ public class Record {
 				}
 			}
 			
-			if( needUpdate && Timer.getDelta() > 0) {
+			if( needUpdate && dt > 0) {
 				// TODO: Quan has fet un canvi el que has de grabar, en realitat, és lastposition, no myPos! (ojo que si tens event has de grabar també mypos amb l'event)
-				recordedData.add( new Snapshot(Timer.getTime(), eventsThisFrame, new Vec2(myPos) ) );
+				recordedData.add( new Snapshot(Clock.getTime(Clock.game), eventsThisFrame, new Vec2(myPos) ) );
 				
 				// Prepare the data for the next frame
 				eventsThisFrame = 0;

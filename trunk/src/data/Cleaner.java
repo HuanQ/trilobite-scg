@@ -4,26 +4,21 @@ import java.io.File;
 
 public class Cleaner {
 	
-	public Cleaner() {
-		
-	}
-	
-	public void cleanAll() {
+	static public final void cleanAll() {
 		// Set up directory if needed
 		File directory = new File( "resources/games/");
-		File f[] = directory.listFiles();
-		for(int i=0;i<f.length;++i) {
-			if(f[i].getName().equals(".svn"))
+		File files[] = directory.listFiles();
+		for(File f : files) {
+			if(f.getName().equals(".svn"))
 				continue;
-			deleteRecursive(f[i]);
+			deleteRecursive(f);
 		}
 	}
 	
-	private void deleteRecursive(File path){
+	static private final void deleteRecursive(File path) {
 		File[] c = path.listFiles();
-        //TODO: Cambiar tots els fors i posar-los aixi (es array, amb vector no es deu poder?)
-        for (File file : c) {
-            if (file.isDirectory()) {
+        for(File file : c) {
+            if(file.isDirectory()) {
             	deleteRecursive(file);
             }
             file.delete();

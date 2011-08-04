@@ -13,25 +13,29 @@ public class Angle {
 		rotation = 0;
 	}
 	
-	public Angle(final float r) {
+	public Angle( final float r ) {
 		rotation = r;
 	}
 	
-	public float getRotation() {
+	public final float get() {
 		return rotation;
 	}
-
-	public void setRotation(final float r) {
+	
+	public final void set(final float r) {
 		float turns = (float) Math.floor(r / (2 * Math.PI));
 		rotation =  r - turns * (2 * (float) Math.PI);
 	}
 	
-	public void addRotation(final float r) {
+	public final void add(final float r) {
 		float turns = (float) Math.floor(r + rotation / (2 * Math.PI));
 		rotation +=  r - turns * (2 * (float) Math.PI);
 	}
 	
-	public Vec2 getDirection() {
+	public final Vec2 getDirection() {
 		return new Vec2((float) Math.cos(rotation), (float) Math.sin(rotation)); 
+	}
+	
+	public final String toString() {
+		return String.valueOf(rotation);
 	}
 }

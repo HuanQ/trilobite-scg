@@ -2,20 +2,22 @@ package components;
 
 import managers.Component;
 import managers.Constant;
-import managers.Timer;
+import managers.Clock;
 
 public class TimedObject {
 
 	private final int											me;
 	private final int											duration;
+	private final int											timerType;
 	
-	public TimedObject( int m, float dur) {
+	public TimedObject( int m, float dur, int timerty) {
 		me = m;
-		duration = Timer.getTime() + (int) (dur * Constant.timerResolution );
+		duration = Clock.getTime(timerty) + (int) (dur * Constant.timerResolution );
+		timerType = timerty;
 	}
 	
-	public void Update() {
-		if( duration < Timer.getTime()  ) {
+	public final void Update() {
+		if( duration < Clock.getTime(timerType)  ) {
 			Component.deadObjects.add(me);
 		}
 	}

@@ -1,25 +1,28 @@
 package game;
 
 import managers.Component;
+import managers.Constant;
 import managers.Level;
-import managers.Timer;
+import managers.Clock;
+import managers.Screen;
 
 import org.lwjgl.opengl.Display;
 
 public class Menu {
-	private boolean											active;
+	private boolean											active = true;
 	
-	public Menu( final String path ) {
-		active = true;
-		
+	public Menu( final String name ) {
 		// Initialize game
+		Screen.Init();
+		Constant.Init();
 		Component.Init();
-		Timer.Init();
+		Clock.Init();
 		Level.AddMouse();
-		Level.Init( path );
+		Level.Init( "resources/data/menu/" + name + ".xml", name );
+		Clock.pause(Clock.game);
 	}
 	
-	public void start() {
+	public final void start() {
 		// Run the game 
 		while ( active || !Component.fader.isDone() ) {
 			Component.Update();
@@ -30,11 +33,9 @@ public class Menu {
 		
 		// Clean up
 		Component.Release();
-		Timer.Release();
-		Level.Release();
 	}
 	
-	public void end() {
+	public final void end() {
 		Component.fader.fadeToBlack();
 		active = false;
 	}

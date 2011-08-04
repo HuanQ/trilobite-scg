@@ -4,15 +4,18 @@ import geometry.Circle;
 import geometry.Polygon;
 import geometry.Rectangle;
 import geometry.Text;
+import geometry.Vec2;
 
-import java.util.Iterator;
 import java.util.Vector;
 
-import geometry.Vec2;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import managers.Component;
 
 
 public class Shape {
-	private Vector<Polygon>										polygons;
+	Vector<Polygon>												polygons;
 	// Internal data
 	private float												radius;
 
@@ -21,65 +24,62 @@ public class Shape {
 		radius = 0;
 	}
 	
-	public Shape(final Shape shp) {
+	public Shape( final Shape shp ) {
 		polygons = new Vector<Polygon>();
-		for (Iterator<Polygon> iter = shp.polygons.iterator(); iter.hasNext();) {
-			Polygon next = iter.next();
-			if( next.whoAmI() == Polygon.circle ) {
-				polygons.add( new Circle((Circle) next) );
+		for(Polygon p : shp.polygons) {
+			if( p.whoAmI() == Polygon.circle ) {
+				polygons.add( new Circle((Circle) p) );
 			}
-			else if( next.whoAmI() == Polygon.rectangle ) {
-				polygons.add( new Rectangle((Rectangle) next) );
+			else if( p.whoAmI() == Polygon.rectangle ) {
+				polygons.add( new Rectangle((Rectangle) p) );
 			}
-			else if( next.whoAmI() == Polygon.text ) {
-				polygons.add( new Text((Text) next) );
+			else if( p.whoAmI() == Polygon.text ) {
+				polygons.add( new Text((Text) p) );
 			}
 		}
 		radius = shp.radius;
 	}
 
-	public float getRadius() {
+	public final float getRadius() {
 		return radius;
 	}
 	
-	public void setText( final String str ) {
-		for (Iterator<Polygon> iter = polygons.iterator(); iter.hasNext();) {
-			Polygon next = iter.next();
-			if( next.whoAmI() == Polygon.text ) {
-				((Text) next).setText(str);
+	public final void setText( final String str ) {
+		for(Polygon p : polygons) {
+			if( p.whoAmI() == Polygon.text ) {
+				((Text) p).setText(str);
 			}
 		}
 	}
 	
-	public Vector<Polygon> getPolygons() {
-		return polygons;
-	}
-	
-	public void add(final Polygon p) {
+	public final void add(final Polygon p) {
 		polygons.add(p);
 		
-		float newMaxRadius = p.getOffset().XYlength() + (float) Math.sqrt(p.getSqRadius());
+		float newMaxRadius = p.offset.length() + (float) Math.sqrt(p.getSqRadius());
 		if(radius < newMaxRadius) {
 			radius = newMaxRadius;
 		}
 	}
 	
-	public boolean Collides(final Vec2 myPos, final Shape him, final Vec2 hisPos) {
-		//TODO: donar id a Shape i que busqui hisPos y myPos i nomes ens passin ID per a colisionar
-		float hisRadius = him == null ? 0 : him.radius;
+	public final boolean Collides( int me, int him ) {
+		float hisRadius = Component.shape.get(him) == null ? 0 : Component.shape.get(him).radius;
+		
+		Vec2 myPos = Component.placement.get(me).position;
+		Vec2 hisPos = Component.placement.get(him).position;
 		
 		// Envolving circle check
 		if( myPos.distanceSquared(hisPos) > Math.pow(radius + hisRadius, 2) ) {
 			return false;
 		}
 
+
 		// Check shape to shape
 		if(radius == 0) {
 			// I am shapeless
 			if(hisRadius != 0) {
 				// Check my position to all his shapes
-				for (Iterator<Polygon> iter = him.polygons.iterator(); iter.hasNext();) {
-					if( iter.next().Collides(hisPos, (Polygon) null, myPos) ) {
+				for(Polygon p : Component.shape.get(him).polygons) {
+					if( p.Collides(myPos, (Polygon) null, hisPos) ) {
 						return true;
 					}
 				}
@@ -88,18 +88,17 @@ public class Shape {
 		else {
 			if(hisRadius == 0) {
 				// Check his position to all my shapes
-				for (Iterator<Polygon> iter = polygons.iterator(); iter.hasNext();) {
-					if( iter.next().Collides(myPos, (Polygon) null, hisPos) ) {
+				for(Polygon p : polygons) {
+					if( p.Collides(myPos, (Polygon) null, hisPos) ) {
 						return true;
 					}
 				}
 			}
 			else {
 				// Check all my shapes to all his shapes
-				for (Iterator<Polygon> iter = polygons.iterator(); iter.hasNext();) {
-					Polygon myPoly = iter.next();
-					for (Iterator<Polygon> iter2 = him.polygons.iterator(); iter2.hasNext();) {
-						if( myPoly.Collides(myPos, iter2.next(), hisPos) ) {
+				for(Polygon myP : polygons) {
+					for(Polygon hisP : Component.shape.get(him).polygons) {
+						if( myP.Collides(myPos, hisP, hisPos) ) {
 							return true;
 						}
 					}
@@ -107,5 +106,13 @@ public class Shape {
 			}
 		}
 		return false;
+	}
+	
+	public final void writeXml( Document doc, Element root ) {
+		Element shape = doc.createElement("Shape");
+		for( Polygon p : polygons ) {
+			p.writeXml(doc, shape);
+		}
+		root.appendChild(shape);
 	}
 }

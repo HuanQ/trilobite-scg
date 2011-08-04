@@ -1,21 +1,17 @@
 package components;
 
-import java.util.Map;
-
-import geometry.Vec2;
-
 import org.lwjgl.input.Keyboard;
 
 import managers.Component;
 import managers.Constant;
-import managers.Timer;
+import managers.Clock;
 
 public class Helper {
 	private final int										me;
 	private String											function;
 	private int												wait;
 	// Internal data
-	private int												phase;
+	private int												phase = 0;
 	private float											blinkTime;
 	private int												blinkWait;
 	// 0: Not shown yet
@@ -26,43 +22,42 @@ public class Helper {
 	public Helper( int m, final String func, float w) {
 		me = m;
 		function = func;
-		wait = Timer.getTime() + (int) (w * Constant.timerResolution);
-		phase = 0;
+		wait = Clock.getTime(Clock.ui) + (int) (w * Constant.timerResolution);
 		blinkTime = Constant.getFloat("Helper_BlinkTime");
 		Component.drawer.get(me).setVisible(false);
 	}
 	
-	public boolean isActive() {
+	public final boolean isActive() {
 		return phase != 0;  
 	}
 	
-	public void Update( ) {
+	public final void Update( ) {
 		
 		switch(phase) {
-			case 0:
-				if(Timer.getTime() > wait) {
-					boolean otherHelpersActive = false;
-					for (Map.Entry<Integer, Helper> entry : Component.helper.entrySet()) {
-						otherHelpersActive |= entry.getValue().isActive();
-					}
-					
-					if( otherHelpersActive ) {
-						// Wait at least one second after no other helper is left
-						wait = Timer.getTime() + Constant.timerResolution;
-					}
-					else {
-						// Show the helper
-						Component.drawer.get(me).setVisible(true);
-						phase = 1;						
-					}
+		case 0:
+			if(Clock.getTime(Clock.ui) > wait) {
+				boolean otherHelpersActive = false;
+				for(Helper h : Component.helper.values()) {
+					otherHelpersActive |= h.isActive();
 				}
+				
+				if( otherHelpersActive ) {
+					// Wait at least one second after no other helper is left
+					wait = Clock.getTime(Clock.ui) + Constant.timerResolution;
+				}
+				else {
+					// Show the helper
+					Component.drawer.get(me).setVisible(true);
+					phase = 1;						
+				}
+			}
 			break;
-			
-			case 1:
+		
+		case 1:
 			{
 				// Discard the helper after stayTime
 				boolean next = false;
-
+	
 				if(function.equals("MOVE") && (Keyboard.isKeyDown(Keyboard.KEY_UP)
 						|| Keyboard.isKeyDown(Keyboard.KEY_DOWN)
 						|| Keyboard.isKeyDown(Keyboard.KEY_LEFT)
@@ -80,35 +75,34 @@ public class Helper {
 					phase = 2;
 					wait += (int) (Constant.getFloat("Helper_Duration") * Constant.timerResolution);
 				}
-
-				if(Timer.getTime() > blinkWait) {
-					blinkWait = Timer.getTime() + (int) (2*blinkTime * Constant.timerResolution);
+	
+				if(Clock.getTime(Clock.ui) > blinkWait) {
+					blinkWait = Clock.getTime(Clock.ui) + (int) (2*blinkTime * Constant.timerResolution);
 					
 					// Create annoying circle
-					Placement p = Component.placement.get(me);
 					Integer id = Component.getID();
-
-					Component.timedObject.put( id, new TimedObject(id, blinkTime) );
-					Component.placement.put( id, new Placement( new Vec2( p.getPosition().x, p.getPosition().y ), p.getScreenSide() ) );
+	
+					Component.timedObject.put( id, new TimedObject(id, blinkTime, Clock.ui) );
+					Component.placement.put( id, new Placement(Component.placement.get(me)) );
 					Component.drawer.put( id, new Drawer(id, Constant.getVector("Helper_Color")) );
 					Component.shape.put( id, Constant.getShape("Helper_Shape")  );
+					Component.sticky.put( id, new Sticky(id) );
 					
 					if(blinkTime > 0.2f) {
 						blinkTime *= 0.85f;
 					}
 				}
-
 			}
 			break;
+		
+		case 2:
+			if(Clock.getTime(Clock.ui) > wait) {
+				// Hide the helper and self destroy
+				Component.drawer.get(me).setVisible(false);
+				phase = 3;
+				Component.deadObjects.add(me);
+			}
 			
-			case 2:
-				if(Timer.getTime() > wait) {
-					// Hide the helper and self destroy
-					Component.drawer.get(me).setVisible(false);
-					phase = 3;
-					Component.deadObjects.add(me);
-				}
-				
 			break;
 		}
 	}

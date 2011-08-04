@@ -1,8 +1,5 @@
 package game;
 
-import managers.Constant;
-import managers.Screen;
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -13,64 +10,84 @@ import static org.lwjgl.opengl.GL11.*;
 public class Start {
 	static final int										startGame = 1;
 	static final int										quitProgram = 2;
-	static final int										mainMenu = 3;
+	static final int										startMain = 3;
+	static final int										startEditor = 4;
 	
 	private boolean											active;
 	static private int										option;
-	static private Menu										mainScreen;
-	static private Game										mainGame;
+	static private Menu										menu;
+	static private Game										game;
+	static private Editor									editor;
 	
-	public void start() {
-		initGraphics();
-		Constant.Init();
-		Screen.Init();
-
+	public final void start() {
+		Start.initGraphics();
+		
 		active = true;
-		option = Start.mainMenu;
+		option = Start.startEditor;
 		
 		while(active) {
 			switch (option) {
-				case Start.quitProgram:
-					active = false;
+			case Start.quitProgram:
+				active = false;
 				break;
 				
-				case Start.startGame:
-					mainGame = new Game("decline", 1);
-					mainGame.start();
-					mainScreen = new Menu( "resources/data/ingame.xml" );
-					mainScreen.start();
+			case Start.startGame:
+				game = new Game("Intro", 1);
+				game.start();
+				game = null;
+				menu = new Menu("ingame" );
+				menu.start();
+				menu = null;
 				break;
 				
-				case Start.mainMenu:
-					mainScreen = new Menu( "resources/data/main.xml" );
-					mainScreen.start();
+			case Start.startMain:
+				menu = new Menu("main");
+				menu.start();
+				menu = null;
+				break;
+			
+			case Start.startEditor:
+				editor = new Editor("Intro");
+				editor.start();
+				editor = null;
 				break;
 			}
 		}
 		Display.destroy();
 	}
 	
-	public static void quitProgram() {
+	static public final void quitProgram() {
 		option = Start.quitProgram;
-		mainScreen.end();
+		menu.end();
 	}
 	
-	public static void startGame() {
+	static public final void startGame() {
 		option = Start.startGame;
-		mainScreen.end();
+		menu.end();
 	}
 	
-	public static void startMenu() {
-		option = Start.mainMenu;
-		mainScreen.end();
+	static public final void startEditor() {
+		option = Start.startEditor;
+		menu.end();
+	}
+	
+	static public final void restartEditor() {
+		option = Start.startEditor;
+		editor.end();
+	}
+	
+	static public final void startMenu() {
+		option = Start.startMain;
+		if(menu != null) menu.end();
+		if(editor != null) editor.end();
 	}
 
-	public static void main(String[] argv) {
+	static public final void main(String[] argv) {
 		Start displayExample = new Start();
 		displayExample.start();
 	}
 	
-	private void initGraphics() {
+	static private final void initGraphics() {
 		//TODO: Crear un manager de graphics i potser fins i tot buidar tot el reste del codi de OpenGL
 		try {
 			Display.setDisplayMode(new DisplayMode(1024, 800));
