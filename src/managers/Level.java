@@ -8,8 +8,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import sequences.Sequence;
+import sequences.SimpleBlaster;
+import sequences.SimpleDumb;
 
 import geometry.Angle;
 import geometry.Vec2;
@@ -20,18 +25,16 @@ import data.NodeReader;
 
 
 public class Level {
+	static public String									lvlname;
 	
-	static private Map<String, Node>						readNodes;
-
-	static public void Init( final String levelName ) {
+	static public void Init( final String str, final String lvln ) {
+		lvlname = lvln;
+		
 		try {
-			
-			//TODO: Carregar diferents xml per a fer un nivell, aixi tenim un que es diu background que es pot reutilitzar i podem separar-los per parts.
-			//... Intro, Lasers, etc (podrem canviar-ne l'ordre etc), caldra canviar la coordenada y amb un offset per a empalmar-los
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc;
 			
-			doc = (Document) db.parse( new File(levelName) );
+			doc = (Document) db.parse( new File(str) );
 			doc.getDocumentElement().normalize();
 			loadXML( doc.getDocumentElement().getChildNodes() );
 			
@@ -39,77 +42,96 @@ public class Level {
 			e.printStackTrace();
 		}
 	}
-	
-	static public void Release() {
-		// Level just creates components so we don't have to release anything yet
-	}
 
-	static private void loadXML(final NodeList section) {
+	static private final void loadXML(final NodeList section) {
 		// Trilobite node
-		for (int s = 0; s < section.getLength(); ++s) {
+		for(int s = 0; s < section.getLength(); ++s) {
 			Node nextSection = section.item(s);
 			if(nextSection.getNodeType() != Node.ELEMENT_NODE)
 				continue;
 			
+			NamedNodeMap attr = nextSection.getAttributes();
+			String zone = attr.getNamedItem("zone").getTextContent();
+
 			// Intro ... nodes
 			NodeList type = nextSection.getChildNodes();
-			for (int t = 0; t < type.getLength(); ++t) {
+			for(int t = 0; t < type.getLength(); ++t) {
 				Node nextType = type.item(t);
 				if(nextType.getNodeType() != Node.ELEMENT_NODE)
 					continue;
 				
-				readNodes = new HashMap<String, Node>();
+				Map<String, Node> readNodes = new HashMap<String, Node>();
 				
 				// Wall ... nodes
 			    NodeList property = nextType.getChildNodes();
-			    for (int p = 0; p < property.getLength(); ++p) {
+			    for(int p = 0; p < property.getLength(); ++p) {
 			    	Node nextProperty = property.item(p);
 			    	if(nextProperty.getNodeType() != Node.ELEMENT_NODE)
 						continue;
 			    	
 			    	readNodes.put(nextProperty.getNodeName(), nextProperty);
 			    }
-			    
+
 			    //TODO: Podem fer un tag d'afegir altres XML aixi un nivell carrega els seus backgrounds, etc
 			    // Add the items with the read nodes they need 
 				if(nextType.getNodeName() == "Wall") {
-					AddWall( NodeReader.readPoint( readNodes.get("Point") ),
-							NodeReader.readShape( readNodes.get("Shape") )
+					AddWall( NodeReader.readPlace( readNodes.get("Point"), zone ),
+							NodeReader.readShape( readNodes.get("Shape"), zone )
 							);
 				}
 				else if(nextType.getNodeName() == "Spawner") {
-					AddSpawner( NodeReader.readPoint( readNodes.get("Point") ),
+					Sequence seq = getSequence( NodeReader.readString(readNodes.get("Sequence")) );
+					Shape shp = NodeReader.readShape( readNodes.get("Shape"), zone );
+					
+					AddSpawner( NodeReader.readPlace( readNodes.get("Point"), zone ),
 							new Angle( NodeReader.readFloat(readNodes.get("Direction")) ),
-							NodeReader.readString( readNodes.get("Sequence") ),
-							NodeReader.readFloat(readNodes.get("RotationSpeed")),
-							NodeReader.readShape( readNodes.get("Shape") ),
-							NodeReader.readFloat( readNodes.get("Frequency") ),
-							(int) NodeReader.readFloat( readNodes.get("Count") )
+							NodeReader.readFloat( readNodes.get("Wait") ),
+							seq,
+							shp
 							);
 				}
 				else if(nextType.getNodeName() == "Button") {
-					AddButton( NodeReader.readPoint( readNodes.get("Point") ),
-							NodeReader.readShape( readNodes.get("Shape") ),
+					AddButton( NodeReader.readPlace( readNodes.get("Point"), zone ),
+							NodeReader.readShape( readNodes.get("Shape"), zone ),
+							NodeReader.readString( readNodes.get("Function") )
+							);
+				}
+				else if(nextType.getNodeName() == "Planet") {
+					AddPlanet( NodeReader.readPlace( readNodes.get("Point"), zone ),
+							NodeReader.readShape( readNodes.get("Shape"), zone ),
 							NodeReader.readString( readNodes.get("Function") )
 							);
 				}
 				else if(nextType.getNodeName() == "Image") {
-							AddImage( NodeReader.readPoint( readNodes.get("Point") ),
-							NodeReader.readShape( readNodes.get("Shape") )
+							AddImage( NodeReader.readPlace( readNodes.get("Point"), zone ),
+							NodeReader.readShape( readNodes.get("Shape"), zone )
 							);
 				}
 				else if(nextType.getNodeName() == "Helper") {
-					AddHelper( NodeReader.readPoint( readNodes.get("Point") ),
-					NodeReader.readShape( readNodes.get("Shape") ),
+					AddHelper( NodeReader.readPlace( readNodes.get("Point"), zone ),
+					NodeReader.readShape( readNodes.get("Shape"), zone ),
 					NodeReader.readString( readNodes.get("Function") ),
 					NodeReader.readFloat( readNodes.get("Wait") )
+					);
+				}
+				else if(nextType.getNodeName() == "EnergyBar") {
+					AddEnergyBar( NodeReader.readPlace( readNodes.get("Point"), zone ),
+					NodeReader.readShape( readNodes.get("Shape"), zone ),
+					NodeReader.readColor( readNodes.get("Empty") ),
+					NodeReader.readColor( readNodes.get("Full") )
+					);
+				}
+				else if(nextType.getNodeName() == "ProgressBar") {
+					AddProgressBar( NodeReader.readPlace( readNodes.get("Point"), zone ),
+					NodeReader.readShape( readNodes.get("Shape"), zone ),
+					NodeReader.readColor( readNodes.get("Color") )
 					);
 				}
 			}
 		}
 	}
 	
-	static public Vec2 getSpawnPoint( int sp ) {
+	static public final Vec2 getSpawnPoint( int sp ) {
 		Vec2 pos = new Vec2();
 		int spawnsRow = (int) Constant.getFloat("Rules_SpawnpointsPerRow");
 		int counterX = sp % spawnsRow;
@@ -129,111 +151,159 @@ public class Level {
 		return pos;
 	}
 	
-	static public Integer AddPlayer( final String path, int number ) {
-		Integer id = Component.getID();
+	static public final Integer AddPlayer( final String path, int number) {
+		
+		// Look for an energy bar to latch onto 
+		int energyBarID = -1;
+		for(EnergyBar e : Component.energybar.values()) {
+			energyBarID = e.latch();
+			if(energyBarID != -1) {
+				break;
+			}
+		} 
+		
+		Integer playerID = Component.getID();
+		Component.input.put( playerID, new Input(playerID, Input.playerKeyboard) );
+		Component.placement.put( playerID, new Placement(getSpawnPoint(number)) );
+		Component.drawer.put( playerID, new Drawer(playerID ) );
+		Component.gun.put( playerID, new Gun(playerID, Constant.getPoint("Ship_Point")) );
+		Component.shield.put( playerID, new Shield(playerID, energyBarID) );
+		Component.mover.put( playerID, new Mover(playerID, Constant.getFloat("Ship_Speed"), true, Clock.play) );
+		Component.shape.put( playerID, Constant.getShape("Ship_Shape") );
+		Component.killable.put( playerID, new Killable(playerID, Killable.playerTeam) );
+		Component.record.put( playerID, new Record(playerID, path) );
+		Component.sticky.put( playerID, new Sticky(playerID) );
 
-		Component.keyboard.put( id, new KeyboardInput(id) );
-		Component.placement.put( id, new Placement( getSpawnPoint(number), Placement.gameSide ) );
-		Component.drawer.put( id, new Drawer(id, Vec3.white ) );
-		Component.gun.put( id, new Gun(id, Constant.getPoint("Gun_Point")) );
-		Component.shield.put( id, new Shield(id) );
-		Component.mover.put( id, new Mover(id, Constant.getFloat("Ship_Speed"), true, 0) );
-		Component.shape.put( id, Constant.getShape("Ship_Shape") );
-		Component.canBeKilled.put( id, new Killable(id) );
-		Component.canKill.put( id, new Killer() );
-		Component.record.put( id, new Record(id, path) );
+		Component.placement.get(playerID).setRotation( (float) Math.PI / 2 );
+		Component.shield.get(playerID).Raise();
+		Component.shape.get(playerID).setText(Integer.toString(number+1));
 
-		Component.placement.get(id).setRotation( (float) Math.PI / 2 );
-		Component.shield.get(id).Raise();
-		Component.shape.get(id).setText(Integer.toString(number+1));
-
-		return id;
+		return playerID;
 	}
 	
-	static public void AddMouse() {
+	static public final void AddMouse() {
 		Integer id = Component.getID();
 		Component.mouse = new Pointer(id);
-		Component.placement.put(id, new Placement(Placement.fullScreen) );
+		Component.placement.put(id, new Placement() );
 		Component.drawer.put( id, new Drawer(id) );
-		Component.shape.put( id, Constant.getShape("Mouse_Shape") );
+		Component.shape.put( id, Constant.getShape("Interface_Shape") );
+		Component.sticky.put( id, new Sticky(id) );
 		
 		Component.placement.get(id).interpPosition( Vec2.topLeft, Vec2.bottomRight, 0.5f);
 	}
 	
-	static public Integer AddActor( final String path, int number ) {
+	static public final void AddEditorControls() {
+		Integer id = Component.getID();
+		Component.input.put(id, new Input(id, Input.editorKeyboard) );
+	}
+	
+	static public final void AddActor( final String path, int number ) {
 		Integer id = Component.getID();
 
 		Component.actor.put( id, new Actor(id, path) );
-		Component.placement.put( id, new Placement(Placement.gameSide) );
-		Component.drawer.put( id, new Drawer(id, Vec3.gray ) );
-		Component.gun.put( id, new Gun(id, Constant.getPoint("Gun_Point")) );
+		Component.placement.put( id, new Placement() );
+		Component.drawer.put( id, new Drawer(id, Constant.getVector("Actor_Color") ) );
+		Component.gun.put( id, new Gun(id, Constant.getPoint("Ship_Point")) );
 		Component.shield.put( id, new Shield(id) );
-		Component.mover.put( id, new Mover(id, Constant.getFloat("Ship_Speed"), true, 0) );
 		Component.shape.put( id, new Shape(Constant.getShape("Ship_Shape")) );
-		Component.canBeKilled.put( id, new Killable(id) );
-		Component.canKill.put( id, new Killer() );
+		Component.killable.put( id, new Killable(id, Killable.playerTeam) );
 
 		Component.placement.get(id).setRotation( (float) Math.PI / 2 );
 		Component.shape.get(id).setText(Integer.toString(number));
-
-		return id;
 	}
 	
-	static private Integer AddImage( final Placement pos, final Shape shp ) {
+	static public final void AddProgressBar( final Vec2 pos, final Shape shp, final Vec3 color ) {
 		Integer id = Component.getID();
-
-		Component.placement.put( id, pos );
-		Component.drawer.put( id, new Drawer( id ) );
+		
+		Component.placement.put( id, new Placement(pos) );
 		Component.shape.put( id, shp );
-
-		return id;
+		Component.progressbar.put( id, new ProgressBar(id, color, lvlname) );
+		Component.drawer.put( id, new Drawer(id) );
+		Component.sticky.put( id, new Sticky(id) );
 	}
 	
-	static private Integer AddHelper( final Placement pos, final Shape shp, final String func, float wait ) {
+	static public final void AddEnergyBar( final Vec2 pos, final Shape shp, final Vec3 empty, final Vec3 full ) {
 		Integer id = Component.getID();
-
-		Component.placement.put( id, pos );
-		Component.drawer.put( id, new Drawer( id ) );
-		Component.helper.put( id, new Helper( id, func, wait ) );
+		
+		Component.placement.put( id, new Placement(pos) );
 		Component.shape.put( id, shp );
-
-		return id;
+		Component.energybar.put( id, new EnergyBar(id, empty, full) );
+		Component.drawer.put( id, new Drawer(id) );
+		Component.sticky.put( id, new Sticky(id) );
 	}
 	
-	static private Integer AddButton( final Placement pos, final Shape shp, final String func ) {
+	// Private stuff
+	static private final void AddImage( final Vec2 pos, final Shape shp ) {
 		Integer id = Component.getID();
 
-		Component.placement.put( id, pos );
+		Component.placement.put( id, new Placement(pos) );
+		Component.drawer.put( id, new Drawer(id) );
+		Component.shape.put( id, shp );
+		Component.sticky.put( id, new Sticky(id) );
+	}
+	
+	static private final void AddHelper( final Vec2 pos, final Shape shp, final String func, float wait ) {
+		Integer id = Component.getID();
+
+		Component.placement.put( id, new Placement(pos) );
+		Component.drawer.put( id, new Drawer(id) );
+		Component.helper.put( id, new Helper(id, func, wait) );
+		Component.shape.put( id, shp );
+		Component.sticky.put( id, new Sticky(id) );
+	}
+	
+	static private final void AddButton( final Vec2 pos, final Shape shp, final String func ) {
+		Integer id = Component.getID();
+
+		Component.placement.put( id, new Placement(pos) );
+		Component.drawer.put( id, new Drawer(id) );
+		Component.shape.put( id, shp );
+		Component.clickable.put(id, new Clickable(id, func) );
+		Component.sticky.put( id, new Sticky(id) );
+	}
+	
+	static private final void AddPlanet( final Vec2 pos, final Shape shp, final String func ) {
+		Integer id = Component.getID();
+
+		Component.placement.put( id, new Placement(pos) );
 		Component.drawer.put( id, new Drawer(id) );
 		Component.planet.put( id, new Planet(id) );
 		Component.shape.put( id, shp );
-		Component.clickable.put(id, new Clickable(func) );
-
-		return id;
+		Component.clickable.put(id, new Clickable(id, func) );
 	}
 	
-	static private Integer AddWall( final Placement pos, final Shape shp ) {
+	static private final void AddWall( final Vec2 pos, final Shape shp ) {
 		Integer id = Component.getID();
 
-		Component.placement.put( id, pos );
+		Component.placement.put( id, new Placement(pos) );
 		Component.drawer.put( id, new Drawer(id) );
 		Component.shape.put( id, shp );
-		Component.canKill.put( id, new Killer() );
-		Component.mover.put( id, new Mover(id, 0, false, 0) );
-
-		return id;
+		Component.killable.put( id, new Killable(id, Killable.terrain) );
+		Component.xml.put( id, new Xml(id) );
 	}
 	
-	static private Integer AddSpawner( final Placement pos, final Angle shootDirection, final String sequence, float rotSpeed, final Shape shp, float freq, int count ) {
+	static private final Sequence getSequence( final String seqName ) {
+		Sequence ret = null;
+		if( Constant.getString(seqName + "_Type").equals("SimpleDumb") ) {
+			ret = new SimpleDumb(seqName);
+		}
+		else if( Constant.getString(seqName + "_Type").equals("SimpleBlaster") ) {
+			ret = new SimpleBlaster(seqName);
+		}
+		return ret;
+	}
+	
+	static private final void AddSpawner( final Vec2 pos, final Angle shootDirection, float wait, final Sequence seq, final Shape shp ) {
 		Integer id = Component.getID();
 
-		Component.placement.put( id, pos );
-		Component.spawner.put( id, new Spawner(id, shootDirection, sequence, rotSpeed, freq, count) );
-		Component.mover.put( id, new Mover(id, 0, false, Constant.getFloat("Spawner_Gravity")) );
+		Component.placement.put( id, new Placement(pos) );
+		Component.spawner.put( id, new Spawner(id, shootDirection, wait, seq) );
 		Component.drawer.put( id, new Drawer(id) );
-		Component.shape.put( id, shp );
-		Component.canKill.put( id, new Killer() );
+		Component.xml.put(id, new Xml(id));
 		
-		return id;
+		if(shp != null) {
+			Component.killable.put( id, new Killable(id, Killable.enemyTeam) );
+			Component.shape.put( id, shp );
+		}
 	}
 }

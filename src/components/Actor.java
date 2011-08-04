@@ -12,7 +12,7 @@ import java.util.Vector;
 
 import managers.Component;
 import managers.Constant;
-import managers.Timer;
+import managers.Clock;
 
 import data.Snapshot;
 
@@ -31,10 +31,8 @@ public class Actor {
 		ObjectInputStream inputStream = null;
 		try {
 	        FileInputStream fileinputstream = new FileInputStream( new File(file) );
-		    //ByteArrayOutputStream b = new ByteArrayOutputStream();
 	        inputStream = new ObjectInputStream( fileinputstream );
 			recordedData = (Vector<Snapshot>) inputStream.readObject();
-			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -44,20 +42,23 @@ public class Actor {
 		} finally {
             //Close the ObjectOutputStream
             try {
-                if (inputStream != null) {
+                if(inputStream != null) {
                 	inputStream.close();
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
-		
 		iter = recordedData.iterator();
 		prevSnap = iter.next();
 		nextSnap = prevSnap;
 	}
 	
-	public void Update() {
+	public final Integer getLifeLength() {
+		return recordedData.get(recordedData.size() - 1).getTime();
+	}
+	
+	public final void Update() {
 		if( nextSnap.isDone()) {
 			if( iter.hasNext() ) {
 				prevSnap = nextSnap;
@@ -77,8 +78,8 @@ public class Actor {
 				Placement p = Component.placement.get(me);
 				Integer id = Component.getID();
 				
-				Component.timedObject.put( id, new TimedObject(id, Constant.getFloat("Phase_Duration")) );
-				Component.placement.put( id, new Placement( new Vec2( p.getPosition().x, p.getPosition().y ), Placement.gameSide ) );
+				Component.timedObject.put( id, new TimedObject(id, Constant.getFloat("Phase_Duration"), Clock.game) );
+				Component.placement.put( id, new Placement( new Vec2( p.position.x, p.position.y ) ) );
 				Component.drawer.put( id, new Drawer(id) );
 				Component.shape.put( id, Constant.getShape("Phase_Shape")  );
 				
@@ -88,15 +89,15 @@ public class Actor {
 		}
 		
 		// Move our actor according to our data
-		Component.placement.get(me).interpPosition( prevSnap.getPosition(), nextSnap.getPosition(), interpolateNow( prevSnap.getTime(), nextSnap.getTime() ) );
+		Component.placement.get(me).interpPosition( prevSnap.position, nextSnap.position, Actor.interpolateNow( prevSnap.getTime(), nextSnap.getTime() ) );
 	}
 	
-	private float interpolateNow( int prev, int next ) {
+	static private final float interpolateNow( int prev, int next ) {
 		if( prev == next ) {
 			return 1;
 		}
 		else {
-			return (float) (Timer.getTime() - prev) / (next - prev);
+			return (float) (Clock.getTime(Clock.game) - prev) / (next - prev);
 		}
 	}
 }

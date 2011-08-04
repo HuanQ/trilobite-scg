@@ -21,7 +21,7 @@ public class Sprite {
 	/** The texture that stores the image for this sprite */
 	private Texture	texture;
 	
-	private String textureName;
+	private final String textureName;
 
 	/** The height and width in pixels of this sprite */
 	private int			width;
@@ -54,10 +54,18 @@ public class Sprite {
 	}
 
 	/**
+	 * Gets the texture name
+	 *
+	 */
+	public final String getTextureName() {
+		return textureName;
+	}
+	
+	/**
 	 * Set the width of this sprite
 	 *
 	 */
-	public void setWidth( int w ) {
+	public final void setWidth( int w ) {
 		width = w;
 	}
 
@@ -65,7 +73,7 @@ public class Sprite {
 	 * Set the height of this sprite
 	 *
 	 */
-	public void setHeight( int h ) {
+	public final void setHeight( int h ) {
 		height = h;
 	}
 
@@ -75,7 +83,7 @@ public class Sprite {
 	 * @param x The x location at which to draw this sprite
 	 * @param y The y location at which to draw this sprite
 	 */
-	public void draw(float x, float y, float z) {
+	public final void draw(float x, float y, float z) {
 		// bind to the appropriate texture for this sprite
 		texture.bind();
 

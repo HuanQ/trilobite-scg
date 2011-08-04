@@ -3,10 +3,14 @@ package game;
 import java.io.File;
 
 import managers.Component;
+import managers.Constant;
 import managers.Level;
-import managers.Timer;
+import managers.Clock;
+import managers.Screen;
 
 import org.lwjgl.opengl.Display;
+
+import components.ProgressBar;
 
 public class Game {
 	private final String										directoryName;
@@ -28,20 +32,20 @@ public class Game {
 		}
 		
 		// Initialize game
+		Screen.Init();
+		Constant.Init();
 		Component.Init();
-		Timer.Init();
-		Level.Init( "resources/data/" + name + ".xml" );
-		Level.Init( "resources/data/hud.xml" );
+		Clock.Init();
+		Level.Init( "resources/data/level/" + name + ".xml", name );
+		Level.Init( "resources/data/hud/game.xml", name );
 		
 		// Helpers pop up the first time we play each level 
 		if(firstPlay) {
-			Level.Init( "resources/data/help.xml" );
+			Level.Init( "resources/data/help.xml", name );
 		}
-		
-		Component.fader.resetBlack();
 	}
 	
-	public void start() {
+	public final void start() {
 		// Insert Player and Actors
 		int i = 0;
 		File actorFile;
@@ -53,10 +57,14 @@ public class Game {
 				Level.AddActor(nextFileName, i);
 			}
 		} while( actorFile.exists() );
+		
+		// Add the actors to the progressbar
+		for(ProgressBar p : Component.progressbar.values()) {
+			p.addActors();
+		}
+
 
 		int player = Level.AddPlayer( "resources/games/" + directoryName, i-1 );
-		
-		Component.fader.fadeToWhite();
 		
 		// Run the game 
 		while ( Component.placement.get(player) != null ) {
@@ -68,7 +76,5 @@ public class Game {
 
 		// Clean up
 		Component.Release();
-		Timer.Release();
-		Level.Release();
 	}
 }

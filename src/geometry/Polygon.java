@@ -1,7 +1,9 @@
 package geometry;
 
 
-import geometry.Vec2;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import geometry.Vec3;
 import graphics.Sprite;
 
@@ -10,27 +12,26 @@ public abstract class Polygon {
 	static public final int												rectangle = 1;
 	static public final int												text = 2;
 	
-	protected final Vec3												offset;
-	protected Vec3														color;
-	protected Sprite													texture;
+	public final Vec2													offset;
+	public float														layer;
+	public Vec3															color;
+	protected Sprite													texture = null;
 	// Internal data
 	protected float														sqradius;
 	
-	protected Polygon(final Vec3 off) {
+	protected Polygon( final Vec2 off, float ly ) {
 		offset = off;
+		layer = ly;
 		color = Vec3.white;
-		texture = null;
 		sqradius = 0;
 	}
 	
-	protected Polygon(final Polygon p) {
-		offset = new Vec3( p.getOffset() );
-		color = new Vec3( p.getColor() );
+	protected Polygon( final Polygon p ) {
+		offset = new Vec2( p.offset );
+		color = new Vec3( p.color );
+		layer = p.layer;
 		sqradius = p.getSqRadius();
-		if( p.texture == null ) {
-			texture = null;
-		}
-		else {
+		if( p.texture != null ) {
 			texture = new Sprite( p.texture );
 		}
 	}
@@ -40,27 +41,39 @@ public abstract class Polygon {
 	
 	public abstract void multSize( float m );
 	
-	public abstract void draw( final Vec2 pos, final Vec3 defColor, int side );
+	public abstract void writeXml( Document doc, Element root );
 	
-	public abstract boolean Collides( final Vec2 myPos, final Polygon p, Vec2 hisPos);
+	public abstract void draw( final Vec2 pos, final Vec3 defColor);
+	
+	public abstract boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos);
 	
 	public final float getSqRadius() {
 		return sqradius;
 	}
-	
-	public final Vec3 getOffset() {
-		return offset;
-	}
-	
+
 	public final void setColor( final Vec3 col ) {
 		color = col;
 	}
-
+	
 	public final void setTexture( final String tex ) {
 		texture = new Sprite( tex );
 	}
 	
-	public final Vec3 getColor() {
-		return color;
+	protected final void writeSubShape( final Document doc, final Element root ) {
+		// Color
+		if( !color.equals(Vec3.white) ) {
+			Element col = doc.createElement("Color");
+			col.setAttribute( "r", Float.toString(color.x) );
+			col.setAttribute( "g", Float.toString(color.y) );
+			col.setAttribute( "b", Float.toString(color.z) );
+			root.appendChild(col);
+		}
+		// Texture
+		if(texture != null) {
+			Element tex = doc.createElement("Texture");
+			tex.appendChild(doc.createTextNode(texture.getTextureName()));
+			root.appendChild(tex);
+		}
+
 	}
 }

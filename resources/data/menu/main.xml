@@ -1,0 +1,85 @@
+<Trilobite>
+	<Background zone="full">
+		<Image>
+			<Point x="0.5" y="0.5"/>
+			<Shape>
+				<Rectangle x="0" y="0" z="6" sizex="1.8" sizey="1">
+					<Texture>spacefield.gif</Texture>
+				</Rectangle>
+			</Shape>
+		</Image>
+		
+		<Image>
+			<Point x="0.25" y="0.325"/>
+			<Shape>
+				<Rectangle x="0" y="0" z="6.2" sizex="0.5" sizey="0.5">
+					<Texture>title.gif</Texture>
+				</Rectangle>
+			</Shape>
+		</Image>
+	</Background>
+	
+	<Menu zone="full">
+		<Planet zone="full">
+			<Point x="0.05" y="1.05"/>
+			<Function>NONE</Function>
+			<Shape>
+				<Circle x="0" y="0" z="6.1" radius="0.45">
+					<Texture>earth.gif</Texture>
+				</Circle>
+			</Shape>
+		</Planet>
+		
+		<Planet zone="full">
+			<Point x="0.35" y="0.5"/>
+			<Function>START</Function>
+			<Shape>
+				<Circle x="0" y="0" z="8" radius="0.135">
+					<Texture>Planet2.gif</Texture>
+				</Circle>
+				<Text x="0" y="0" z="9" txt="Play game" size="0">
+					<Color r="1" g="0.5" b="0"/>
+				</Text>
+			</Shape>
+		</Planet>
+
+		<Planet zone="full">
+			<Point x="0.7" y="0.9"/>
+			<Function>QUIT</Function>
+			<Shape>
+				<Circle x="0" y="0" z="8" radius="0.048">
+					<Texture>Planet4.gif</Texture>
+				</Circle>
+				<Text x="0" y="0" z="9" txt="Quit" size="1">
+					<Color r="1" g="0.5" b="0"/>
+				</Text>
+			</Shape>
+		</Planet>
+		
+		<Planet zone="full">
+			<Point x="0.85" y="0.7"/>
+			<Function>CLEAN</Function>
+			<Shape>
+				<Circle x="0" y="0" z="8" radius="0.07">
+					<Texture>Planet3.gif</Texture>
+				</Circle>
+				<Text x="0" y="0" z="9" txt="Clean all" size="1">
+					<Color r="1" g="0.5" b="0"/>
+				</Text>
+			</Shape>
+		</Planet>
+		
+		<Planet zone="full">
+			<Point x="0.8" y="0.475"/>
+			<Function>EDITOR</Function>
+			<Shape>
+				<Circle x="0" y="0" z="8" radius="0.06">
+					<Texture>Planet1.gif</Texture>
+				</Circle>
+				<Text x="0" y="0" z="9" txt="Level editor" size="1">
+					<Color r="1" g="0.5" b="0"/>
+				</Text>
+			</Shape>
+		</Planet>
+	</Menu>
+</Trilobite>

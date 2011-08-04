@@ -5,18 +5,18 @@
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
+ * under the terms of the GNU General public final License version 2 only, as
  * published by the Free Software Foundation.  Sun designates this
  * particular file as subject to the "Classpath" exception as provided
  * by Sun in the LICENSE file that accompanied this code.
  *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General public final License
  * version 2 for more details (a copy is included in the LICENSE file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License version
+ * You should have received a copy of the GNU General public final License version
  * 2 along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -38,11 +38,20 @@ import java.lang.Math;
  * floating point x,y coordinates.
  *
  */
-public class Vec2 implements java.io.Serializable, Cloneable {
+public final class Vec2 implements java.io.Serializable, Cloneable {
+	public static final Vec2						zero = new Vec2(0, 0);
+	public static final Vec2						ones = new Vec2(1, 1);
+	// Directions
+	public static final Vec2						up = new Vec2(0, 1);
+	public static final Vec2						down = new Vec2(0, -1);
+	public static final Vec2						left = new Vec2(-1, 0);
+	public static final Vec2						right = new Vec2(1, 0);
+	// Coordinates
 	public static final Vec2						topLeft = new Vec2(0, 0);
 	public static final Vec2						topRight = new Vec2(1, 0);
 	public static final Vec2						bottomLeft = new Vec2(0, 1);
 	public static final Vec2						bottomRight = new Vec2(1, 1);
+	
     /**
 	 * 
 	 */
@@ -51,41 +60,14 @@ public class Vec2 implements java.io.Serializable, Cloneable {
 	/**
      * The x coordinate.
      */
-    public	float	x;
+    public float	x;
 
     /**
      * The y coordinate.
      */
-    public	float	y;
+    public float	y;
 
-    /**
-     * Static Up vector
-     */
-    static public Vec2 Up() {
-    	return new Vec2(0, 1);
-    }
-    
-    /**
-     * Static Down vector
-     */
-    static public Vec2 Down() {
-    	return new Vec2(0, -1);
-    }
-    
-    /**
-     * Static Left vector
-     */
-    static public Vec2 Left() {
-    	return new Vec2(-1, 0);
-    }
-    
-    /**
-     * Static Right vector
-     */
-    static public Vec2 Right() {
-    	return new Vec2(1, 0);
-    }
-    
+
     /**
      * Constructs and initializes a Vec2 from the specified xy coordinates.
      * @param x the x coordinate
@@ -124,7 +106,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * @param x the x coordinate
      * @param y the y coordinate
      */
-    public void set(float x, float y)
+    public final void set(float x, float y)
     {
     	this.x = x;
     	this.y = y;
@@ -135,7 +117,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * Sets the value of this tuple to the value of the Vec2 argument.
      * @param t1 the tuple to be copied
      */
-    public void set(Vec2 t1)
+    public final void set(Vec2 t1)
     {
     	this.x = t1.x;
     	this.y = t1.y;
@@ -146,7 +128,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * Checks if it is all ones
      * @returns true if it is ones
      */
-    public boolean isOnes()
+    public final boolean isOnes()
     {
     	return x == 1 && y == 1;
     }
@@ -156,7 +138,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * Checks if it is zero
      * @returns true if it is zero
      */
-    public boolean isZero()
+    public final boolean isZero()
     {
     	return x == 0 && y == 0;
     }
@@ -165,7 +147,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
     /**
      * Sets to zero
      */
-    public void zero()
+    public final void zero()
     {
     	x = 0;
     	y = 0;
@@ -177,7 +159,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * @param t1 the first tuple
      * @param t2 the second tuple
      */
-    public void add(Vec2 t1, Vec2 t2)
+    public final void add(Vec2 t1, Vec2 t2)
     {
     	this.x = t1.x + t2.x;
     	this.y = t1.y + t2.y;
@@ -188,7 +170,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * Sets the value of this tuple to the vector sum of itself and tuple t1.
      * @param t1 the other tuple
      */  
-    public void add(Vec2 t1)
+    public final void add(Vec2 t1)
     {
         this.x += t1.x;
         this.y += t1.y;
@@ -196,10 +178,21 @@ public class Vec2 implements java.io.Serializable, Cloneable {
 
 
     /**
+     * Sets the value of this tuple to the vector sum of itself and the floats given.
+     * @param x y float
+     */  
+    public final void add(float _x, float _y)
+    {
+        this.x += _x;
+        this.y += _y;
+    }
+
+
+    /**
      * Sets the value of this tuple to the vector multiplication of itself and tuple t1.
      * @param t1 the other tuple
      */  
-    public void mult(Vec3 t1)
+    public final void mult(Vec2 t1)
     {
         this.x *= t1.x;
         this.y *= t1.y;
@@ -211,7 +204,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * @param t1 the first tuple
      * @param t2 the second tuple
      */
-    public void mult(Vec3 t1, Vec3 t2)
+    public final void mult(Vec2 t1, Vec2 t2)
     {
     	this.x = t1.x * t2.x;
     	this.y = t1.y * t2.y;
@@ -224,7 +217,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * @param t1 the first tuple
      * @param t2 the second tuple
      */  
-    public void sub(Vec2 t1, Vec2 t2)
+    public final void sub(Vec2 t1, Vec2 t2)
     {
         this.x = t1.x - t2.x;
         this.y = t1.y - t2.y;
@@ -236,7 +229,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * itself and tuple t1 (this = this - t1).
      * @param t1 the other tuple
      */  
-    public void sub(Vec2 t1)
+    public final void sub(Vec2 t1)
     {
         this.x -= t1.x;
         this.y -= t1.y;
@@ -247,7 +240,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * Sets the value of this tuple to the negation of tuple t1.
      * @param t1 the source tuple
      */
-    public void negate(Vec2 t1)
+    public final void negate(Vec2 t1)
     {
     	this.x = -t1.x;
     	this.y = -t1.y;
@@ -257,7 +250,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
     /**
      * Negates the value of this vector in place.
      */
-    public void negate()
+    public final void negate()
     {
     	this.x = -this.x;
     	this.y = -this.y;
@@ -287,18 +280,6 @@ public class Vec2 implements java.io.Serializable, Cloneable {
     	this.x *= s;
     	this.y *= s;
     }
-
-    
-    /**
-     * Returns a tuple to the scalar multiplication of this vector.
-     * @param s the scalar value
-     * @return the result
-     */
-    public final Vec2 getScaled(float s)
-    {
-    	return new Vec2(x*s, y*s);
-    }
-    
 
     /**
      * Sets the value of this tuple to the scalar multiplication
@@ -335,7 +316,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * same hash value, although this is not likely.
      * @return the integer hash code value
      */  
-    public int hashCode() {
+    public final int hashCode() {
     	long bits = 1L;
     	bits = 31L * bits + (long)floatToIntBits(x);
     	bits = 31L * bits + (long)floatToIntBits(y);
@@ -349,7 +330,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * @param t1  the vector with which the comparison is made
      * @return  true or false
      */  
-    public boolean equals(Vec2 t1)
+    public final boolean equals(Vec2 t1)
     {
         try {
            return(this.x == t1.x && this.y == t1.y);
@@ -365,7 +346,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * @param t1  the object with which the comparison is made
      * @return  true or false
      */  
-    public boolean equals(Object t1)
+    public final boolean equals(Object t1)
     {
         try {
            Vec2 t2 = (Vec2) t1;
@@ -385,7 +366,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      * @param epsilon  the threshold value  
      * @return  true or false
      */
-    public boolean epsilonEquals(Vec2 t1, float epsilon)
+    public final boolean epsilonEquals(Vec2 t1, float epsilon)
     {
        float diff;
 
@@ -405,7 +386,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
 	 * The form is (x,y).
 	 * @return the String representation
 	 */  
-	public String toString()
+	public final String toString()
 	{
         return("(" + this.x + ", " + this.y + ")");
 	}
@@ -416,7 +397,6 @@ public class Vec2 implements java.io.Serializable, Cloneable {
 	 *  places the values into this tuple.  
 	 *  @param min  the lowest value in the tuple after clamping
 	 *  @param max  the highest value in the tuple after clamping 
-	 *  @param t   the source tuple, which will not be modified
 	 */
 	public final void clamp(Vec2 min, Vec2 max)
 	{
@@ -557,25 +537,6 @@ public class Vec2 implements java.io.Serializable, Cloneable {
 	} 
 
 	/**
-     * Creates a new object of the same class as this object.
-     *
-     * @return a clone of this instance.
-     * @exception OutOfMemoryError if there is not enough memory.
-     * @see java.lang.Cloneable
-     * @since vecmath 1.3
-     */
-	public Vec2 clone() {
-    	// Since there are no arrays we can just use Object.clone()
-    	try {
-    		return (Vec2) super.clone();
-    	} catch (CloneNotSupportedException e) {
-    		// this shouldn't happen, since we are Cloneable
-    		throw new InternalError();
-    	}
-    }
-
-
-	/**
 	 * Computes the dot product of the this vector and vector v1.
 	 * @param v1 the other vector
 	 */
@@ -692,7 +653,7 @@ public class Vec2 implements java.io.Serializable, Cloneable {
      */
 	private int floatToIntBits(float f) {
 		// Check for +0 or -0
-		if (f == 0.0f) {
+		if(f == 0.0f) {
 		    return 0;
 		}
 		else {

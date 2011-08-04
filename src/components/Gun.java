@@ -7,7 +7,6 @@ import managers.Constant;
 
 
 public class Gun {
-
 	private final int											me;
 	private final Vec2											gunPoint;
 	
@@ -15,11 +14,14 @@ public class Gun {
 		me = m;
 		gunPoint = p;
 	}
-	public void Shoot() {
-		Vec2 myPos = Component.placement.get(me).getPosition();
-		Vec2 exitPoint = new Vec2( myPos.x + gunPoint.x, myPos.y + gunPoint.y);
+	
+	public final void Shoot() {
+		Vec2 exitPoint = new Vec2(Component.placement.get(me).position);
+		exitPoint.add(gunPoint);
+
 		Integer id = Component.getID();
-		
+
+		//TODO: S'ha de grabar la direcció perquè cada actor tindrà direccions diferents
 		// Record
 		Record rec = Component.record.get(me);
 		if( rec != null) {
@@ -28,10 +30,9 @@ public class Gun {
 		
 		// Create a bullet
 		Component.bullet.put( id, new Bullet(id,  new Vec2(0, -Constant.getFloat("Bullet_Speed")) ) );
-		Component.placement.put( id, new Placement( exitPoint, Component.placement.get(me).getScreenSide() ) );
+		Component.placement.put( id, new Placement(exitPoint) );
 		Component.drawer.put( id, new Drawer(id, Constant.getVector("Bullet_Color") ) );
-		Component.canBeKilled.put( id, new Killable(id) );
-		Component.canKill.put( id, new Killer() );
+		Component.killable.put( id, new Killable(id, Killable.playerTeam) );
 	}
 
 }

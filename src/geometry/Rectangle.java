@@ -1,5 +1,7 @@
 package geometry;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import geometry.Vec2;
 import geometry.Vec3;
@@ -10,68 +12,74 @@ import managers.Screen;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Rectangle extends Polygon {
-	private final Vec2											size;
+	public final Vec2											size;
+	public final boolean										stretch;
 	
-	public Rectangle( final Vec2 s, final Vec3 off ) {
-		super(off);
-		size = s;
+	public Rectangle( final Vec2 sz, final Vec2 off, float ly, boolean str ) {
+		super(off, ly);
+		size = sz;
+		stretch = str;
 		sqradius = (float) Math.pow(size.length()/2, 2);
 	}
 	
 	public Rectangle( final Rectangle r ) {
 		super(r);
 		size = new Vec2( r.size );
+		stretch = r.stretch;
 	}
-	
-	public Vec2 getSize() {
-		return size;
-	}
-	
-	public int whoAmI() {
+
+	public final int whoAmI() {
 		return Polygon.rectangle;
 	}
 	
-	public void multSize( float m ) {
+	public final void multSize( float m ) {
 		size.scale(m);
 		sqradius = (float) Math.pow(size.length()/2, 2);
 	}
 
-	public void draw( final Vec2 pos, final Vec3 defColor, int side ) {
-		Vec2 mySize = new Vec2(size); 
-		Screen.rescale( mySize, side );
-		Vec3 finalColor = new Vec3(defColor);
-		finalColor.mult(color);
-		finalColor.mult(Component.fader.getColor());
-		glColor4f(finalColor.x, finalColor.y, finalColor.z, 1.f);
+	public final void draw( final Vec2 pos, final Vec3 defColor) {
 		
-		if(texture == null) {
-		    // Draw placeholder
-			glDisable(GL_TEXTURE_2D);
-
-			glBegin(GL_QUADS);
-		    glVertex3f(pos.x - mySize.x/2, pos.y - mySize.y/2, offset.z);
-			glVertex3f(pos.x + mySize.x/2, pos.y - mySize.y/2, offset.z);
-			glVertex3f(pos.x + mySize.x/2, pos.y + mySize.y/2, offset.z);
-			glVertex3f(pos.x - mySize.x/2, pos.y + mySize.y/2, offset.z);
-		    glEnd();
+		//TODO: Treure sqrt
+		Vec2 realPos = new Vec2(pos.x+offset.x, pos.y+offset.y);
+		if( Screen.inScreen(realPos, (float) Math.sqrt(sqradius)) ) {
+			// Final position
+			Vec2 screenPos = Screen.coords(realPos);
+			Vec2 screenSize = Screen.coords( size, stretch );
+			// Final color
+			Vec3 finalColor = new Vec3(defColor);
+			finalColor.mult(color);
+			finalColor.mult(Component.fader.color);
+			glColor4f(finalColor.x, finalColor.y, finalColor.z, 1.f);
+			
+			if(texture == null) {
+			    // Draw placeholder
+				glDisable(GL_TEXTURE_2D);
+	
+				glBegin(GL_QUADS);
+			    glVertex3f(screenPos.x - screenSize.x/2, screenPos.y - screenSize.y/2, layer);
+				glVertex3f(screenPos.x + screenSize.x/2, screenPos.y - screenSize.y/2, layer);
+				glVertex3f(screenPos.x + screenSize.x/2, screenPos.y + screenSize.y/2, layer);
+				glVertex3f(screenPos.x - screenSize.x/2, screenPos.y + screenSize.y/2, layer);
+			    glEnd();
+			}
+			else {
+				// Draw sprites
+		    	glEnable(GL_TEXTURE_2D);
+		    	texture.setWidth( (int) screenSize.x );
+				texture.setHeight( (int) screenSize.y );
+		    	texture.draw(screenPos.x, screenPos.y, layer);
+		    }
 		}
-		else {
-			// Draw sprites
-	    	glEnable(GL_TEXTURE_2D);
-	    	texture.setWidth( (int) mySize.x );
-			texture.setHeight( (int) mySize.y );
-	    	texture.draw(pos.x, pos.y, offset.z + 0.5f);
-	    }
 	}
     
-	public boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos ) {
-		Vec2 myAbsPos = new Vec2(myPos.x + offset.x, myPos.y + offset.y);
-		
+	public final boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos ) {
+		Vec2 myAbsPos = new Vec2( myPos.x+offset.x, myPos.y+offset.y);
+
 		if(p == null) {
 			return Math.abs(hisPos.x - myAbsPos.x) < size.x / 2 && Math.abs(hisPos.y - myAbsPos.y) < size.y / 2;
 		}
 		else {
-			Vec2 hisAbsPos = new Vec2(hisPos.x + p.offset.x, hisPos.y + p.offset.y);
+			Vec2 hisAbsPos = new Vec2( hisPos.x+p.offset.x, hisPos.y+p.offset.y);
 			
 			if( p.whoAmI() == Polygon.circle ) {
 				// Rectangle to circle
@@ -95,5 +103,20 @@ public class Rectangle extends Polygon {
 				return false;
 			}
 		}
+	}
+	
+	public final void writeXml( final Document doc, final Element root ) {
+		Element rectangle = doc.createElement("Rectangle");
+		Vec2 myOff = new Vec2(offset);
+		Vec2 mySz = new Vec2(size);
+		Screen.descale("game", myOff);
+		Screen.descale("game", mySz);
+		rectangle.setAttribute( "x", Float.toString(myOff.x) );
+		rectangle.setAttribute( "y", Float.toString(myOff.y) );
+		rectangle.setAttribute( "z", Float.toString(layer) );
+		rectangle.setAttribute( "sizex", Float.toString(mySz.x) );
+		rectangle.setAttribute( "sizey", Float.toString(mySz.y) );
+		writeSubShape( doc, rectangle );
+		root.appendChild(rectangle);
 	}
 }

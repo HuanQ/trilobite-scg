@@ -2,7 +2,7 @@ package data;
 
 import java.io.Serializable;
 
-import managers.Timer;
+import managers.Clock;
 
 import geometry.Vec2;
  
@@ -14,7 +14,7 @@ public class Snapshot implements Serializable {
 	
 	private final int											time;
 	private final int											events;
-	private final Vec2											position;
+	public final Vec2											position;
 	
 	public Snapshot( int t, int ev, Vec2 pos) {
 		time = t;
@@ -25,26 +25,22 @@ public class Snapshot implements Serializable {
 	public Snapshot(Snapshot snp) {
 		time = snp.getTime();
 		events = snp.getEvent();
-		position = snp.getPosition();
+		position = snp.position;
 	}
 
-	public String toString() {
+	public final String toString() {
 		return "(" + time + ", " + events + ", " + position + ")";
 	}
 
-	public boolean isDone() {
-		return time < Timer.getTime();
+	public final boolean isDone() {
+		return time < Clock.getTime(Clock.game);
 	}
 	
-	public int getTime() {
+	public final int getTime() {
 		return time;
 	}
 	
-	public Vec2 getPosition() {
-		return position;
-	}
-	
-	public int getEvent() {
+	public final int getEvent() {
 		return events;
 	}
 }

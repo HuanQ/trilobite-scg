@@ -1,61 +1,50 @@
 package components;
 
+import managers.Screen;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import geometry.Angle;
 
 import geometry.Vec2;
 
 public class Placement {
-	static public final int										gameSide = 0;
-	static public final int										fullScreen = 1;
-	static public final int										leftSide = 2;
-	static public final int										rightSide = 3;
-	static public final int										leftSideFull = 4;
-	static public final int										rightSideFull = 5;
+	public Vec2													position;
+	public Angle												angle = new Angle();
 	
-	private Vec2												position;
-	private Angle												angle;
-	private int													screenSide;
-	
-	//TODO: Afegir rotations a tots els objectes (draw rectangle i poster gunpoint i poc mes)
-	
-	public Placement( int side ) {
+	//TODO: Afegir rotations a tots els objectes (draw polygons i poster gunpoint i poc mes)
+	public Placement() {
 		position = new Vec2();
-		angle = new Angle();
-		screenSide = side;
 	}
 	
-	public Placement( final Vec2 p, int side ) {
+	public Placement( final Vec2 p ) {
 		position = p;
-		angle = new Angle();
-		screenSide = side;
 	}
 	
-	public int getScreenSide() {
-		return screenSide;
-	}
-	
-	public void interpPosition( final Vec2 start, final Vec2 end, float step ) {
-		position.interpolate(start, end, step);
-	}
-	
-	public void addPosition( final Vec2 v ) {
-		position.x += v.x;
-		position.y += v.y;
-	}
-	
-	public Vec2 getPosition() {
-		return position;
-	}
-	
-	public float getRotation() {
-		return angle.getRotation();
+	public Placement(Placement p) {
+		position = new Vec2(p.position);
+		angle = p.angle;
 	}
 
-	public void setRotation( float r ) {
-		angle.setRotation(r);
+	public final void interpPosition( final Vec2 start, final Vec2 end, float step ) {
+		position.interpolate(start, end, step);
+	}
+
+	public final void setRotation( float r ) {
+		angle.set(r);
 	}
 	
-	public void addRotation( float r ) {
-		angle.addRotation(r);
+	public final void addRotation( float r ) {
+		angle.add(r);
+	}
+	
+	public final void writeXml( Document doc, Element root ) {
+		Element point = doc.createElement("Point");
+		Vec2 myPos = new Vec2(position);
+		Screen.deposition("game", myPos);
+		point.setAttribute( "x", Float.toString(myPos.x) );
+		point.setAttribute( "y", Float.toString(myPos.y) );
+		root.appendChild(point);
 	}
 }

@@ -3,38 +3,35 @@ package components;
 import geometry.Vec2;
 
 import managers.Component;
-import managers.Constant;
+import managers.Clock;
 import managers.Screen;
-import managers.Timer;
 
 
 public class Mover {
 	private final int											me;
 	private float												speed;
-	private Vec2												nextMovement;
+	private Vec2												nextMovement = new Vec2();
 	private final boolean										stayInScreeen;
-	private final float											gravity;
-	
-	public Mover( int m, float s, boolean stay, float g) {
+	private final int											timeType; 
+
+	public Mover( int m, float s, boolean stay, int timeTy ) {
 		me = m;
 		speed = s;
-		nextMovement = new Vec2();
 		stayInScreeen = stay;
-		gravity = g;
+		timeType = timeTy;
 	}
 	
-	public void move(final Vec2 dir) {
-		nextMovement.x += dir.x;
-		nextMovement.y += dir.y;
+	public final void move( final Vec2 dir ) {
+		nextMovement.add(dir);
 	}
 	
-	public void addSpeed( float f) {
+	public final void addSpeed( float f) {
 		speed += f;
 	}
 	
-	public void Update() {
+	public final void Update() {
 		
-		float dt = Timer.getDelta();
+		float dt = Clock.getDelta(timeType);
 		float myRadius = 0;
 		if(Component.shape.get(me) != null) {
 			myRadius += Component.shape.get(me).getRadius();
@@ -44,7 +41,7 @@ public class Mover {
 		{
 			nextMovement.normalize();
 			nextMovement.scale(speed * dt);
-			Component.placement.get(me).addPosition(nextMovement);
+			Component.placement.get(me).position.add(nextMovement);
 			
 			// Record
 			Record rec = Component.record.get(me);
@@ -52,35 +49,28 @@ public class Mover {
 				rec.event( Record.movement, null );
 			}
 		}
-		
 		nextMovement.zero();
 		
-		// Gravity pull
-		if(!stayInScreeen && Screen.inScreen(Component.placement.get(me).getPosition(), myRadius)) {
-			Vec2 grav = new Vec2();
-			grav.y = (gravity + Constant.gravity) * dt;
-			Component.placement.get(me).addPosition( grav );
-		}
 		
-		Vec2 myPos = Component.placement.get(me).getPosition();
-		
+		//TODO: Repassar tots els news i veure quins no fan falta (potser nomes new Vec2)
 		// Stay in screen
 		if(stayInScreeen) {
 			float myRad = Component.shape.get(me).getRadius();
-			if( myPos.x + myRad > 1 )
-				myPos.x = 1 - myRad;
-			if( myPos.x - myRad < 0 )
-				myPos.x = myRad;
-			if( myPos.y + myRad > 1 )
-				myPos.y = 1 - myRad;
-			if( myPos.y - myRad < 0 )
-				myPos.y = myRad;
-		}
-		
-		// Selfkill at a certain distance from the screen limit
-		float killDist = Constant.getFloat("Render_DefaultKillDistance") + myRadius;
-		if( !Screen.inScreenU(myPos, killDist) ) {
-			Component.deadObjects.add(me);
+			
+			Vec2 myTopLeft = new Vec2(Vec2.topLeft); 
+			Screen.reposition("game", myTopLeft);
+			myTopLeft.add(myRad, myRad);
+			myTopLeft.add(Screen.up);
+			
+			Vec2 myBotRight = new Vec2(Vec2.bottomRight); 
+			Screen.reposition("game", myBotRight);
+			myBotRight.add(-myRad, -myRad);
+			myBotRight.add(Screen.up);
+			
+			Vec2 myPos = Component.placement.get(me).position;
+			
+			// Lateral
+			myPos.clamp(myTopLeft, myBotRight);
 		}
 	}
 }

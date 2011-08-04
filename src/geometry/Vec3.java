@@ -5,18 +5,18 @@
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
+ * under the terms of the GNU General public final License version 2 only, as
  * published by the Free Software Foundation.  Sun designates this
  * particular file as subject to the "Classpath" exception as provided
  * by Sun in the LICENSE file that accompanied this code.
  *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General public final License
  * version 2 for more details (a copy is included in the LICENSE file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License version
+ * You should have received a copy of the GNU General public final License version
  * 2 along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -38,12 +38,21 @@ import java.lang.Math;
  * floating point x,y,z coordinates.
  *
  */
-public class Vec3 implements java.io.Serializable, Cloneable {
+public final class Vec3 implements java.io.Serializable, Cloneable {
+	// Constants
+	public static final Vec3						zero = new Vec3(0, 0, 0);
+	// Colors
 	public static final Vec3						white = new Vec3(1, 1, 1);
 	public static final Vec3						lightgray = new Vec3(0.75f, 0.75f, 0.75f);
 	public static final Vec3						gray = new Vec3(0.5f, 0.5f, 0.5f);
 	public static final Vec3						darkgray = new Vec3(0.25f, 0.25f, 0.25f);	
 	public static final Vec3						black = new Vec3(0, 0, 0);
+	public static final Vec3						red = new Vec3(1, 0, 0);
+	public static final Vec3						green = new Vec3(0, 1, 0);
+	public static final Vec3						blue = new Vec3(0, 0, 1);
+	public static final Vec3						magenta = new Vec3(1, 0, 1);
+	public static final Vec3						yellow = new Vec3(1, 1, 0);
+	public static final Vec3						cyan = new Vec3(0, 1, 1);
 	
     /**
 	 * 
@@ -54,19 +63,19 @@ public class Vec3 implements java.io.Serializable, Cloneable {
 	/**
      * The x coordinate.
      */
-    public	float	x;
+    public float	x;
 
 
     /**
      * The y coordinate.
      */
-    public	float	y;
+    public float	y;
 
 
     /**
      * The z coordinate.
      */
-    public	float	z;
+    public float	z;
 
 
     /**
@@ -112,7 +121,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    public void set(float x, float y, float z)
+    public final void set(float x, float y, float z)
     {
     	this.x = x;
     	this.y = y;
@@ -124,7 +133,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * Sets the value of this tuple to the value of the Vec3 argument.
      * @param t1 the tuple to be copied
      */
-    public void set(Vec3 t1)
+    public final void set(Vec3 t1)
     {
     	this.x = t1.x;
     	this.y = t1.y;
@@ -136,7 +145,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * Checks if it is all ones
      * @returns true if it is ones
      */
-    public boolean isOnes()
+    public final boolean isOnes()
     {
     	return x == 1 && y == 1 && z == 1;
     }
@@ -146,7 +155,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * Checks if it is zero
      * @returns true if it is zero
      */
-    public boolean isZero()
+    public final boolean isZero()
     {
     	return x == 0 && y == 0 && z == 0;
     }
@@ -155,7 +164,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
     /**
      * Sets to zero
      */
-    public void zero()
+    public final void zero()
     {
     	x = 0;
     	y = 0;
@@ -168,7 +177,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * @param t1 the first tuple
      * @param t2 the second tuple
      */
-    public void add(Vec3 t1, Vec3 t2)
+    public final void add(Vec3 t1, Vec3 t2)
     {
     	this.x = t1.x + t2.x;
     	this.y = t1.y + t2.y;
@@ -180,7 +189,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * Sets the value of this tuple to the vector sum of itself and tuple t1.
      * @param t1 the other tuple
      */  
-    public void add(Vec3 t1)
+    public final void add(Vec3 t1)
     {
         this.x += t1.x;
         this.y += t1.y;
@@ -189,10 +198,22 @@ public class Vec3 implements java.io.Serializable, Cloneable {
 
 
     /**
+     * Sets the value of this tuple to the vector sum of itself and the floats given.
+     * @param x y z float
+     */  
+    public final void add(float _x, float _y, float _z)
+    {
+        this.x += _x;
+        this.y += _y;
+        this.z += _z;
+    }
+
+
+    /**
      * Sets the value of this tuple to the vector multiplication of itself and tuple t1.
      * @param t1 the other tuple
      */  
-    public void mult(Vec3 t1)
+    public final void mult(Vec3 t1)
     {
         this.x *= t1.x;
         this.y *= t1.y;
@@ -205,7 +226,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * @param t1 the first tuple
      * @param t2 the second tuple
      */
-    public void mult(Vec3 t1, Vec3 t2)
+    public final void mult(Vec3 t1, Vec3 t2)
     {
     	this.x = t1.x * t2.x;
     	this.y = t1.y * t2.y;
@@ -219,7 +240,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * @param t1 the first tuple
      * @param t2 the second tuple
      */  
-    public void sub(Vec3 t1, Vec3 t2)
+    public final void sub(Vec3 t1, Vec3 t2)
     {
         this.x = t1.x - t2.x;
         this.y = t1.y - t2.y;
@@ -232,7 +253,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * itself and tuple t1 (this = this - t1).
      * @param t1 the other tuple
      */  
-    public void sub(Vec3 t1)
+    public final void sub(Vec3 t1)
     {
         this.x -= t1.x;
         this.y -= t1.y;
@@ -244,7 +265,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * Sets the value of this tuple to the negation of tuple t1.
      * @param t1 the source tuple
      */
-    public void negate(Vec3 t1)
+    public final void negate(Vec3 t1)
     {
     	this.x = -t1.x;
     	this.y = -t1.y;
@@ -255,7 +276,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
     /**
      * Negates the value of this vector in place.
      */
-    public void negate()
+    public final void negate()
     {
     	this.x = -this.x;
     	this.y = -this.y;
@@ -287,17 +308,6 @@ public class Vec3 implements java.io.Serializable, Cloneable {
     	this.x *= s;
     	this.y *= s;
     	this.z *= s;
-    }
-
-
-    /**
-     * Returns a tuple to the scalar multiplication of this vector.
-     * @param s the scalar value
-     * @return the result
-     */
-    public final Vec3 getScaled(float s)
-    {
-    	return new Vec3(x*s, y*s, z*s);
     }
 
 
@@ -338,7 +348,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * same hash value, although this is not likely.
      * @return the integer hash code value
      */  
-    public int hashCode() {
+    public final int hashCode() {
     	long bits = 1L;
     	bits = 31L * bits + (long)floatToIntBits(x);
     	bits = 31L * bits + (long)floatToIntBits(y);
@@ -353,7 +363,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * @param t1  the vector with which the comparison is made
      * @return  true or false
      */  
-    public boolean equals(Vec3 t1)
+    public final boolean equals(Vec3 t1)
     {
         try {
            return(this.x == t1.x && this.y == t1.y && this.z == t1.z);
@@ -369,7 +379,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * @param t1  the object with which the comparison is made
      * @return  true or false
      */  
-    public boolean equals(Object t1)
+    public final boolean equals(Object t1)
     {
         try {
            Vec3 t2 = (Vec3) t1;
@@ -389,7 +399,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      * @param epsilon  the threshold value  
      * @return  true or false
      */
-    public boolean epsilonEquals(Vec3 t1, float epsilon)
+    public final boolean epsilonEquals(Vec3 t1, float epsilon)
     {
        float diff;
 
@@ -413,7 +423,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
 	 * The form is (x,y).
 	 * @return the String representation
 	 */  
-	public String toString()
+	public final String toString()
 	{
         return("(" + this.x + ", " + this.y + ", " + this.z + ")");
 	}
@@ -581,24 +591,6 @@ public class Vec3 implements java.io.Serializable, Cloneable {
 		this.z = (1-alpha)*this.z + alpha*t1.z;
 	} 
 
-	/**
-     * Creates a new object of the same class as this object.
-     *
-     * @return a clone of this instance.
-     * @exception OutOfMemoryError if there is not enough memory.
-     * @see java.lang.Cloneable
-     * @since vecmath 1.3
-     */
-	public Vec3 clone() {
-    	// Since there are no arrays we can just use Object.clone()
-    	try {
-    		return (Vec3) super.clone();
-    	} catch (CloneNotSupportedException e) {
-    		// this shouldn't happen, since we are Cloneable
-    		throw new InternalError();
-    	}
-    }
-
 
 	/**
 	 * Computes the dot product of the this vector and vector v1.
@@ -739,7 +731,7 @@ public class Vec3 implements java.io.Serializable, Cloneable {
      */
 	private int floatToIntBits(float f) {
 		// Check for +0 or -0
-		if (f == 0.0f) {
+		if(f == 0.0f) {
 		    return 0;
 		}
 		else {
