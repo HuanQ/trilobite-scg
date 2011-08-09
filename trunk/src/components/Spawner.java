@@ -9,6 +9,7 @@ import geometry.Vec2;
 
 import managers.Component;
 import managers.Constant;
+import managers.Level;
 import managers.Screen;
 import managers.Clock;
 
@@ -26,6 +27,7 @@ public class Spawner {
 	private int													phase = 0;
 	private int													hitTime;
 	private int													lastPhase;
+	private int													lastSpark = 0;
 	// 0: Wait until we are on screen
 	// 1: Shoot away
 	// 2: Disabled
@@ -44,7 +46,13 @@ public class Spawner {
 		// Check if i am in screen
 		switch(phase) {
 		case 0:
-			if( Screen.inScreen(myPos, 0) ) {
+			float inScreenRadius = 0;
+			if(totalWait < 0) {
+				// Negative wait means we start doing our job at a certain radius
+				inScreenRadius = 0.5f;
+			}
+			
+			if( Screen.inScreen(myPos, inScreenRadius) ) {
 				if(wait == 0) {
 					wait = time + (int) (totalWait * Constant.timerResolution);
 				}
@@ -66,7 +74,19 @@ public class Spawner {
 				phase = lastPhase;
 			}
 			else {
-				//TODO: Disabled spark
+				if(time > lastSpark + (Constant.getFloat("Spark_Duration") * Constant.timerResolution)) {
+					// Random positioning
+					float rad = Constant.getShape("Spark_Shape").getRadius() * Constant.rnd.nextFloat();
+					Angle alpha = new Angle( (float) (2*Math.PI*Constant.rnd.nextFloat()) );
+					Vec2 sparkPos = alpha.getDirection();
+					sparkPos.scale(rad);
+					sparkPos.add(myPos);
+					
+					// Disabled spark
+					Level.AddEffect( sparkPos, "Spark" );
+					
+					lastSpark = time;
+				}
 			}
 			break;
 		
@@ -77,13 +97,15 @@ public class Spawner {
 	
 	public final void Hit() {
 		if(phase != 3) {
+			if(phase != 2) {
+				lastPhase = phase;
+			}
 			hitTime = Clock.getTime(Clock.game) + (int) (Constant.getFloat("Spawner_DisableTime") * Constant.timerResolution);
-			lastPhase = phase;
 			phase = 2;
 		}
 	}
 	
-	public final void writeXml( Document doc, Element root ) {
+	public final void WriteXML( Document doc, Element root ) {
 		Element dir = doc.createElement("Direction");
 		dir.appendChild( doc.createTextNode(Float.toString(spawnDirection.get())) );
 		root.appendChild(dir);
@@ -95,10 +117,6 @@ public class Spawner {
 		Element wt = doc.createElement("Wait");
 		wt.appendChild( doc.createTextNode(Float.toString(totalWait)) );
 		root.appendChild(wt);
-		
-		if( Component.shape.get(me) != null) {
-			Component.shape.get(me).writeXml(doc, root);
-		}
 	}
 	
 }

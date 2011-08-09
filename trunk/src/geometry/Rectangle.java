@@ -37,9 +37,8 @@ public class Rectangle extends Polygon {
 		sqradius = (float) Math.pow(size.length()/2, 2);
 	}
 
-	public final void draw( final Vec2 pos, final Vec3 defColor) {
-		
-		//TODO: Treure sqrt
+	public final void Draw( final Vec2 pos, final Vec3 defColor, final Angle rot ) {
+		//TODO: Draw amb rounded edges
 		Vec2 realPos = new Vec2(pos.x+offset.x, pos.y+offset.y);
 		if( Screen.inScreen(realPos, (float) Math.sqrt(sqradius)) ) {
 			// Final position
@@ -54,32 +53,38 @@ public class Rectangle extends Polygon {
 			if(texture == null) {
 			    // Draw placeholder
 				glDisable(GL_TEXTURE_2D);
-	
+				glTranslatef(screenPos.x, screenPos.y, layer);
+				glRotatef( (float) Math.toDegrees(rot.get()), 0, 0, 1 );
+				
 				glBegin(GL_QUADS);
-			    glVertex3f(screenPos.x - screenSize.x/2, screenPos.y - screenSize.y/2, layer);
-				glVertex3f(screenPos.x + screenSize.x/2, screenPos.y - screenSize.y/2, layer);
-				glVertex3f(screenPos.x + screenSize.x/2, screenPos.y + screenSize.y/2, layer);
-				glVertex3f(screenPos.x - screenSize.x/2, screenPos.y + screenSize.y/2, layer);
+			    glVertex2f(- screenSize.x/2, - screenSize.y/2);
+				glVertex2f(screenSize.x/2, - screenSize.y/2);
+				glVertex2f(screenSize.x/2, screenSize.y/2);
+				glVertex2f(- screenSize.x/2, screenSize.y/2);
 			    glEnd();
+			    
+			    glLoadIdentity();
 			}
 			else {
 				// Draw sprites
 		    	glEnable(GL_TEXTURE_2D);
 		    	texture.setWidth( (int) screenSize.x );
 				texture.setHeight( (int) screenSize.y );
-		    	texture.draw(screenPos.x, screenPos.y, layer);
+		    	texture.Draw(screenPos.x, screenPos.y, layer, rot.get());
 		    }
 		}
 	}
     
 	public final boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos ) {
-		Vec2 myAbsPos = new Vec2( myPos.x+offset.x, myPos.y+offset.y);
+		Vec2 myAbsPos = new Vec2(myPos);
+		myAbsPos.add(offset);
 
 		if(p == null) {
 			return Math.abs(hisPos.x - myAbsPos.x) < size.x / 2 && Math.abs(hisPos.y - myAbsPos.y) < size.y / 2;
 		}
 		else {
-			Vec2 hisAbsPos = new Vec2( hisPos.x+p.offset.x, hisPos.y+p.offset.y);
+			Vec2 hisAbsPos = new Vec2(hisPos);
+			hisAbsPos.add(p.offset);
 			
 			if( p.whoAmI() == Polygon.circle ) {
 				// Rectangle to circle
@@ -105,7 +110,7 @@ public class Rectangle extends Polygon {
 		}
 	}
 	
-	public final void writeXml( final Document doc, final Element root ) {
+	public final void WriteXML( final Document doc, final Element root ) {
 		Element rectangle = doc.createElement("Rectangle");
 		Vec2 myOff = new Vec2(offset);
 		Vec2 mySz = new Vec2(size);

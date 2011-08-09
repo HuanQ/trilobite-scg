@@ -18,16 +18,15 @@ public class Input {
 	private final int											type;
 	// Internal data
 	private final Timer											gun;
-	private final Timer											shield;
+	private final Timer											shieldCooldown;
 	
-	public Input( int m, int tp ) {
+	public Input( int m, int ttyp ) {
 		me = m;
-		type = tp;
+		type = ttyp;
 		gun = new Timer(Constant.getFloat("Ship_GunCooldown"), Clock.play);
-		shield = new Timer(Constant.getFloat("Ship_ShieldCooldown"), Clock.play);
+		shieldCooldown = new Timer(Constant.getFloat("Ship_ShieldCooldown"), Clock.play);
 	}
 	
-	//TODO: Els components han d'anar aixi. Una petita maquina d'estats amb un switch i uns defines a dalt
 	public final void Update() {
 		switch(type) {
 		case playerKeyboard:
@@ -41,7 +40,15 @@ public class Input {
 	
 	private final void doEditor() {
 		if( Keyboard.isKeyDown(Keyboard.KEY_UP) ) {
-
+			//TODO: fer editor controls de teclat	
+			/*else if( function.equals("EDITORUP") ) {
+			Screen.up.add(0, -0.25f);
+		}
+		else if( function.equals("EDITORDOWN") ) {
+			if(Screen.up.y < 0) {
+				Screen.up.add(0, 0.25f);
+			}
+		}*/
 		}
 		if( Keyboard.isKeyDown(Keyboard.KEY_DOWN) ) {
 			
@@ -52,13 +59,13 @@ public class Input {
 		if( Component.mover.get(me) != null )
 		{
 			if( Keyboard.isKeyDown(Keyboard.KEY_UP) )
-				Component.mover.get(me).move( Vec2.down );
+				Component.mover.get(me).Move( Vec2.down );
 			if( Keyboard.isKeyDown(Keyboard.KEY_DOWN) )
-				Component.mover.get(me).move( Vec2.up );
+				Component.mover.get(me).Move( Vec2.up );
 			if( Keyboard.isKeyDown(Keyboard.KEY_LEFT) )
-				Component.mover.get(me).move( Vec2.left );
+				Component.mover.get(me).Move( Vec2.left );
 			if( Keyboard.isKeyDown(Keyboard.KEY_RIGHT) )
-				Component.mover.get(me).move( Vec2.right );
+				Component.mover.get(me).Move( Vec2.right );
 		}
 		
 		if( Component.gun.get(me) != null )
@@ -72,10 +79,11 @@ public class Input {
 		
 		if( Component.shield.get(me) != null )
 		{
-			if( Keyboard.isKeyDown(Keyboard.KEY_RETURN) && shield.Check() )
+			if( Keyboard.isKeyDown(Keyboard.KEY_RETURN) && shieldCooldown.Check() )
 			{
 				Component.shield.get(me).Raise();
-				shield.Refresh();
+				Component.energybar.Exhaust();
+				shieldCooldown.Refresh();
 			}
 		}
 	}

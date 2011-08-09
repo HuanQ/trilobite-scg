@@ -1,0 +1,36 @@
+<Trilobite>
+	<Tutorial zone="game">
+		<Helper>
+			<Point x="0.9" y="0.9"/>
+			<Wait>0</Wait>
+			<Function>MOVE</Function>
+			<Shape>
+				<Rectangle x="0" y="0" z="8" sizex="0.25" sizey="0.125">
+					<Texture>move.gif</Texture>
+				</Rectangle>
+			</Shape>
+		</Helper>
+		
+		<Helper>
+			<Point x="0.9" y="0.9"/>
+			<Wait>4</Wait>
+			<Function>SHOOT</Function>
+			<Shape>
+				<Rectangle x="0" y="0" z="8" sizex="0.25" sizey="0.25">
+					<Texture>shoot.gif</Texture>
+				</Rectangle>
+			</Shape>
+		</Helper>
+		
+		<Helper>
+			<Point x="0.9" y="0.9"/>
+			<Wait>8</Wait>
+			<Function>SHIELD</Function>
+			<Shape>
+				<Rectangle x="0" y="0" z="8" sizex="0.25" sizey="0.25">
+					<Texture>shield.gif</Texture>
+				</Rectangle>
+			</Shape>
+		</Helper>
+	</Tutorial>
+</Trilobite>

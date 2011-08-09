@@ -43,17 +43,16 @@ public class SimpleBlaster implements Sequence {
 			return false;
 			
 		case 1:
-			
 			if(time < shootingTime) {
 				if( time > lastTime + shootRate) {
 					doShoot(direction, spawnPoint);
 					lastTime = time;
 				}
+				return false;
 			}
 			else {
 				return true;
 			}
-			return false;
 			
 		default:
 			return true;
@@ -64,7 +63,6 @@ public class SimpleBlaster implements Sequence {
 		return name;
 	}
 
-	//TODO: Posar tots els metodes en majuscules (gets, sets i do tambe?)
 	private final void doShoot( final Angle direction, final Vec2 spawnPoint ) {
 		Angle a = new Angle(direction);
 		a.add(-shootingArc/2);

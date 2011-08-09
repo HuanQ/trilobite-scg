@@ -21,7 +21,7 @@ import managers.Level;
 import managers.Screen;
 import data.Cleaner;
 import game.Start;
-import geometry.Polygon;
+import geometry.Rectangle;
 import geometry.Vec3;
 
 public class Clickable {
@@ -32,12 +32,20 @@ public class Clickable {
 	
 	private final int										me;
 	private final String									function;
-	private int												state;
+	private final int										param;							
+	private int												state = on;
 		
+	//TODO: Millorar aquest component, no se com
 	public Clickable( int m, final String fun ) {
 		me = m;
 		function = fun;
-		state = on;
+		param = 0;
+	}
+	
+	public Clickable( int m, final String fun, int par ) {
+		me = m;
+		function = fun;
+		param = par;
 	}
 	
 	public final String getFunction() {
@@ -62,10 +70,9 @@ public class Clickable {
 			break;
 		}
 		
-		for(Polygon p : Component.shape.get(me).polygons) {
-			if(p.whoAmI() == Polygon.rectangle) {
-				p.setColor(col);
-			}
+		Rectangle r = Component.shape.get(me).getRectangle();
+		if( r != null ) {
+			r.setColor(col);
 		}
 	}
 	
@@ -77,28 +84,31 @@ public class Clickable {
 	
 	private final void doClick() {
 		if( function.equals("START") ) {
+			//TODO: Level selection al main menu
+			Level.lvlname = "Intro";
 			Start.startGame();
 		}
 		else if( function.equals("QUIT") ) {
 			Start.quitProgram();
 		}
-		else if( function.equals("AGAIN") ) {
-			Start.startGame();
+		else if( function.equals("STARTPLAY") ) {
+			Start.startPlaying();
 		}
 		else if( function.equals("BACK") ) {
-			Component.fader.fadeToBlack();
+			Component.fader.FadeToBlack();
 			Start.startMenu();
 		}
 		else if( function.equals("CLEAN") ) {
-			Cleaner.cleanAll();
+			Cleaner.CleanAll();
 		}
 		else if( function.equals("EDITOR") ) {
+			Level.lvlname = "Intro";
 			Start.startEditor();
 		}
 		else if( function.equals("PLAY") ) {
 			Screen.up.zero();
 			Clock.unpause(Clock.game);
-			setEditor(Clickable.off);
+			setEditorButtons(Clickable.off);
 			setState(Clickable.selected);
 			for(Clickable c : Component.clickable.values()) {
 				if(c.getFunction().equals("STOP")) {
@@ -120,7 +130,7 @@ public class Clickable {
 		else if( function.equals("SAVE") ) {
 			Component.mouse.setSave(Clickable.off);
 			Component.mouse.setPlay(Clickable.on);
-			saveLevel();
+			doLevel();
 			for(Clickable c : Component.clickable.values()) {
 				if(c.getFunction().equals("PLAY")) {
 					c.setState(Clickable.on);
@@ -136,20 +146,24 @@ public class Clickable {
 			}
 		}
 		else if( function.equals("ADDCIRCLE") ) {
-			Component.mouse.selectedTool(me, Pointer.addcircle);
+			Component.mouse.SelectTool(me, Pointer.addcircle);
 		}
 		else if( function.equals("ADDSQUARE") ) {
-			Component.mouse.selectedTool(me, Pointer.addsquare);
+			Component.mouse.SelectTool(me, Pointer.addsquare);
 		}
 		else if( function.equals("ADDSPAWNER") ) {
-			Component.mouse.selectedTool(me, Pointer.addspawner);
+			Component.mouse.SelectTool(me, Pointer.addspawner);
 		}
 		else if( function.equals("MOVE") ) {
-			Component.mouse.selectedTool(me, Pointer.move);
+			Component.mouse.SelectTool(me, Pointer.move);
+		}
+		else if( function.equals("DELETEACTOR") ) {
+			Cleaner.DeleteActor(param);
+			Component.actorpanel.Reload();
 		}
 	}
 	
-	private final void setEditor( int state ) {
+	static private final void setEditorButtons( int state ) {
 		for(Clickable c : Component.clickable.values()) {
 			if(c.getFunction().equals("ADDCIRCLE")
 					|| c.getFunction().equals("ADDSQUARE")
@@ -165,7 +179,7 @@ public class Clickable {
 		}
 	}
 	
-	private final void saveLevel() {
+	static private final void doLevel() {
 		File file = new File( "resources/data/level/" + Level.lvlname + ".xml" );
 
 		try {
@@ -180,12 +194,10 @@ public class Clickable {
 			//staff elements
 			Element block = doc.createElement("Generated");
 			rootElement.appendChild(block);
-			
-			//set attribute to staff element
 			block.setAttribute("zone", "game");
 	 
 			for(Xml x : Component.xml.values()) {
-				x.writeXml( doc, block );
+				x.WriteXML( doc, block );
 			}
 			
 			//write the content into xml file

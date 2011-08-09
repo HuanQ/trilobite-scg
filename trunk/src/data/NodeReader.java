@@ -77,7 +77,7 @@ public class NodeReader {
     	
     	
     	Node str = attr.getNamedItem("stretch");
-    	boolean stretch = false;
+    	boolean stretch = true;
     	if(str != null) {
     		stretch = Boolean.valueOf(str.getTextContent());
     	}

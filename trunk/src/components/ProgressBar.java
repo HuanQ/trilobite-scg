@@ -3,14 +3,15 @@ package components;
 import java.util.Collections;
 import java.util.Vector;
 
-import geometry.Polygon;
 import geometry.Rectangle;
 import geometry.Vec2;
 import geometry.Vec3;
+import graphics.Sprite;
 
 import managers.Component;
 import managers.Constant;
 import managers.Clock;
+import managers.Level;
 
 public class ProgressBar {
 	private final int										me;
@@ -21,18 +22,13 @@ public class ProgressBar {
 	private Rectangle										myRectangle;
 	private Rectangle										myBar;
 
-	public ProgressBar( int m, final Vec3 col, final String lvlname ) {
+	public ProgressBar( int m, final Vec3 col ) {
 		me = m;
 		color = col;
-		levelTime = (int) Constant.getFloat(lvlname + "_Time") * Constant.timerResolution;
+		levelTime = (int) Constant.getFloat(Level.lvlname + "_Time") * Constant.timerResolution;
 		bestTimes = new Vector<Float>();
 		
-		for(Polygon p : Component.shape.get(me).polygons) {
-			if(p.whoAmI() == Polygon.rectangle) {
-				myRectangle = (Rectangle) p;
-				break;
-			}
-		}
+		myRectangle = Component.shape.get(me).getRectangle();
 		
 		Vec2 mySize = new Vec2( myRectangle.size.x, 0.003f);
 		myBar = new Rectangle(mySize, new Vec2(), myRectangle.layer + 0.02f, true);
@@ -56,7 +52,7 @@ public class ProgressBar {
 			Collections.sort(bestTimes);
 			Collections.reverse(bestTimes);
 	
-			float margin = 0.01f;
+			float margin = 0.0075f;
 			Shape shp = Component.shape.get(me);
 			Vec2 pos = new Vec2();
 			pos.x = -myRectangle.size.x / 2 + margin;
@@ -70,17 +66,13 @@ public class ProgressBar {
 				Vec2 myPos =  new Vec2(pos);
 				myPos.x += barWidth/2 + index * barWidth;
 				myPos.y += -bestTimes.get(index) * barMaxHeight/2;
-				
 				Vec2 mySize =  new Vec2(barWidth, bestTimes.get(index) * barMaxHeight);
+				
 				Rectangle r = new Rectangle(mySize, myPos, layer, true);
 				r.setColor(color);
-				
+				r.setTexture( Sprite.getRect(r.size) );
 				shp.add(r);
 			}
-		}
-		else {
-			// Die unless we have some actors's life to show
-			//Component.deadObjects.add(me);
 		}
 	}
 }

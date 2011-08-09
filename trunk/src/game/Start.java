@@ -12,6 +12,7 @@ public class Start {
 	static final int										quitProgram = 2;
 	static final int										startMain = 3;
 	static final int										startEditor = 4;
+	static final int										startPlaying = 5;
 	
 	private boolean											active;
 	static private int										option;
@@ -23,7 +24,7 @@ public class Start {
 		Start.initGraphics();
 		
 		active = true;
-		option = Start.startEditor;
+		option = Start.startMain;
 		
 		while(active) {
 			switch (option) {
@@ -32,9 +33,6 @@ public class Start {
 				break;
 				
 			case Start.startGame:
-				game = new Game("Intro", 1);
-				game.start();
-				game = null;
 				menu = new Menu("ingame" );
 				menu.start();
 				menu = null;
@@ -51,6 +49,12 @@ public class Start {
 				editor.start();
 				editor = null;
 				break;
+				
+			case Start.startPlaying:
+				game = new Game();
+				game.start();
+				game = null;
+				break;
 			}
 		}
 		Display.destroy();
@@ -63,7 +67,7 @@ public class Start {
 	
 	static public final void startGame() {
 		option = Start.startGame;
-		menu.end();
+		if(menu != null) menu.end();
 	}
 	
 	static public final void startEditor() {
@@ -81,6 +85,12 @@ public class Start {
 		if(menu != null) menu.end();
 		if(editor != null) editor.end();
 	}
+	
+	static public final void startPlaying() {
+		option = Start.startPlaying;
+		menu.end();
+	}
+	
 
 	static public final void main(String[] argv) {
 		Start displayExample = new Start();
@@ -89,9 +99,11 @@ public class Start {
 	
 	static private final void initGraphics() {
 		//TODO: Crear un manager de graphics i potser fins i tot buidar tot el reste del codi de OpenGL
+		DisplayMode dm = null;
 		try {
-			Display.setDisplayMode(new DisplayMode(1024, 800));
-			//Display.setDisplayMode( Display.getDesktopDisplayMode() );
+			//dm = Display.getDesktopDisplayMode();
+			dm = new DisplayMode(1024, 800);
+			Display.setDisplayMode(dm);
 			Display.setFullscreen(false);
 			Display.create();
 		} catch (LWJGLException e) {
@@ -102,8 +114,7 @@ public class Start {
 		// init OpenGL here
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, 1024, 800, 0, -10, 10);
-		//glOrtho(0, 1920, 1080, 0, -10, 10);
+		glOrtho(0, dm.getWidth(), dm.getHeight(), 0, -10, 10);
 		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_ALPHA_TEST);
@@ -113,7 +124,6 @@ public class Start {
         //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
 		Mouse.setGrabbed(true);
-		glViewport(0, 0, 1024, 800);
-		//glViewport(0, 0, 1920, 1080);
+		glViewport(0, 0, dm.getWidth(), dm.getHeight());
 	}
 }

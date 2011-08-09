@@ -1,5 +1,7 @@
 package graphics;
 
+import geometry.Vec2;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -28,6 +30,24 @@ public class Sprite {
 	private int			height;
 	
 	/**
+	 * Create a new sprite from a specified sprite.
+	 *
+	 * @param sprite to copy
+	 */
+	static public final String getRect( final Vec2 size ) {
+		int proportion = (int) (Math.max(size.x, size.y) / Math.min(size.x, size.y));
+		proportion = Math.max(proportion, 1);
+		proportion = Math.min(proportion, 4);
+		
+		if(size.x > size.y) {
+			return "base/rect" + proportion + "x1.gif";
+		}
+		else {
+			return "base/rect1x" + proportion + ".gif";
+		}
+	}
+	
+	/**
 	 * Create a new sprite from a specified image.
 	 *
 	 * @param loader the texture loader to use
@@ -42,7 +62,12 @@ public class Sprite {
 	    	System.exit(-1);
 	    }
 	}
-
+	
+	/**
+	 * Create a new sprite from a specified sprite.
+	 *
+	 * @param sprite to copy
+	 */
 	public Sprite(Sprite spr) {
 		textureName = spr.textureName;
 	    try {
@@ -83,12 +108,13 @@ public class Sprite {
 	 * @param x The x location at which to draw this sprite
 	 * @param y The y location at which to draw this sprite
 	 */
-	public final void draw(float x, float y, float z) {
+	public final void Draw(float x, float y, float z, float rot) {
 		// bind to the appropriate texture for this sprite
 		texture.bind();
 
 		// translate to the right location and prepare to draw
 		glTranslatef(x, y, z);
+		glRotatef( (float) Math.toDegrees(rot), 0, 0, 1 );
 
 		// draw a quad textured to match the sprite
 		glBegin(GL_QUADS);

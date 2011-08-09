@@ -12,33 +12,34 @@ public class Xml {
 		me = m;
 	}
 	
-	public final void writeXml( final Document doc, final Element root ) {
-		if( Component.spawner.get(me) == null ) {
+	public final void WriteXML( final Document doc, final Element root ) {
+		Element elem = null;
+		// Find out which component to use 
+		if( Component.spawner.get(me) != null ) {
+			// Spawner
+			elem = doc.createElement("Spawner");
+			Component.spawner.get(me).WriteXML(doc, elem);
+		}
+		else if( Component.killable.get(me) != null) 
+		{
 			// Wall
-			Element wall = doc.createElement("Wall");
-			// Point
-			//TODO: Passar a cada component totes les funcions aixi, posarem mes privats i menys imports ja veuras!
-			Component.placement.get(me).writeXml(doc, wall);
-			// Shape
-			Component.shape.get(me).writeXml(doc, wall);
-			root.appendChild(wall);
+			elem = doc.createElement("Wall");
 		}
 		else {
-			// Spawner
-			Element spawner = doc.createElement("Spawner");
-			// Point
-			Component.placement.get(me).writeXml(doc, spawner);
-			// Shape
-			if(Component.shape.get(me) != null) {
-				Component.shape.get(me).writeXml(doc, spawner);
+			// Decoration
+			elem = doc.createElement("Decoration");
+			if( Component.sticky.get(me) != null ) {
+				float spd = Component.sticky.get(me).getSpeed();
+				elem.setAttribute( "speed", String.valueOf(spd) );
 			}
-			// Shape
-			Component.spawner.get(me).writeXml(doc, spawner);
-			root.appendChild(spawner);
 		}
+
+		// Point
+		Component.placement.get(me).WriteXML(doc, elem);
+		// Shape
+		if(Component.shape.get(me) != null) {
+			Component.shape.get(me).WriteXML(doc, elem);
+		}
+		root.appendChild(elem);
 	}
-	
-	
-	
-	//TODO: Fer static les privades que no utilitzin atributs
 }

@@ -7,7 +7,10 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glVertex3f;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -51,38 +54,47 @@ public class Circle extends Polygon {
 		return Polygon.circle;
 	}
 	
-	public final void draw( final Vec2 pos, final Vec3 defColor ) {
+	public final void Draw( final Vec2 pos, final Vec3 defColor, final Angle rot ) {
 
 		Vec2 realPos = new Vec2(pos.x+offset.x, pos.y+offset.y);
 		if( Screen.inScreen(realPos, radius) ) {
 			// Final position
 			Vec2 screenPos = Screen.coords(realPos);
-			float screenRadius = Screen.coords(radius);
 			// Final color
 			Vec3 finalColor = new Vec3(defColor);
 			finalColor.mult(color);
 			finalColor.mult(Component.fader.color);
 			glColor4f(finalColor.x, finalColor.y, finalColor.z, 1.f);
-			
+
 			if(texture == null) {
+				float screenRadius = Screen.coords(radius);
 			    // Draw placeholder
 				glDisable(GL_TEXTURE_2D);
 				
+				glDisable(GL_TEXTURE_2D);
+				glTranslatef(screenPos.x, screenPos.y, layer);
+				glRotatef( (float) Math.toDegrees(rot.get()), 0, 0, 1 );
+
 				glBegin(GL_TRIANGLE_FAN);
-				glVertex3f(screenPos.x, screenPos.y, layer);
+				glVertex2f(0, 0);
 				int sect = (int) Constant.getFloat("Render_CircleSections");
 				for(int i = 0; i <= sect; ++i) {
 					float slice = i * (float) (2 * Math.PI) / (float) sect; 
-					glVertex3f( screenPos.x + (float) Math.sin(slice) * screenRadius, screenPos.y + (float) Math.cos(slice) * screenRadius, layer);
+					glVertex2f( (float) Math.sin(slice) * screenRadius, (float) Math.cos(slice) * screenRadius);
 				}
 				glEnd();
+				
+				glLoadIdentity();
 			}
 			else {
+				//TODO: Dibuixar com a rectangle
+				//Vec2 screenSize = Screen.coords( new Vec2(radius, radius), false );
+				float screenRadius = Screen.coords(radius);
 				// Draw sprites
 		    	glEnable(GL_TEXTURE_2D);
 		    	texture.setWidth( (int) screenRadius*2 );
 				texture.setHeight( (int) screenRadius*2 );
-		    	texture.draw(screenPos.x, screenPos.y, layer);
+		    	texture.Draw(screenPos.x, screenPos.y, layer, rot.get());
 		    }
 		}
 	}
@@ -117,7 +129,7 @@ public class Circle extends Polygon {
 		}
 	}
 	
-	public final void writeXml( final Document doc, final Element root ) {
+	public final void WriteXML( final Document doc, final Element root ) {
 		Element circle = doc.createElement("Circle");
 		Vec2 myOff = new Vec2(offset);
 		Screen.descale("game", myOff);

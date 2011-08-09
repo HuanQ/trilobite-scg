@@ -4,6 +4,7 @@ import geometry.Vec2;
 
 import managers.Component;
 import managers.Clock;
+import managers.Screen;
 
 
 public class Bullet {
@@ -13,6 +14,7 @@ public class Bullet {
 	public Bullet( int m, final Vec2 v ) {
 		me = m;
 		direction = v;
+		Screen.rescale("game", v, false);
 	}
 	
 	public final void Update() {

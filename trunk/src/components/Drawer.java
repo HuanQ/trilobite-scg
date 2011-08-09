@@ -13,7 +13,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Drawer {
 	private final int											me;
-	private final Vec3											color;
+	private Vec3												color;
 	private boolean												visible = true;
 	
 	public Drawer( int m) {
@@ -28,6 +28,10 @@ public class Drawer {
 	
 	public final void setVisible( boolean b ) {
 		visible = b;
+	}
+	
+	public final void setColor( Vec3 col ) {
+		color = col;
 	}
 	
 	public final void Render() {
@@ -56,7 +60,7 @@ public class Drawer {
 			else {
 				// Each shape draws itself
 				for(Polygon p : myShape.polygons) {
-					p.draw(Component.placement.get(me).position, color);
+					p.Draw(Component.placement.get(me).position, color, Component.placement.get(me).angle);
 				}
 			}
 		}

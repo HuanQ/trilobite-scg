@@ -1,5 +1,6 @@
 package components;
 
+import data.Timer;
 import geometry.Polygon;
 
 import managers.Clock;
@@ -9,35 +10,31 @@ import managers.Constant;
 
 public class Shield {
 	private final int											me;
-	private int													lastShieldID = -1;
-	// Internal data
-	private final int											energyBarID;
+	private final float											duration;
+	private final Timer											shieldDuration;
 
-	public Shield( int m ) {
+	public Shield( int m, float dur ) {
 		me = m;
-		energyBarID = -1;
+		duration = dur;
+		shieldDuration = new Timer( dur, Clock.game );
 	}
-	// Shield ha de saber la seva duracio i cooldown
-	public Shield( int m, int eID ) {
-		me = m;
-		energyBarID = eID;
-	}
+	// TODO: Shield ha de saber la seva duracio i cooldown
 	
-	public final boolean isUp() {
-		return Component.timedObject.get(lastShieldID) != null;
+	public final void Update() {
+		if( shieldDuration.Check() ) {
+			Component.killable.get(me).setType( Killable.playerTeam );
+		}
 	}
 	
 	public final void Raise() {
-		// Exhaust energy bar
-		if(energyBarID >= 0) {
-			Component.energybar.get(energyBarID).exhaust();
-		}
+		shieldDuration.Refresh();
+		Component.killable.get(me).setType( Killable.shieldTeam );
 		
 		//TODO: S'ha de grabar la duració perquè cada actor tindrà duracions diferents		
 		// Record
 		Record rec = Component.record.get(me);
 		if( rec != null) {
-			rec.event( Record.shield, null );
+			rec.addEvent( Record.shield, null );
 		}
 		
 		Shape shp = Component.shape.get(me);
@@ -47,7 +44,7 @@ public class Shield {
 		else {
 			// Draw a bigger self below me
 			Integer id = Component.getID();
-			Component.timedObject.put( id, new TimedObject(id, Constant.getFloat("Ship_ShieldTime"), Clock.game) );
+			Component.timedObject.put( id, new TimedObject(id, duration, Clock.game) );
 			Component.shape.put( id, new Shape(Component.shape.get(me)) );
 			Component.placement.put( id, Component.placement.get(me) );
 			Component.drawer.put( id, new Drawer(id) );
@@ -59,8 +56,6 @@ public class Shield {
 				p.layer = Constant.getFloat("Ship_ShieldLayer");
 				p.setColor( Constant.getVector("Ship_Color") );
 			}
-			
-			lastShieldID = id;
 		}
 	}
 }

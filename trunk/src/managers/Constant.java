@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.newdawn.slick.TrueTypeFont;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -97,7 +98,9 @@ public class Constant {
 				    	myStrings.put( typeName + nextProperty.getNodeName(), NodeReader.readString(nextProperty) );
 				    }
 				    else if(nextProperty.getNodeName().equals("Shape")) {
-				    	myShapes.put( typeName + nextProperty.getNodeName(), NodeReader.readShape(nextProperty, "full") );
+				    	NamedNodeMap attr = nextProperty.getAttributes();
+						String zone = attr.getNamedItem("zone").getTextContent();
+				    	myShapes.put( typeName + nextProperty.getNodeName(), NodeReader.readShape(nextProperty, zone) );
 				    }
 				    else {
 				    	myFloats.put( typeName + nextProperty.getNodeName(), NodeReader.readFloat(nextProperty) );

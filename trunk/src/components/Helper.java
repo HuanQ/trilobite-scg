@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import managers.Component;
 import managers.Constant;
 import managers.Clock;
+import managers.Level;
 
 public class Helper {
 	private final int										me;
@@ -35,64 +36,11 @@ public class Helper {
 		
 		switch(phase) {
 		case 0:
-			if(Clock.getTime(Clock.ui) > wait) {
-				boolean otherHelpersActive = false;
-				for(Helper h : Component.helper.values()) {
-					otherHelpersActive |= h.isActive();
-				}
-				
-				if( otherHelpersActive ) {
-					// Wait at least one second after no other helper is left
-					wait = Clock.getTime(Clock.ui) + Constant.timerResolution;
-				}
-				else {
-					// Show the helper
-					Component.drawer.get(me).setVisible(true);
-					phase = 1;						
-				}
-			}
+			doWait();
 			break;
 		
 		case 1:
-			{
-				// Discard the helper after stayTime
-				boolean next = false;
-	
-				if(function.equals("MOVE") && (Keyboard.isKeyDown(Keyboard.KEY_UP)
-						|| Keyboard.isKeyDown(Keyboard.KEY_DOWN)
-						|| Keyboard.isKeyDown(Keyboard.KEY_LEFT)
-						|| Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) ) {
-					next = true;
-				}
-				else if(function.equals("SHOOT") && Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-					next = true;
-				}
-				else if(function.equals("SHIELD") && Keyboard.isKeyDown(Keyboard.KEY_RETURN) ) {
-					next = true;
-				}
-				
-				if(next) {
-					phase = 2;
-					wait += (int) (Constant.getFloat("Helper_Duration") * Constant.timerResolution);
-				}
-	
-				if(Clock.getTime(Clock.ui) > blinkWait) {
-					blinkWait = Clock.getTime(Clock.ui) + (int) (2*blinkTime * Constant.timerResolution);
-					
-					// Create annoying circle
-					Integer id = Component.getID();
-	
-					Component.timedObject.put( id, new TimedObject(id, blinkTime, Clock.ui) );
-					Component.placement.put( id, new Placement(Component.placement.get(me)) );
-					Component.drawer.put( id, new Drawer(id, Constant.getVector("Helper_Color")) );
-					Component.shape.put( id, Constant.getShape("Helper_Shape")  );
-					Component.sticky.put( id, new Sticky(id) );
-					
-					if(blinkTime > 0.2f) {
-						blinkTime *= 0.85f;
-					}
-				}
-			}
+			doShow();
 			break;
 		
 		case 2:
@@ -104,6 +52,59 @@ public class Helper {
 			}
 			
 			break;
+		}
+	}
+	
+	private final void doWait() {
+		if(Clock.getTime(Clock.ui) > wait) {
+			boolean otherHelpersActive = false;
+			for(Helper h : Component.helper.values()) {
+				otherHelpersActive |= h.isActive();
+			}
+			
+			if( otherHelpersActive ) {
+				// Wait at least one second after no other helper is left
+				wait = Clock.getTime(Clock.ui) + Constant.timerResolution;
+			}
+			else {
+				// Show the helper
+				Component.drawer.get(me).setVisible(true);
+				phase = 1;						
+			}
+		}
+	}
+	
+	private final void doShow() {
+		// Discard the helper after stayTime
+		boolean next = false;
+
+		if(function.equals("MOVE") && (Keyboard.isKeyDown(Keyboard.KEY_UP)
+				|| Keyboard.isKeyDown(Keyboard.KEY_DOWN)
+				|| Keyboard.isKeyDown(Keyboard.KEY_LEFT)
+				|| Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) ) {
+			next = true;
+		}
+		else if(function.equals("SHOOT") && Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			next = true;
+		}
+		else if(function.equals("SHIELD") && Keyboard.isKeyDown(Keyboard.KEY_RETURN) ) {
+			next = true;
+		}
+		
+		if(next) {
+			phase = 2;
+			wait += (int) (Constant.getFloat("Helper_Duration") * Constant.timerResolution);
+		}
+
+		if(Clock.getTime(Clock.ui) > blinkWait) {
+			blinkWait = Clock.getTime(Clock.ui) + (int) (2*blinkTime * Constant.timerResolution);
+			
+			// Create annoying circle
+			Level.AddAnnoyingCircle( Component.placement.get(me).position, blinkTime );
+			
+			if(blinkTime > 0.2f) {
+				blinkTime *= 0.85f;
+			}
 		}
 	}
 }

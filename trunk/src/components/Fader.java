@@ -12,13 +12,8 @@ public class Fader {
 	public Vec3												color = new Vec3(Vec3.white);
 	private int												direction = 0;
 	
-	public final void resetBlack() {
-		color = new Vec3(Vec3.black);
-		direction = 0;
-	}
-	
-	public final void resetWhite() {
-		color.set(Vec3.white);
+	public final void set( final Vec3 col ) {
+		color = new Vec3(col);
 		direction = 0;
 	}
 	
@@ -26,11 +21,11 @@ public class Fader {
 		return direction == 0;
 	}
 	
-	public final void fadeToBlack() {
+	public final void FadeToBlack() {
 		direction = toBlack;
 	}
 	
-	public final void fadeToWhite() {
+	public final void FadeToWhite() {
 		direction = toWhite;
 	}
 	

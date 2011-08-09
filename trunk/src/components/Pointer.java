@@ -6,6 +6,7 @@ import geometry.Polygon;
 import geometry.Rectangle;
 import geometry.Vec2;
 import geometry.Vec3;
+import graphics.Sprite;
 import managers.Component;
 import managers.Screen;
 
@@ -50,15 +51,13 @@ public class Pointer {
 		return Component.placement.get(me).position;
 	}
 	
-	public final void selectedTool( int id, int tool ) {
+	public final void SelectTool( int id, int tool ) {
 		// Turn all tools on
-		setTools(Clickable.on);
+		doTools(Clickable.on);
 		// Make it active
 		Component.clickable.get(id).setState(Clickable.selected);
 		// Turn cursor green
-		for(Polygon p : Component.shape.get(me).polygons) {
-			p.setColor(Vec3.green);
-		}
+		Component.drawer.get(me).setColor(Vec3.green);
 		// Switch to tool
 		state = tool;
 		// Limit the mouse to the game zone
@@ -77,7 +76,6 @@ public class Pointer {
 			Screen.reposition("game", min);
 			Screen.reposition("game", max);
 		}
-		
 		Component.placement.get(me).position.clamp(min, max);
 		
 		if( Mouse.isButtonDown(0) || Mouse.isButtonDown(1) ) {
@@ -88,35 +86,30 @@ public class Pointer {
 					// Left click
 					switch(state) {
 					case Pointer.mouse:
-						mouseClick();
+						doMouseClick();
 						break;
-						
 					case Pointer.addcircle:
 						addCircle();
 						break;
-						
 					case Pointer.addsquare:
 						addSquare();
 						break;
-						
 					case Pointer.addspawner:
 						addSpawner();
 						break;
-						
 					case Pointer.move:
-						selectMove();
+						SelectMove();
 						break;
 					}
 				}
 				else {
 					// Right click
-					unSelectTool();
+					UnselectTool();
 					myPoly = null;
 					firstClick = null;
 					secondClick = null;
 					Component.deadObjects.add(currentID);
 				}
-				
 			}
 		}
 		else if (pressed) {
@@ -131,22 +124,15 @@ public class Pointer {
 					c.setRadius( firstClick.distance(Component.placement.get(me).position) );
 				}
 				break;
-				
 			case Pointer.addsquare:
 				if(firstClick != null) {
 					Rectangle r = (Rectangle) myPoly;
 					r.size.x = (float) Math.abs(firstClick.x - Component.placement.get(me).position.x)*2;
 					r.size.y = (float) Math.abs(firstClick.y - Component.placement.get(me).position.y)*2;
 					
-					if(r.size.x > r.size.y) {
-						myPoly.setTexture("rect2x1.gif");
-					}
-					else {
-						myPoly.setTexture("rect1x2.gif");
-					}
+					myPoly.setTexture( Sprite.getRect(r.size) );
 				}
 				break;
-				
 			case Pointer.move:
 				if(firstClick != null) {
 					Component.placement.get(currentID).position.set( Component.placement.get(me).position );
@@ -156,7 +142,7 @@ public class Pointer {
 		}
 	}
 	
-	private final void mouseClick() {
+	private final void doMouseClick() {
 		for(Integer him : Component.clickable.keySet()) {
 			if( Component.shape.get(him).Collides(him, me) ) {
 				Component.clickable.get(him).Click();
@@ -164,10 +150,10 @@ public class Pointer {
 		}
 	}
 	
-	private final void selectMove() {
+	private final void SelectMove() {
 		if(firstClick == null) {
-			for(Integer i : Component.placement.keySet()) {
-				if( me != i && Component.shape.get(me).Collides(me, i) ) {
+			for(Integer i : Component.shape.keySet()) {
+				if( me != i && Component.shape.get(i).Collides(i, me) ) {
 					firstClick = new Vec2(Component.placement.get(me).position);
 					currentID = i;
 					break;
@@ -216,8 +202,8 @@ public class Pointer {
 			Component.killable.put( currentID, new Killable(currentID, Killable.terrain) );
 			Component.xml.put(currentID, new Xml(currentID));
 			
-			myPoly = new Circle(0.000001f, new Vec2(), 1);
-			myPoly.setTexture("circle.gif");
+			myPoly = new Circle(0.000001f, new Vec2(), 2);
+			myPoly.setTexture("base/circle.gif");
 			shp.add( myPoly );
 		}
 		else if(secondClick == null) {
@@ -244,8 +230,8 @@ public class Pointer {
 			Component.killable.put( currentID, new Killable(currentID, Killable.terrain) );
 			Component.xml.put(currentID, new Xml(currentID));
 			
-			myPoly = new Rectangle(new Vec2(0.000001f, 0.000001f), new Vec2(), 1, false);
-			myPoly.setTexture("rect2x1.gif");
+			myPoly = new Rectangle(new Vec2(0.000001f, 0.000001f), new Vec2(), 1, true);
+			myPoly.setTexture("base/rect1x1.gif");
 			shp.add( myPoly );
 		}
 		else if(secondClick == null) {
@@ -260,19 +246,17 @@ public class Pointer {
 		}
 	}
 	
-	public final void unSelectTool() {
+	public final void UnselectTool() {
 		// Turn all tools' on
-		setTools(Clickable.on);		
+		doTools(Clickable.on);		
 		// Turn cursor yellow
-		for(Polygon p : Component.shape.get(me).polygons) {
-			p.setColor(Vec3.yellow);
-		}
+		Component.drawer.get(me).setColor(Vec3.yellow);
 		// Switch to tool
 		state = 0;
 		limitMouse = false;
 	}
 	
-	private final void setTools( int state ) {
+	static private final void doTools( int state ) {
 		for(Clickable c : Component.clickable.values()) {
 			if(c.getFunction().equals("ADDCIRCLE")
 					|| c.getFunction().equals("ADDSQUARE")

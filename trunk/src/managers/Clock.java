@@ -38,6 +38,10 @@ public class Clock {
 		pausedMask = 0;
 	}
 
+	static public final boolean isPaused( int type ) {
+		return (pausedMask & (1 << type)) > 0;
+	}
+	
 	static public final void pause( int type ) {
 		pausedMask |= 1 << type;
 	}

@@ -16,12 +16,12 @@ public class Mover {
 
 	public Mover( int m, float s, boolean stay, int timeTy ) {
 		me = m;
-		speed = s;
+		speed = Screen.rescale("game", s);
 		stayInScreeen = stay;
 		timeType = timeTy;
 	}
 	
-	public final void move( final Vec2 dir ) {
+	public final void Move( final Vec2 dir ) {
 		nextMovement.add(dir);
 	}
 	
@@ -30,11 +30,11 @@ public class Mover {
 	}
 	
 	public final void Update() {
-		
 		float dt = Clock.getDelta(timeType);
 		float myRadius = 0;
-		if(Component.shape.get(me) != null) {
-			myRadius += Component.shape.get(me).getRadius();
+		Shape shp = Component.shape.get(me);
+		if( shp != null) {
+			myRadius = shp.getRadius();
 		}
 		
 		if(!nextMovement.isZero())
@@ -46,7 +46,7 @@ public class Mover {
 			// Record
 			Record rec = Component.record.get(me);
 			if( rec != null) {
-				rec.event( Record.movement, null );
+				rec.addEvent( Record.movement, null );
 			}
 		}
 		nextMovement.zero();
@@ -55,22 +55,17 @@ public class Mover {
 		//TODO: Repassar tots els news i veure quins no fan falta (potser nomes new Vec2)
 		// Stay in screen
 		if(stayInScreeen) {
-			float myRad = Component.shape.get(me).getRadius();
-			
 			Vec2 myTopLeft = new Vec2(Vec2.topLeft); 
 			Screen.reposition("game", myTopLeft);
-			myTopLeft.add(myRad, myRad);
+			myTopLeft.add(myRadius, myRadius);
 			myTopLeft.add(Screen.up);
 			
 			Vec2 myBotRight = new Vec2(Vec2.bottomRight); 
 			Screen.reposition("game", myBotRight);
-			myBotRight.add(-myRad, -myRad);
+			myBotRight.add(-myRadius, -myRadius);
 			myBotRight.add(Screen.up);
 			
-			Vec2 myPos = Component.placement.get(me).position;
-			
-			// Lateral
-			myPos.clamp(myTopLeft, myBotRight);
+			Component.placement.get(me).position.clamp(myTopLeft, myBotRight);
 		}
 	}
 }

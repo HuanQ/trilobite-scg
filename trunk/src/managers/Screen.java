@@ -63,8 +63,8 @@ public class Screen {
 
 	static public final void descale( final String zone, final Vec2 sz ) {
 		ScreenZone z = zones.get(zone);
-		sz.x = sz.x / Math.min(z.size.x, z.size.y);
-		sz.y = sz.y / Math.min(z.size.x, z.size.y);
+		sz.x = sz.x / z.size.x;
+		sz.y = sz.y / z.size.y;
 	}
 	
 	static public final float rescale( final String zone, float radius ) {

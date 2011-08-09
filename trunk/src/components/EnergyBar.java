@@ -1,6 +1,5 @@
 package components;
 
-import geometry.Polygon;
 import geometry.Rectangle;
 import geometry.Vec3;
 import managers.Component;
@@ -15,30 +14,14 @@ public class EnergyBar {
 	private final float										originalSize;
 	private Rectangle										myRectangle;
 	private float											time;
-	private boolean											latched = false;
 	
 	public EnergyBar( int m, final Vec3 empty, final Vec3 full ) {
 		me = m;
-		for(Polygon p : Component.shape.get(me).polygons) {
-			if(p.whoAmI() == Polygon.rectangle) {
-				myRectangle = (Rectangle) p;
-				break;
-			}
-		}
+		myRectangle = Component.shape.get(me).getRectangle();
 		emptyColor = empty;
 		fullColor = full;
 		originalSize = myRectangle.size.y;
 		time = Constant.getFloat("Ship_ShieldCooldown");
-	}
-	
-	public final int latch() {
-		if(latched) {
-			return -1;
-		}
-		else {
-			latched = true;
-			return me;
-		}
 	}
 	
 	public final void Update() {
@@ -51,8 +34,7 @@ public class EnergyBar {
 			
 			myRectangle.size.y = originalSize * percent;
 			
-			Component.placement.get(me).position.y -= percentDelta * originalSize/2;
-			//Component.placement.get(me).position.y -= percentDelta * originalSize/2;
+			myRectangle.offset.y -= percentDelta * originalSize/2;
 
 			if(time >= shieldCD) {
 				// Recharge done
@@ -61,10 +43,10 @@ public class EnergyBar {
 		}
 	}
 	
-	public final void exhaust() {
+	public final void Exhaust() {
 		time = 0;
 		myRectangle.size.y = 0;
-		Component.placement.get(me).position.y += originalSize/2;
+		myRectangle.offset.y += originalSize/2;
 		myRectangle.setColor(emptyColor);
 	}
 }
