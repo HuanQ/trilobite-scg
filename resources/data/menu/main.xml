@@ -3,16 +3,16 @@
 		<Image>
 			<Point x="0.5" y="0.5"/>
 			<Shape>
-				<Rectangle x="0" y="0" z="6" sizex="1.8" sizey="1">
+				<Rectangle x="0" y="0" z="6" sizex="1.8" sizey="1" stretch="false">
 					<Texture>spacefield.gif</Texture>
 				</Rectangle>
 			</Shape>
 		</Image>
 		
 		<Image>
-			<Point x="0.25" y="0.325"/>
+			<Point x="0.275" y="0.275"/>
 			<Shape>
-				<Rectangle x="0" y="0" z="6.2" sizex="0.5" sizey="0.5">
+				<Rectangle x="0" y="0" z="6.2" sizex="0.5" sizey="0.5" stretch="true">
 					<Texture>title.gif</Texture>
 				</Rectangle>
 			</Shape>
@@ -31,7 +31,7 @@
 		</Planet>
 		
 		<Planet zone="full">
-			<Point x="0.35" y="0.5"/>
+			<Point x="0.35" y="0.55"/>
 			<Function>START</Function>
 			<Shape>
 				<Circle x="0" y="0" z="8" radius="0.135">
@@ -58,17 +58,17 @@
 		
 		<Planet zone="full">
 			<Point x="0.85" y="0.7"/>
-			<Function>CLEAN</Function>
+			<Function>EDITOR</Function>
 			<Shape>
 				<Circle x="0" y="0" z="8" radius="0.07">
 					<Texture>Planet3.gif</Texture>
 				</Circle>
-				<Text x="0" y="0" z="9" txt="Clean all" size="1">
+				<Text x="0" y="0" z="9" txt="Level editor" size="1">
 					<Color r="1" g="0.5" b="0"/>
 				</Text>
 			</Shape>
 		</Planet>
-		
+		<!-- 
 		<Planet zone="full">
 			<Point x="0.8" y="0.475"/>
 			<Function>EDITOR</Function>
@@ -81,5 +81,6 @@
 				</Text>
 			</Shape>
 		</Planet>
+		 -->
 	</Menu>
 </Trilobite>

@@ -41,12 +41,12 @@ public class Editor {
 		Clock.Init();
 		
 		Level.AddMouse();
-		Level.Init( "resources/data/level/" + name + ".xml", name );
-		Level.Init( "resources/data/hud/editor.xml", name );
+		Level.Init( "resources/data/level/" + name + ".xml" );
+		Level.Init( "resources/data/hud/editor.xml" );
 		Level.AddEditorControls();
 		
 		// Menus
-		Component.mouse.unSelectTool();
+		Component.mouse.UnselectTool();
 		for(Clickable c : Component.clickable.values()) {
 			if( c.getFunction().equals("STOP") || c.getFunction().equals("RELOAD") || c.getFunction().equals("SAVE") ) {
 				c.setState(Clickable.off);
@@ -66,7 +66,7 @@ public class Editor {
 			Component.Update();
 			Component.Render();
 			Display.update();
-			Display.sync(60);
+			Display.sync(100);
 		}
 
 		// Clean up

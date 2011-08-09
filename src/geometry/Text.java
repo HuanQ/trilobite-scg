@@ -42,7 +42,7 @@ public class Text extends Polygon {
 	public final void multSize( float f ) {}
 	
 	@SuppressWarnings("deprecation")
-	public final void draw( final Vec2 pos, final Vec3 defColor ) {
+	public final void Draw( final Vec2 pos, final Vec3 defColor, final Angle rot ) {
 		Vec2 realPos = new Vec2(pos.x+offset.x, pos.y+offset.y);
 		if( Screen.inScreen(realPos, 0) ) {
 			// Final position
@@ -52,8 +52,9 @@ public class Text extends Polygon {
 			finalColor.mult(color);
 			finalColor.mult(Component.fader.color);
 			Color col = new Color(finalColor.x, finalColor.y, finalColor.z);
-	
 			glTranslatef(0.f, 0.f, layer);
+			glRotatef( (float) Math.toDegrees(rot.get()), 0, 0, 1 );
+
 			glEnable(GL_TEXTURE_2D);
 			
 			Constant.font[size].drawString(screenPos.x - Constant.font[size].getWidth(text)/2, screenPos.y - Constant.font[size].getHeight()/2, text, col);
@@ -69,7 +70,7 @@ public class Text extends Polygon {
 		return false;
 	}
 	
-	public final void writeXml( final Document doc, final Element root ) {
+	public final void WriteXML( final Document doc, final Element root ) {
 		Element txt = doc.createElement("Text");
 		Vec2 myOff = new Vec2(offset);
 		Screen.descale("game", myOff);

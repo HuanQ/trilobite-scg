@@ -17,7 +17,7 @@ public class Planet {
 	
 	public Planet( int m ) {
 		me = m;
-		inertia = (int) Constant.getFloat("Interface_PlanetInertia");
+		inertia = (int) Constant.getFloat("GUI_PlanetInertia");
 		originalPos = new Vec2(Component.placement.get(m).position);
 		while(lastFloats.size() < inertia) {
 			lastFloats.add( new Vec2() );
@@ -32,8 +32,11 @@ public class Planet {
 		// Gravity movement
 		if( Component.mouse != null) {
 			Vec2 mousePos = Component.mouse.getPosition();
-			float mass = Component.shape.get(me).getRadius();
-			float dist = (float) Math.pow(mousePos.distance(originalPos), 0.0015f/mass );
+			float dist = 1;
+			Shape shp = Component.shape.get(me);
+			if( shp != null && shp.getRadius() > 0 ) {
+				dist = (float) Math.pow(mousePos.distance(originalPos), 0.0015f/shp.getRadius() );
+			}
 			myFuturePos.interpolate(mousePos, originalPos, Math.min(Math.max(dist,0),1) );
 			
 			//TODO: Usar el mover per a fer aixo
@@ -52,11 +55,11 @@ public class Planet {
 				lastFloats.poll();
 			}
 			
-			Component.placement.get(me).position.add( averageFloat() );
+			Component.placement.get(me).position.add( doAverageFloat() );
 		}
 	}
 	
-	private final Vec2 averageFloat() {
+	private final Vec2 doAverageFloat() {
 		Vec2 avg = new Vec2();
 		for(Vec2 lf : lastFloats) {
 			avg.add( lf );

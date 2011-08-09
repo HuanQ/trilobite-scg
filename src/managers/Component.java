@@ -1,5 +1,7 @@
 package managers;
 
+import geometry.Vec3;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,12 +21,12 @@ public class Component {
 	static public Map<Integer, Placement>					placement = new HashMap<Integer, Placement>();
 	static public Map<Integer, Gun>							gun = new HashMap<Integer, Gun>();
 	static public Map<Integer, Shape>						shape = new HashMap<Integer, Shape>();
-	static public Map<Integer, Shield>						shield = new HashMap<Integer, Shield>();
 	static public Map<Integer, Clickable>					clickable = new HashMap<Integer, Clickable>();
 	static public Map<Integer, Xml>							xml = new HashMap<Integer, Xml>();
 	// Render
 	static public Map<Integer, Drawer>						drawer = new HashMap<Integer, Drawer>();
 	// Update
+	static public Map<Integer, Shield>						shield = new HashMap<Integer, Shield>();
 	static public Map<Integer, Input>						input = new HashMap<Integer, Input>();
 	static public Map<Integer, Bullet>						bullet = new HashMap<Integer, Bullet>();
 	static public Map<Integer, Mover>						mover = new HashMap<Integer, Mover>();
@@ -36,10 +38,11 @@ public class Component {
 	static public Map<Integer, Actor>						actor = new HashMap<Integer, Actor>();
 	static public Map<Integer, Planet>						planet = new HashMap<Integer, Planet>();
 	static public Map<Integer, Helper>						helper = new HashMap<Integer, Helper>();
-	static public Map<Integer, EnergyBar>					energybar = new HashMap<Integer, EnergyBar>();
-	static public Map<Integer, ProgressBar>					progressbar = new HashMap<Integer, ProgressBar>();
 	static public Map<Integer, Sticky>						sticky = new HashMap<Integer, Sticky>();
 	// Global
+	static public EnergyBar									energybar;
+	static public ProgressBar								progressbar;
+	static public ActorPanel								actorpanel;
 	static public Pointer									mouse;
 	static public Fader										fader = new Fader();
 		
@@ -51,6 +54,9 @@ public class Component {
 	static public final void Init() {
 		myIDcounter = 0;
 		mouse = null;
+		energybar = null;
+		progressbar = null;
+		actorpanel = null;
 	}
 	
 	static public final void Release() {
@@ -71,27 +77,37 @@ public class Component {
 		actor.clear();
 		clickable.clear();
 		helper.clear();
-		energybar.clear();
-		progressbar.clear();
 		sticky.clear();
 		xml.clear();
 		
-		fader.resetWhite();
+		fader.set(Vec3.white);
 		mouse = null;
+		energybar = null;
+		progressbar = null;
+		actorpanel = null;
 	}
 	
 	static public final void Update() {
 		Clock.Update();
 		
-		// Move the screen
+		// Screen
 		Screen.up.add(0.f, Clock.getDelta(Clock.game) * Constant.getFloat("Rules_ScreenSpeed"));
 		
 		// Update the components
+		fader.Update();
 		if(mouse != null) {
 			mouse.Update();
 		}
-		fader.Update();
-				
+		if(energybar != null) {
+			energybar.Update();
+		}
+		if(progressbar != null) {
+			progressbar.Update();
+		}
+		if( actorpanel != null && actorpanel.isReloadTime() ) {
+			actorpanel.Load();
+		}
+		
 		for(Actor a : actor.values()) {
 			a.Update();
 		}
@@ -113,14 +129,8 @@ public class Component {
 		for(Helper h : helper.values()) {
 			h.Update();
 		}
-		for(Mover m : mover.values()) {
-			m.Update();
-		}
-		for(EnergyBar e : energybar.values()) {
-			e.Update();
-		}
-		for(ProgressBar p : progressbar.values()) {
-			p.Update();
+		for(Shield s : shield.values()) {
+			s.Update();
 		}
 		for(Sticky s : sticky.values()) {
 			s.Update();
@@ -131,11 +141,16 @@ public class Component {
 		for(TimedObject t : timedObject.values()) {
 			t.Update();
 		}
+		
+		// Mover 
+		for(Mover m : mover.values()) {
+			m.Update();
+		}
 		// Record is always updated last
 		for(Record r : record.values()) { 
 			r.Update();
 		}
-		
+
 		DestroyObjects();
 	}
 	
@@ -156,7 +171,7 @@ public class Component {
 		   // Save to file
 		   Record rec = record.get(id); 
 		   if( rec != null) {
-			   record.get(id).save();
+			   record.get(id).Save();
 			   record.remove(id);
 		   }
 		   
@@ -176,8 +191,6 @@ public class Component {
 		   actor.remove(id);
 		   helper.remove(id);
 		   clickable.remove(id);
-		   energybar.remove(id);
-		   progressbar.remove(id);
 		   sticky.remove(id);
 		   xml.remove(id);
 		}

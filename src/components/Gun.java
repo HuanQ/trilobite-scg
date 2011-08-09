@@ -4,6 +4,7 @@ import geometry.Vec2;
 
 import managers.Component;
 import managers.Constant;
+import managers.Level;
 
 
 public class Gun {
@@ -19,20 +20,16 @@ public class Gun {
 		Vec2 exitPoint = new Vec2(Component.placement.get(me).position);
 		exitPoint.add(gunPoint);
 
-		Integer id = Component.getID();
-
 		//TODO: S'ha de grabar la direcció perquè cada actor tindrà direccions diferents
 		// Record
 		Record rec = Component.record.get(me);
 		if( rec != null) {
-			rec.event( Record.gunShot, null );
+			rec.addEvent( Record.gunShot, null );
 		}
 		
 		// Create a bullet
-		Component.bullet.put( id, new Bullet(id,  new Vec2(0, -Constant.getFloat("Bullet_Speed")) ) );
-		Component.placement.put( id, new Placement(exitPoint) );
-		Component.drawer.put( id, new Drawer(id, Constant.getVector("Bullet_Color") ) );
-		Component.killable.put( id, new Killable(id, Killable.playerTeam) );
+		Vec2 bulletDirection = new Vec2(0, -Constant.getFloat("Ship_BulletSpeed"));
+		Level.AddBullet(bulletDirection, exitPoint, Killable.playerTeam);
 	}
 
 }

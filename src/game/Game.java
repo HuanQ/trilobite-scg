@@ -1,5 +1,7 @@
 package game;
 
+import geometry.Vec3;
+
 import java.io.File;
 
 import managers.Component;
@@ -10,25 +12,15 @@ import managers.Screen;
 
 import org.lwjgl.opengl.Display;
 
-import components.ProgressBar;
-
 public class Game {
-	private final String										directoryName;
 	
-	public Game( final String name, int number ) {
-		// Set up directory if needed
-		String firstDir = name + "/";
-		File directory = new File( "resources/games/" + firstDir );
-		if( !directory.exists() ) {
-			directory.mkdir();
-		}
-		
+	public Game() {
 		boolean firstPlay = false;
-		directoryName = firstDir + "/" + number + "/";
-		directory = new File( "resources/games/" + directoryName );
+		// Set up directory if needed
+		File directory = new File( "resources/games/" + Level.lvlname + "/" );
 		if( !directory.exists() ) {
 			directory.mkdir();
-			firstPlay = number == 1;
+			firstPlay = true;
 		}
 		
 		// Initialize game
@@ -36,44 +28,60 @@ public class Game {
 		Constant.Init();
 		Component.Init();
 		Clock.Init();
-		Level.Init( "resources/data/level/" + name + ".xml", name );
-		Level.Init( "resources/data/hud/game.xml", name );
+		Level.Init( "resources/data/level/" + Level.lvlname + ".xml" );
+		Level.Init( "resources/data/hud/game.xml" );
+		Level.Init( "resources/data/level/Background.xml" );
 		
-		// Helpers pop up the first time we play each level 
-		if(firstPlay) {
-			Level.Init( "resources/data/help.xml", name );
+		// Helpers pop up the first time we play the Intro level 
+		if( firstPlay && Level.lvlname.equals("Intro") ) {
+			Level.Init( "resources/data/hud/help.xml" );
 		}
+		
+		Component.fader.set(Vec3.black);
 	}
 	
 	public final void start() {
+		Component.fader.FadeToWhite();
+		Clock.pause(Clock.game);
+		
 		// Insert Player and Actors
-		int i = 0;
+		String nextFileName;
 		File actorFile;
-		do {
-			i++;
-			String nextFileName = "resources/games/" + directoryName + i + ".dat";
+		int lowestAvailNumber = 0;
+		for(int i=1; i<Constant.getFloat("Rules_MaxActors"); ++i) {
+			nextFileName = "resources/games/" + Level.lvlname + "/" + i + ".dat";
 			actorFile = new File(nextFileName);
 			if( actorFile.exists() ) {
 				Level.AddActor(nextFileName, i);
 			}
-		} while( actorFile.exists() );
+			else if ( lowestAvailNumber == 0 ) {
+				lowestAvailNumber = i;
+			}
+		}
 		
 		// Add the actors to the progressbar
-		for(ProgressBar p : Component.progressbar.values()) {
-			p.addActors();
-		}
-
-
-		int player = Level.AddPlayer( "resources/games/" + directoryName, i-1 );
+		Component.progressbar.addActors();
 		
-		// Run the game 
-		while ( Component.placement.get(player) != null ) {
-			Component.Update();
-			Component.Render();
-			Display.update();
-			Display.sync(60);
+		if( lowestAvailNumber != 0) {
+			int player = Level.AddPlayer( "resources/games/" + Level.lvlname + "/", lowestAvailNumber );
+	
+			// Run the game 
+			while ( Component.placement.get(player) != null ) {
+				Component.Update();
+				Component.Render();
+				Display.update();
+				Display.sync(100);
+				if(Clock.isPaused(Clock.game) && Component.fader.isDone()) {
+					Clock.unpause(Clock.game);
+				}
+			}
+			
+			Start.startGame();
 		}
-
+		else {
+			// Max actors reached
+		}
+		
 		// Clean up
 		Component.Release();
 	}

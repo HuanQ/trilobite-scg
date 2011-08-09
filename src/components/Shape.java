@@ -44,15 +44,17 @@ public class Shape {
 		return radius;
 	}
 	
-	public final void setText( final String str ) {
-		for(Polygon p : polygons) {
-			if( p.whoAmI() == Polygon.text ) {
-				((Text) p).setText(str);
+	public final void add( final Shape shp ) {
+		for(Polygon p : shp.polygons) {
+			add(p);
+			float newMaxRadius = p.offset.length() + (float) Math.sqrt(p.getSqRadius());
+			if(radius < newMaxRadius) {
+				radius = newMaxRadius;
 			}
 		}
 	}
 	
-	public final void add(final Polygon p) {
+	public final void add( final Polygon p ) {
 		polygons.add(p);
 		
 		float newMaxRadius = p.offset.length() + (float) Math.sqrt(p.getSqRadius());
@@ -60,7 +62,7 @@ public class Shape {
 			radius = newMaxRadius;
 		}
 	}
-	
+
 	public final boolean Collides( int me, int him ) {
 		float hisRadius = Component.shape.get(him) == null ? 0 : Component.shape.get(him).radius;
 		
@@ -79,7 +81,7 @@ public class Shape {
 			if(hisRadius != 0) {
 				// Check my position to all his shapes
 				for(Polygon p : Component.shape.get(him).polygons) {
-					if( p.Collides(myPos, (Polygon) null, hisPos) ) {
+					if( p.Collides(myPos, null, hisPos) ) {
 						return true;
 					}
 				}
@@ -89,7 +91,7 @@ public class Shape {
 			if(hisRadius == 0) {
 				// Check his position to all my shapes
 				for(Polygon p : polygons) {
-					if( p.Collides(myPos, (Polygon) null, hisPos) ) {
+					if( p.Collides(myPos, null, hisPos) ) {
 						return true;
 					}
 				}
@@ -108,11 +110,29 @@ public class Shape {
 		return false;
 	}
 	
-	public final void writeXml( Document doc, Element root ) {
+	public final void WriteXML( Document doc, Element root ) {
 		Element shape = doc.createElement("Shape");
 		for( Polygon p : polygons ) {
-			p.writeXml(doc, shape);
+			p.WriteXML(doc, shape);
 		}
 		root.appendChild(shape);
+	}
+	
+	public final Rectangle getRectangle() {
+		for(Polygon p : polygons) {
+			if(p.whoAmI() == Polygon.rectangle) {
+				return (Rectangle) p;
+			}
+		}
+		return null;
+	}
+	
+	public final Text getText() {
+		for(Polygon p : polygons) {
+			if(p.whoAmI() == Polygon.text) {
+				return (Text) p;
+			}
+		}
+		return null;
 	}
 }

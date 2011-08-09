@@ -16,7 +16,6 @@ import managers.Constant;
 import managers.Clock;
 
 
-
 public class Record {
 	// Event types
 	static final int													positionChange = 1;
@@ -43,7 +42,7 @@ public class Record {
 		} while( file.exists() );		
 	}
 	
-	public final void event( int event, int[] data ) {
+	public final void addEvent( int event, int[] data ) {
 		eventsThisFrame = eventsThisFrame | event;
 		switch(event) {
 		case movement:
@@ -56,7 +55,7 @@ public class Record {
 		}
 	}
 	
-	public final void save() {
+	public final void Save() {
 		// Save last position
 		recordedData.add( new Snapshot(Clock.getTime(Clock.game), eventsThisFrame, new Vec2(Component.placement.get(me).position)) );
 		
@@ -102,8 +101,8 @@ public class Record {
 					Vec2 newDirection = new Vec2( lastRecordedPosition );
 					newDirection.sub( myPos );
 					newDirection.scale( 1 / tickAccumulatedTime );
-					if( !newDirection.epsilonEquals( lastRecordedDirection, 0.01f ) ) {
-						// If we had moved the same direction and speed as the last frame we wouldn't need to record, interpolation wouldpredict it correctly
+					if( !newDirection.epsilonEquals( lastRecordedDirection, Constant.getFloat("Performance_RecordEpsilon") ) ) {
+						// If we had moved the same direction and speed as the last frame we wouldn't need to record, interpolation would predict it correctly
 						needUpdate = true;
 					}
 				}

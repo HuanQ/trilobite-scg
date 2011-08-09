@@ -1,37 +1,40 @@
 <Trilobite>
 	<Menu zone="full">
+		<ActorPanel zone="full">
+			<Point x="0.4" y="0.3"/>
+			<Shape>
+				<Rectangle x="0" y="0" z="8" sizex="0.7" sizey="0.45">
+					<Color r="0.7" g="0.7" b="0.8"/>
+					<Texture>base/frame2x1.gif</Texture>
+				</Rectangle>
+				<Text x="-0.3" y="-0.25" z="9" txt="Ships" size="1">
+					<Color r="0.4" g="0.4" b="1"/>
+				</Text>
+			</Shape>
+		</ActorPanel>
+		
 		<Planet>
 			<Point x="0.05" y="1.05" side="full"/>
-			<Function>NONE</Function>
+			<Function>BACK</Function>
 			<Shape>
 				<Circle x="0" y="0" z="6.1" radius="0.45">
 					<Texture>planet2.gif</Texture>
 				</Circle>
-			</Shape>
-		</Planet>
-		
-		<Planet>
-			<Point x="0.7" y="0.2" side="full"/>
-			<Function>AGAIN</Function>
-			<Shape>
-				<Rectangle x="0" y="0" z="8" sizex="0.3" sizey="0.1">
-					<Color r="0" g="0" b="0"/>
-				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Again" size="0">
-					<Color r="1" g="0" b="0"/>
+				<Text x="0.075" y="-0.2" z="9" txt="Back" size="0">
+					<Color r="1" g="0.5" b="0"/>
 				</Text>
 			</Shape>
 		</Planet>
 		
 		<Planet>
-			<Point x="0.7" y="0.4" side="full"/>
-			<Function>BACK</Function>
+			<Point x="0.85" y="0.85" side="full"/>
+			<Function>STARTPLAY</Function>
 			<Shape>
-				<Rectangle x="0" y="0" z="8" sizex="0.3" sizey="0.1">
-					<Color r="0" g="0" b="0"/>
-				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Back" size="0">
-					<Color r="1" g="0" b="0"/>
+				<Circle x="0" y="0" z="7" radius="0.12">
+					<Texture>planet5.gif</Texture>
+				</Circle>
+				<Text x="0" y="0" z="9" txt="Play" size="1">
+					<Color r="1" g="0.5" b="0"/>
 				</Text>
 			</Shape>
 		</Planet>

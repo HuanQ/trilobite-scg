@@ -12,13 +12,13 @@ public class Menu {
 	private boolean											active = true;
 	
 	public Menu( final String name ) {
-		// Initialize game
+		// Initialize menu
 		Screen.Init();
 		Constant.Init();
 		Component.Init();
 		Clock.Init();
 		Level.AddMouse();
-		Level.Init( "resources/data/menu/" + name + ".xml", name );
+		Level.Init( "resources/data/menu/" + name + ".xml" );
 		Clock.pause(Clock.game);
 	}
 	
@@ -28,7 +28,7 @@ public class Menu {
 			Component.Update();
 			Component.Render();
 			Display.update();
-			Display.sync(60);
+			Display.sync(100);
 		}
 		
 		// Clean up
@@ -36,7 +36,7 @@ public class Menu {
 	}
 	
 	public final void end() {
-		Component.fader.fadeToBlack();
+		Component.fader.FadeToBlack();
 		active = false;
 	}
 }

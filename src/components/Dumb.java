@@ -6,6 +6,7 @@ import geometry.Vec2;
 import managers.Component;
 import managers.Constant;
 import managers.Clock;
+import managers.Level;
 import managers.Screen;
 
 
@@ -25,6 +26,7 @@ public class Dumb {
 	private int													phase = 0;
 	private final float											radius;
 	private int													wait;
+	private float												selfRotate;
 	// 0: Go straight for a while
 	// 1: Doing my route
 	// 2: Stopping and spinning
@@ -38,13 +40,17 @@ public class Dumb {
 		rotateGoal = rg;
 		radius = Component.shape.get(me) == null ? 0 : Component.shape.get(me).getRadius();
 		wait = Clock.getTime(Clock.game) + (int) (wt * Constant.timerResolution);
+		selfRotate = Constant.getFloat("Dumb_Rotation");
 	}
 	
 	public final void Update() {
-		//TODO: Sempre ha de donar voltes
+		float dt = Clock.getDelta(Clock.game);
+		Component.placement.get(me).angle.add( selfRotate*dt );
+		
 		switch(phase) {
 		case 0:
-			Component.mover.get(me).move( movementRotation.getDirection() );
+			//TODO: Els dumbs es veuen mes petits a 1920x1080
+			Component.mover.get(me).Move( movementRotation.getDirection() );
 			if( Clock.getTime(Clock.game) > wait) {
 				phase = 1;
 			}
@@ -53,7 +59,7 @@ public class Dumb {
 			// Follow the route untill we reach the top of the screen
 			switch(route) {
 			case 0:
-				doNormal();
+				doNormal(dt);
 				break;
 			}
 			if( Component.placement.get(me).position.y-radius-Constant.getFloat("Dumb_StopDistance") < Screen.up.y ) {
@@ -64,6 +70,8 @@ public class Dumb {
 		
 		case 2:
 			// Stop and spin
+			selfRotate += Constant.getFloat("Dumb_Acceleration") * dt;
+			
 			if( Clock.getTime(Clock.game) > wait) {
 				phase = 3;
 			}
@@ -77,23 +85,17 @@ public class Dumb {
 				
 				Vec2 bulletDirection = a.getDirection();
 				bulletDirection.scale(Constant.getFloat("Dumb_BulletSpeed"));
-				
 				Vec2 bulletPosition = new Vec2(Component.placement.get(me).position);
 
-				Integer id = Component.getID();
-				Component.bullet.put( id, new Bullet(id, bulletDirection) );
-				Component.placement.put( id, new Placement(bulletPosition) );
-				Component.drawer.put( id, new Drawer(id, Constant.getVector("Bullet_Color") ) );
-				Component.killable.put( id, new Killable(id, Killable.enemyTeam) );
+				Level.AddBullet(bulletDirection, bulletPosition, Killable.enemyTeam);
 			}
 			Component.deadObjects.add(me);
 			break;
 		}
 	}
 	
-	private final void doNormal() {
+	private final void doNormal( float dt ) {
 		float nextRotate = 0;
-		float dt = Clock.getDelta(Clock.game);
 		Mover mover = Component.mover.get(me);
 
 		if( Math.abs(rotatedDistance) < rotateGoal ) {
@@ -106,6 +108,6 @@ public class Dumb {
 			nextRotate = 0;
 			mover.addSpeed( Constant.getFloat("Dumb_Acceleration") * dt );
 		}
-		mover.move( movementRotation.getDirection() );
+		mover.Move( movementRotation.getDirection() );
 	}
 }
