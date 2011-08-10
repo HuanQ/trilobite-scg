@@ -19,10 +19,16 @@ public class Menu {
 		Clock.Init();
 		Level.AddMouse();
 		Level.Init( "resources/data/menu/" + name + ".xml" );
+		
 		Clock.pause(Clock.game);
 	}
 	
 	public final void start() {
+		// If the game has been won, show victory menu instead
+		if( Component.actorpanel != null && Component.actorpanel.isVictory() ) {
+			Start.victoryMenu();
+		}
+		
 		// Run the game 
 		while ( active || !Component.fader.isDone() ) {
 			Component.Update();

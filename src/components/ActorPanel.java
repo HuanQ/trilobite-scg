@@ -18,6 +18,7 @@ public class ActorPanel {
 	private final Vec2										nextPlaceOffset;
 	private final Vector<Integer>							shownActors;
 	private boolean											reload = false;
+	private boolean											victory = false;
 
 	public ActorPanel( int m ) {
 		me = m;
@@ -30,6 +31,11 @@ public class ActorPanel {
 	public final boolean isReloadTime() {
 		return reload;
 	}
+	
+	public final boolean isVictory() {
+		return victory;
+	}
+	
 	public final void Reload() {
 		reload = true;
 	}
@@ -41,16 +47,19 @@ public class ActorPanel {
 			Component.deadObjects.add(i);
 		}
 		shownActors.clear();
+		
 		// Prepare our insert positions
 		Vec2 realSpace = new Vec2(myRectangle.size);
 		realSpace.x *= ( 1-Constant.getFloat("GUI_PanelMarginX") )/2;
 		realSpace.y *= ( 1-Constant.getFloat("GUI_PanelMarginY") )/2;
 		nextPlaceOffset.x = -realSpace.x;
 		nextPlaceOffset.y = -realSpace.y;
+		
 		// Load Actors
 		String nextFileName;
 		File actorFile;
 		boolean newline = true;
+		int highestLife = 0;
 		for(int i=1; i<Constant.getFloat("Rules_MaxActors"); ++i) {
 			nextFileName = "resources/games/" + Level.lvlname + "/" + i + ".dat";
 			actorFile = new File(nextFileName);
@@ -61,10 +70,14 @@ public class ActorPanel {
 				life = Math.min(life, 100);
 				Shape shp = new Shape(Constant.getShape("Ship_Shape"));
 				shp.getText().setText(Integer.toString(i));
+				if(life > highestLife) {
+					highestLife = life;
+				}
 				
 				// Write success %
 				Shape succ = new Shape(Constant.getShape("Success_Shape"));
 				succ.getText().setText(Integer.toString(life) + "%");
+				
 				// Insert indicator
 				shp.add( succ );
 				shp.add( new Shape(Constant.getShape("Delete_Shape")) );
@@ -78,6 +91,7 @@ public class ActorPanel {
 				}
 				insertPos.add(nextPlaceOffset);
 				shownActors.add( Level.AddActorIndicator(insertPos, shp, i) );
+				
 				// Move nextplace
 				nextPlaceOffset.x += shp.getRadius();
 				if(nextPlaceOffset.x > realSpace.x) {
@@ -87,6 +101,8 @@ public class ActorPanel {
 				}
 			}
 		}
+		
+		victory = highestLife >= 100;
 	}
 	
 }

@@ -1,0 +1,42 @@
+<Trilobite>
+	<Menu zone="full">
+		<Image>
+			<Point x="0.4" y="0.3"/>
+			<Shape>
+				<Rectangle x="0" y="0" z="8" sizex="0.7" sizey="0.45">
+					<Color r="0.7" g="0.7" b="0.8"/>
+					<Texture>base/frame2x1.gif</Texture>
+				</Rectangle>
+				<Text x="0" y="0" z="9" txt="Victory!" size="0">
+					<Color r="1" g="1" b="0"/>
+				</Text>
+			</Shape>
+		</Image>
+			
+		<Planet>
+			<Point x="0.05" y="1.05" side="full"/>
+			<Function>BACK</Function>
+			<Shape>
+				<Circle x="0" y="0" z="6.1" radius="0.45">
+					<Texture>planet2.gif</Texture>
+				</Circle>
+				<Text x="0.075" y="-0.2" z="9" txt="Back" size="0">
+					<Color r="1" g="0.5" b="0"/>
+				</Text>
+			</Shape>
+		</Planet>
+		
+		<Planet>
+			<Point x="0.85" y="0.85" side="full"/>
+			<Function>RESTARTLEVEL</Function>
+			<Shape>
+				<Circle x="0" y="0" z="7" radius="0.12">
+					<Texture>planet1.gif</Texture>
+				</Circle>
+				<Text x="0" y="0" z="9" txt="Restart" size="1">
+					<Color r="1" g="0.5" b="0"/>
+				</Text>
+			</Shape>
+		</Planet>
+	</Menu>>
+</Trilobite>

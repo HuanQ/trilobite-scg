@@ -8,11 +8,12 @@ import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Start {
-	static final int										startGame = 1;
+	static final int										gameMenu = 1;
 	static final int										quitProgram = 2;
-	static final int										startMain = 3;
+	static final int										mainMenu = 3;
 	static final int										startEditor = 4;
-	static final int										startPlaying = 5;
+	static final int										startGame = 5;
+	static final int										victoryMenu = 6;
 	
 	private boolean											active;
 	static private int										option;
@@ -24,7 +25,7 @@ public class Start {
 		Start.initGraphics();
 		
 		active = true;
-		option = Start.startMain;
+		option = Start.mainMenu;
 		
 		while(active) {
 			switch (option) {
@@ -32,13 +33,13 @@ public class Start {
 				active = false;
 				break;
 				
-			case Start.startGame:
+			case Start.gameMenu:
 				menu = new Menu("ingame" );
 				menu.start();
 				menu = null;
 				break;
 				
-			case Start.startMain:
+			case Start.mainMenu:
 				menu = new Menu("main");
 				menu.start();
 				menu = null;
@@ -50,11 +51,16 @@ public class Start {
 				editor = null;
 				break;
 				
-			case Start.startPlaying:
+			case Start.startGame:
 				game = new Game();
 				game.start();
 				game = null;
 				break;
+				
+			case Start.victoryMenu:
+				menu = new Menu("victory");
+				menu.start();
+				menu = null;
 			}
 		}
 		Display.destroy();
@@ -65,8 +71,8 @@ public class Start {
 		menu.end();
 	}
 	
-	static public final void startGame() {
-		option = Start.startGame;
+	static public final void gameMenu() {
+		option = Start.gameMenu;
 		if(menu != null) menu.end();
 	}
 	
@@ -80,17 +86,26 @@ public class Start {
 		editor.end();
 	}
 	
-	static public final void startMenu() {
-		option = Start.startMain;
+	static public final void mainMenu() {
+		option = Start.mainMenu;
 		if(menu != null) menu.end();
 		if(editor != null) editor.end();
 	}
 	
-	static public final void startPlaying() {
-		option = Start.startPlaying;
+	static public final void startGame() {
+		option = Start.startGame;
 		menu.end();
 	}
 	
+	static public final void gameWon() {
+		option = Start.gameMenu;
+		game.end();
+	}
+	
+	static public final void victoryMenu() {
+		option = Start.victoryMenu;
+		menu.end();
+	}
 
 	static public final void main(String[] argv) {
 		Start displayExample = new Start();

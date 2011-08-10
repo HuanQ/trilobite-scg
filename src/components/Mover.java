@@ -39,6 +39,7 @@ public class Mover {
 		
 		if(!nextMovement.isZero())
 		{
+			//TODO: Ship es mou clarament mes lent en fullscreen (prova d'anar enrrere, o es screenup que va mes rapid?)
 			nextMovement.normalize();
 			nextMovement.scale(speed * dt);
 			Component.placement.get(me).position.add(nextMovement);
