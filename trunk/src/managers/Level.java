@@ -177,7 +177,7 @@ public class Level {
 		Component.drawer.put( playerID, new Drawer(playerID ) );
 		Component.gun.put( playerID, new Gun(playerID, Constant.getPoint("Ship_Point")) );
 		Component.shield.put( playerID, new Shield(playerID, Constant.getFloat("Ship_ShieldTime")) );
-		Component.mover.put( playerID, new Mover(playerID, Constant.getFloat("Ship_Speed"), true, Clock.play) );
+		Component.mover.put( playerID, new Mover(playerID, Constant.getFloat("Ship_Speed"), true, Clock.game) );
 		Component.shape.put( playerID, Constant.getShape("Ship_Shape") );
 		Component.killable.put( playerID, new Killable(playerID, Killable.playerTeam) );
 		Component.record.put( playerID, new Record(playerID, path) );

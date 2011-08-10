@@ -13,6 +13,7 @@ import managers.Screen;
 import org.lwjgl.opengl.Display;
 
 public class Game {
+	private boolean												victory = false;
 	
 	public Game() {
 		boolean firstPlay = false;
@@ -66,7 +67,7 @@ public class Game {
 			int player = Level.AddPlayer( "resources/games/" + Level.lvlname + "/", lowestAvailNumber );
 	
 			// Run the game 
-			while ( Component.placement.get(player) != null ) {
+			while ( Component.placement.get(player) != null && !victory ) {
 				Component.Update();
 				Component.Render();
 				Display.update();
@@ -76,13 +77,22 @@ public class Game {
 				}
 			}
 			
-			Start.startGame();
+			if(victory) {
+				Component.record.get(player).Save();
+			}
+			
+			Start.gameMenu();
 		}
 		else {
 			// Max actors reached
+			//TODO: Carregar tots els arxius de la carpeta (agafant el llistat i posar spawnpoints dinamics fent screenups positius per a fer espai -> NO REAL ACTOR LIMIT
 		}
 		
 		// Clean up
 		Component.Release();
+	}
+	
+	public final void end() {
+		victory = true;
 	}
 }

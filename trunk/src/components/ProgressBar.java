@@ -3,7 +3,9 @@ package components;
 import java.util.Collections;
 import java.util.Vector;
 
+import game.Start;
 import geometry.Rectangle;
+import geometry.Text;
 import geometry.Vec2;
 import geometry.Vec3;
 import graphics.Sprite;
@@ -20,6 +22,7 @@ public class ProgressBar {
 	private final int										levelTime;	
 	private final Vector<Float>								bestTimes;
 	private Rectangle										myRectangle;
+	private Text											myText;
 	private Rectangle										myBar;
 
 	public ProgressBar( int m, final Vec3 col ) {
@@ -29,6 +32,7 @@ public class ProgressBar {
 		bestTimes = new Vector<Float>();
 		
 		myRectangle = Component.shape.get(me).getRectangle();
+		myText = Component.shape.get(me).getText();
 		
 		Vec2 mySize = new Vec2( myRectangle.size.x, 0.003f);
 		myBar = new Rectangle(mySize, new Vec2(), myRectangle.layer + 0.02f, true);
@@ -39,6 +43,13 @@ public class ProgressBar {
 	public final void Update() {
 		float percentCompleted = (float) Clock.getTime(Clock.game) / levelTime;
 		myBar.offset.y = myRectangle.size.y/2 - percentCompleted*myRectangle.size.y;
+		
+		// Set percent counter's text
+		percentCompleted *= 100;
+		myText.setText( Integer.toString((int) percentCompleted) + "%" );
+		if( percentCompleted >= 100 ) {
+			Start.gameWon();
+		}
 	}
 	
 	public final void addActors() {

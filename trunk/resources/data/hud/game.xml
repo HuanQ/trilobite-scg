@@ -14,7 +14,7 @@
 			<Point x="0.7" y="0.85"/>
 			<Shape>
 				<Rectangle x="0" y="0" z="6.5" sizex="0.125" sizey="0.185" stretch="true"/>
-				<Text x="0" y="0.3" z="9" txt="Shield" size="3">
+				<Text x="0" y="0.5" z="9" txt="Shield" size="3">
 					<Color r="0.5" g="0.5" b="1"/>
 				</Text>
 			</Shape>
@@ -25,9 +25,12 @@
 		<ProgressBar>
 			<Point x="0.5" y="0.45"/>
 			<Shape>
-				<Rectangle x="0" y="-0.01" z="6.5" sizex="0.45" sizey="0.4" stretch="true">
+				<Rectangle x="0" y="0" z="6.5" sizex="0.45" sizey="0.4" stretch="true">
 					<Color r="0" g="0" b="0"/>
 				</Rectangle>
+				<Text x="0" y="-1.8" z="7" size="1" txt="0%">
+					<Color r="1" g="1" b="0"/>
+				</Text>
 			</Shape>
 			<Color r="0.4" g="0" b="0.65"/>
 		</ProgressBar>
@@ -38,9 +41,7 @@
 				<Rectangle x="0" y="0" z="6.5" sizex="0.85" sizey="0.06" stretch="true">
 					<Color r="0" g="0" b="0"/>
 				</Rectangle>
-				<Text x="0" y="0" z="7" size="1" txt="100%">
-					<Color r="1" g="1" b="0"/>
-				</Text>
+
 			</Shape>
 			<Color r="0.4" g="0" b="0.65"/>
 		</Image>

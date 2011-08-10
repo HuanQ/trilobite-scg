@@ -86,20 +86,21 @@ public class Clickable {
 		if( function.equals("START") ) {
 			//TODO: Level selection al main menu
 			Level.lvlname = "Intro";
-			Start.startGame();
+			Start.gameMenu();
 		}
 		else if( function.equals("QUIT") ) {
 			Start.quitProgram();
 		}
 		else if( function.equals("STARTPLAY") ) {
-			Start.startPlaying();
+			Start.startGame();
 		}
 		else if( function.equals("BACK") ) {
 			Component.fader.FadeToBlack();
-			Start.startMenu();
+			Start.mainMenu();
 		}
-		else if( function.equals("CLEAN") ) {
+		else if( function.equals("RESTARTLEVEL") ) {
 			Cleaner.CleanAll();
+			Start.gameMenu();
 		}
 		else if( function.equals("EDITOR") ) {
 			Level.lvlname = "Intro";

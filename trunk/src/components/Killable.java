@@ -40,7 +40,6 @@ public class Killable {
 	public final void Update() {
 		Shape myShape = Component.shape.get(me);
 		boolean collision = false;
-		int collisionID = 0;
 		for(Integer him : Component.killable.keySet()) {
 			if( him != me && Component.killable.get(him).Kills(type) ) {
 				Shape hisShape = Component.shape.get(him);
@@ -50,7 +49,6 @@ public class Killable {
 					if( hisShape != null ) {
 						if( hisShape.Collides(him, me) ) {
 							collision = true;
-							collisionID = him;
 							break;
 						}
 					}
@@ -58,7 +56,6 @@ public class Killable {
 				else {
 					if( myShape.Collides(me, him) ) {
 						collision = true;
-						collisionID = him;
 						break;
 					}
 				}
