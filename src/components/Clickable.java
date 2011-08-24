@@ -19,6 +19,7 @@ import managers.Clock;
 import managers.Component;
 import managers.Level;
 import managers.Screen;
+import managers.Sound;
 import data.Cleaner;
 import game.Start;
 import geometry.Rectangle;
@@ -83,6 +84,7 @@ public class Clickable {
 	}
 	
 	private final void doClick() {
+		boolean clicked = true;
 		if( function.equals("START") ) {
 			//TODO: Level selection al main menu
 			Level.lvlname = "Intro";
@@ -161,6 +163,13 @@ public class Clickable {
 		else if( function.equals("DELETEACTOR") ) {
 			Cleaner.DeleteActor(param);
 			Component.actorpanel.Reload();
+		}
+		else {
+			clicked = false;
+		}
+		
+		if(clicked) {
+			Sound.Play(Sound.click);
 		}
 	}
 	

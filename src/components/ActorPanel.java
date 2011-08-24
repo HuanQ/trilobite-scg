@@ -13,7 +13,7 @@ import managers.Level;
 public class ActorPanel {
 	private final int										me;
 	private final Rectangle									myRectangle;
-	private final float										levelTime;
+	private final int										levelTime;
 	// Internal data
 	private final Vec2										nextPlaceOffset;
 	private final Vector<Integer>							shownActors;
@@ -22,7 +22,7 @@ public class ActorPanel {
 
 	public ActorPanel( int m ) {
 		me = m;
-		levelTime = Constant.getFloat(Level.lvlname + "_Time") * Constant.timerResolution;
+		levelTime = (int) (Constant.getFloat(Level.lvlname + "_Time") * Constant.timerResolution);
 		myRectangle = Component.shape.get(me).getRectangle();
 		nextPlaceOffset = new Vec2();
 		shownActors = new Vector<Integer>();
@@ -66,7 +66,7 @@ public class ActorPanel {
 			if( actorFile.exists() ) {
 				// Load
 				Actor act = new Actor(0, nextFileName, false);
-				int life = (int) (100 * act.getLifeLength() / levelTime);
+				int life = 100 * act.getLifeLength() / levelTime;
 				life = Math.min(life, 100);
 				Shape shp = new Shape(Constant.getShape("Ship_Shape"));
 				shp.getText().setText(Integer.toString(i));

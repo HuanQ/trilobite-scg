@@ -5,6 +5,7 @@ import geometry.Vec2;
 import managers.Component;
 import managers.Constant;
 import managers.Level;
+import managers.Sound;
 
 
 public class Gun {
@@ -30,6 +31,8 @@ public class Gun {
 		// Create a bullet
 		Vec2 bulletDirection = new Vec2(0, -Constant.getFloat("Ship_BulletSpeed"));
 		Level.AddBullet(bulletDirection, exitPoint, Killable.playerTeam);
+		
+		Sound.Play(Sound.shoot);
 	}
 
 }

@@ -17,6 +17,7 @@ import managers.Component;
 import managers.Constant;
 import managers.Clock;
 import managers.Level;
+import managers.Sound;
 
 import data.Snapshot;
 
@@ -91,8 +92,9 @@ public class Actor {
 					}
 				}
 				else {
-					// Draw dephasing
+					// Dephasing
 					Level.AddEffect( Component.placement.get(me).position, "Phase" );
+					Sound.Play(Sound.phase);
 					// Die
 					Component.deadObjects.add(me);
 				}

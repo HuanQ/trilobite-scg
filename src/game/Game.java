@@ -9,6 +9,7 @@ import managers.Constant;
 import managers.Level;
 import managers.Clock;
 import managers.Screen;
+import managers.Sound;
 
 import org.lwjgl.opengl.Display;
 
@@ -66,6 +67,7 @@ public class Game {
 		if( lowestAvailNumber != 0) {
 			int player = Level.AddPlayer( "resources/games/" + Level.lvlname + "/", lowestAvailNumber );
 	
+			Sound.Play(Sound.start);
 			// Run the game 
 			while ( Component.placement.get(player) != null && !victory ) {
 				Component.Update();
@@ -78,6 +80,7 @@ public class Game {
 			}
 			
 			if(victory) {
+				Sound.Play(Sound.win);
 				Component.record.get(player).Save();
 			}
 			

@@ -28,7 +28,7 @@ public class ProgressBar {
 	public ProgressBar( int m, final Vec3 col ) {
 		me = m;
 		color = col;
-		levelTime = (int) Constant.getFloat(Level.lvlname + "_Time") * Constant.timerResolution;
+		levelTime = (int) (Constant.getFloat(Level.lvlname + "_Time") * Constant.timerResolution);
 		bestTimes = new Vector<Float>();
 		
 		myRectangle = Component.shape.get(me).getRectangle();
