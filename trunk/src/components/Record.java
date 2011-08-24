@@ -58,7 +58,6 @@ public class Record {
 	public final void Save() {
 		// Save last position
 		recordedData.add( new Snapshot(Clock.getTime(Clock.game), eventsThisFrame, new Vec2(Component.placement.get(me).position)) );
-		
 		ObjectOutputStream outputStream = null;
 		try {
 	        FileOutputStream fileoutputstream = new FileOutputStream( file );

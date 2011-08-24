@@ -2,6 +2,7 @@ package components;
 
 import managers.Component;
 import managers.Level;
+import managers.Sound;
 
 
 public class Killable {
@@ -71,6 +72,7 @@ public class Killable {
 			else {
 				// Boom
 				Level.AddEffect( Component.placement.get(me).position, "Explosion" );
+				Sound.Play(Sound.explosion);
 				
 				Component.deadObjects.add(me);
 			}
