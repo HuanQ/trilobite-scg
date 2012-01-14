@@ -20,7 +20,7 @@ public class Menu {
 		Level.AddMouse();
 		Level.Init( "resources/data/menu/" + name + ".xml" );
 		
-		Clock.pause(Clock.game);
+		Clock.Pause(Clock.game);
 	}
 	
 	public final void start() {

@@ -8,6 +8,7 @@ import managers.Constant;
 import managers.Clock;
 import managers.Level;
 import managers.Screen;
+import managers.Sound;
 
 
 public class Dumb {
@@ -20,6 +21,7 @@ public class Dumb {
 	private final float											rotSpeed;
 	private final int											route;
 	private final float											rotateGoal;
+	private float												health;
 	// Internal data
 	private Angle												movementRotation;
 	private float												rotatedDistance = 0;
@@ -32,7 +34,7 @@ public class Dumb {
 	// 2: Stopping and spinning
 	// 3: Explode and shoot bullets everywhere
 
-	public Dumb( int m, float rspeed, final Angle rstart, int rt, float rg, float wt ) {
+	public Dumb( int m, float rspeed, final Angle rstart, int rt, float rg, float wt, float ht ) {
 		me = m;
 		rotSpeed = rspeed;
 		movementRotation = new Angle( rstart );
@@ -41,8 +43,10 @@ public class Dumb {
 		radius = Component.shape.get(me) == null ? 0 : Component.shape.get(me).getRadius();
 		wait = Clock.getTime(Clock.game) + (int) (wt * Constant.timerResolution);
 		selfRotate = Constant.getFloat("Dumb_Rotation");
+		health = ht;
 	}
 	
+	//TODO: Health (hits) als dumb i spawners (amb un so al tocar)
 	public final void Update() {
 		float dt = Clock.getDelta(Clock.game);
 		Component.placement.get(me).angle.add( selfRotate*dt );
@@ -79,19 +83,33 @@ public class Dumb {
 		
 		case 3:
 			// Explode
-			Angle a = new Angle((float) Math.PI);
+			Angle a = new Angle();
 			for(int i=0;i<Constant.getFloat("Dumb_NumBullets");++i) {
-				a.add((float) -Math.PI / (Constant.getFloat("Dumb_NumBullets")+1));
+				a.add((float) Math.PI / (Constant.getFloat("Dumb_NumBullets")+1));
 				
 				Vec2 bulletDirection = a.getDirection();
 				bulletDirection.scale(Constant.getFloat("Dumb_BulletSpeed"));
 				Vec2 bulletPosition = new Vec2(Component.placement.get(me).position);
 
-				Level.AddBullet(bulletDirection, bulletPosition, Killable.enemyTeam);
+				Level.AddBullet(bulletDirection, bulletPosition, Killable.enemyBulletTeam);
 			}
 			Component.deadObjects.add(me);
 			break;
 		}
+	}
+	
+	public final void Hit( float dmg ) {
+		health -= dmg;
+		if(health <= 0) {
+			Die();
+		}
+	}
+	
+	public final void Die() {
+		// Boom
+		Level.AddEffect( Component.placement.get(me).position, "Explosion" );
+		Sound.Play(Sound.explosion);
+		Component.deadObjects.add(me);
 	}
 	
 	private final void doNormal( float dt ) {
@@ -110,4 +128,5 @@ public class Dumb {
 		}
 		mover.Move( movementRotation.getDirection() );
 	}
+	
 }

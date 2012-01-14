@@ -74,7 +74,7 @@ public class SimpleBlaster implements Sequence {
 			Component.bullet.put( id, new Bullet(id, bulletDirection) );
 			Component.placement.put( id, new Placement( new Vec2(spawnPoint) ) );
 			Component.drawer.put( id, new Drawer(id, Constant.getVector("Bullet_Color") ) );
-			Component.killable.put( id, new Killable(id, Killable.enemyTeam) );
+			Component.killable.put( id, new Killable(id, Killable.enemyBulletTeam) );
 		
 			a.add( shootingArc/(numBullets-1) );
 		}

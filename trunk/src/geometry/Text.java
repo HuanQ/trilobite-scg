@@ -39,25 +39,34 @@ public class Text extends Polygon {
 		return text;
 	}
 	
-	public final void multSize( float f ) {}
+	public final void Scale( float m ) {
+		offset.scale(m);
+	}
 	
 	@SuppressWarnings("deprecation")
 	public final void Draw( final Vec2 pos, final Vec3 defColor, final Angle rot ) {
-		Vec2 realPos = new Vec2(pos.x+offset.x, pos.y+offset.y);
+		Vec2 realPos = new Vec2(pos);
+		Vec2 offsetSize = new Vec2(offset.x, offset.y);
+		realPos.add(offsetSize);
 		if( Screen.inScreen(realPos, 0) ) {
 			// Final position
-			Vec2 screenPos = Screen.coords(realPos);
+			Vec2 screenPos = Screen.coords(pos);
+			Vec2 screenOffset = Screen.coords(offsetSize, false);
 			// Final color
 			Vec3 finalColor = new Vec3(defColor);
 			finalColor.mult(color);
 			finalColor.mult(Component.fader.color);
 			Color col = new Color(finalColor.x, finalColor.y, finalColor.z);
-			glTranslatef(0.f, 0.f, layer);
+			glLoadIdentity();
+			//glTranslatef(screenPos.x - Constant.font[size].getWidth(text)/2, screenPos.y - Constant.font[size].getHeight()/2, layer);
+			glTranslatef(screenPos.x, screenPos.y, layer);
 			glRotatef( (float) Math.toDegrees(rot.get()), 0, 0, 1 );
+			glTranslatef(screenOffset.x, screenOffset.y, 0);
+			glTranslatef(-Constant.font[size].getWidth(text)/2, -Constant.font[size].getHeight()/2, 0);
 
 			glEnable(GL_TEXTURE_2D);
 			
-			Constant.font[size].drawString(screenPos.x - Constant.font[size].getWidth(text)/2, screenPos.y - Constant.font[size].getHeight()/2, text, col);
+			Constant.font[size].drawString(0, 0, text, col);
 			glLoadIdentity();
 		}
 	}
@@ -66,7 +75,7 @@ public class Text extends Polygon {
 		text = str;
 	}
 	
-	public final boolean Collides(final Vec2 myPos, final Polygon p, final Vec2 hisPos) {
+	public final boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos, final Angle myRot, final Angle hisRot ) {
 		return false;
 	}
 	

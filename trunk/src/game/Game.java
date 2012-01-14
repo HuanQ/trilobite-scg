@@ -13,6 +13,8 @@ import managers.Sound;
 
 import org.lwjgl.opengl.Display;
 
+import components.PanelActors;
+
 public class Game {
 	private boolean												victory = false;
 	
@@ -30,8 +32,8 @@ public class Game {
 		Constant.Init();
 		Component.Init();
 		Clock.Init();
-		Level.Init( "resources/data/level/" + Level.lvlname + ".xml" );
 		Level.Init( "resources/data/hud/game.xml" );
+		Level.Init( "resources/data/level/" + Level.lvlname + ".xml" );
 		Level.Init( "resources/data/level/Background.xml" );
 		
 		// Helpers pop up the first time we play the Intro level 
@@ -42,19 +44,21 @@ public class Game {
 		Component.fader.set(Vec3.black);
 	}
 	
-	public final void start() {
+	public final void start( final String shipType ) {
+		Sound.Play(Sound.start);
+		
 		Component.fader.FadeToWhite();
-		Clock.pause(Clock.game);
+		Clock.Pause(Clock.game);
 		
 		// Insert Player and Actors
 		String nextFileName;
-		File actorFile;
 		int lowestAvailNumber = 0;
 		for(int i=1; i<Constant.getFloat("Rules_MaxActors"); ++i) {
-			nextFileName = "resources/games/" + Level.lvlname + "/" + i + ".dat";
-			actorFile = new File(nextFileName);
-			if( actorFile.exists() ) {
-				Level.AddActor(nextFileName, i);
+			String base = "resources/games/" + Level.lvlname + "/" + i;
+			String extension = PanelActors.getFileName(base);
+			if( extension != null ) {
+				nextFileName = base + "." + extension;
+				Level.AddActor(nextFileName, i, extension);
 			}
 			else if ( lowestAvailNumber == 0 ) {
 				lowestAvailNumber = i;
@@ -65,20 +69,22 @@ public class Game {
 		Component.progressbar.addActors();
 		
 		if( lowestAvailNumber != 0) {
-			int player = Level.AddPlayer( "resources/games/" + Level.lvlname + "/", lowestAvailNumber );
+			int player = Level.AddPlayer( "resources/games/" + Level.lvlname + "/", lowestAvailNumber, shipType );
 	
-			Sound.Play(Sound.start);
-			// Run the game 
+			// Run the game
+			boolean startPaused = true;
 			while ( Component.placement.get(player) != null && !victory ) {
 				Component.Update();
 				Component.Render();
 				Display.update();
-				Display.sync(100);
-				if(Clock.isPaused(Clock.game) && Component.fader.isDone()) {
-					Clock.unpause(Clock.game);
+				Display.sync(60);
+				if(startPaused && Component.fader.isDone()) {
+					Clock.Unpause(Clock.game);
+					startPaused = false;
 				}
 			}
 			
+			Clock.UnmaskAll();
 			if(victory) {
 				Sound.Play(Sound.win);
 				Component.record.get(player).Save();
@@ -98,4 +104,5 @@ public class Game {
 	public final void end() {
 		victory = true;
 	}
+	
 }

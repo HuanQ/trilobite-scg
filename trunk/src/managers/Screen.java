@@ -97,7 +97,7 @@ public class Screen {
 	}
 	
 	static public final Vec2 coords( final Vec2 sz, boolean stretch ) {
-		// Returns the size of a rectangle streched or not
+		// Returns the size of a rectangle streched or otherwise
 		if(stretch) {
 			return new Vec2( sz.x*screenSize.x, sz.y*screenSize.y );
 		}

@@ -7,12 +7,13 @@ import geometry.Rectangle;
 import geometry.Vec2;
 import geometry.Vec3;
 import graphics.Sprite;
+import managers.Clock;
 import managers.Component;
+import managers.Constant;
+import managers.Level;
 import managers.Screen;
 
 import org.lwjgl.input.Mouse;
-
-import sequences.SimpleDumb;
 
 public class Pointer {
 	static public final int									mouse = 0;
@@ -26,17 +27,16 @@ public class Pointer {
 	private boolean											pressed = false;
 	private int												state = 0;
 	// Internal data
-	private Vec2											firstClick;
-	private Vec2											secondClick;
+	private Vec2											firstClick = null;
+	private Vec2											secondClick = null;
 	private Integer											currentID;
-	private Polygon											myPoly;
+	private Polygon											myPoly = null;
+	private int												mySequence = 0;
 	private boolean											limitMouse = false;
 	
+	//TODO: Fer composition aqui, tenir una Tool<-AddSquare i enviar-li firstclick i secondclick
 	public Pointer( int m ) {
 		me = m;
-		firstClick = null;
-		secondClick = null;
-		myPoly = null;
 	}
 	
 	public final boolean isActive() {
@@ -77,6 +77,35 @@ public class Pointer {
 			Screen.reposition("game", max);
 		}
 		Component.placement.get(me).position.clamp(min, max);
+		
+		int wheelMove = Mouse.getDWheel();
+		if( wheelMove != 0 ) {
+			switch(state) {
+			case Pointer.addcircle:
+			case Pointer.addsquare:
+				//TODO: Ciclar entre les textures del format adequat amb la rodeta
+				break;
+			case Pointer.addspawner:
+				// Cycling between sequences
+				if(firstClick != null) {
+					int mov = wheelMove > 0 ? 1 : -1;
+					mySequence = (mySequence + mov + Constant.sequenceList.size()) % Constant.sequenceList.size();
+					String seqName = Constant.sequenceList.get(mySequence);
+					Component.spawner.get(currentID).setSequence( Level.getSequence(seqName) );
+					Component.shape.put( currentID, new Shape(Constant.getShape(seqName + "_Shape")) );
+					
+					// Floating text show us our selection
+					Integer id = Component.getID();
+					Component.placement.put( id, new Placement( new Vec2(firstClick)) );
+					Component.drawer.put( id, new Drawer(id) );
+					Shape shp = new Shape(Constant.getShape("FloatingText_Shape"));
+					shp.getText().setText(seqName);
+					Component.shape.put( id, shp );
+					Component.timedObject.put( id, new Timed(id, 1, Clock.real) );
+				}
+				break;
+			}
+		}
 		
 		if( Mouse.isButtonDown(0) || Mouse.isButtonDown(1) ) {
 			if(!pressed) {
@@ -177,10 +206,21 @@ public class Pointer {
 			
 			currentID = Component.getID();
 			Component.placement.put( currentID, new Placement(firstClick) );
-			Component.spawner.put( currentID, new Spawner(currentID, new Angle(3.14f), 0, new SimpleDumb("LeftDumb")) );
+			Component.spawner.put( currentID, new Spawner(currentID, new Angle(3.14f), 0, Level.getSequence(Constant.sequenceList.get(mySequence))) );
 			Component.drawer.put( currentID, new Drawer(currentID) );
+			Component.shape.put( currentID, new Shape(Constant.getShape( Constant.sequenceList.get(mySequence) + "_Shape")) );
 			Component.xml.put(currentID, new Xml(currentID));
+		}
+		else if(secondClick == null) {
+			secondClick = new Vec2(Component.placement.get(me).position);
 			
+			Vec2 dir = new Vec2(secondClick);
+			dir.sub(firstClick);
+			Angle a = new Angle();
+			a.set(dir);
+			Component.spawner.get(currentID).setDirection( a );
+			
+			// Leave the spawner
 			currentID = Integer.MIN_VALUE;
 			myPoly = null;
 			firstClick = null;

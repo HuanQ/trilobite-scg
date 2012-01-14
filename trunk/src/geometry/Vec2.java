@@ -536,6 +536,7 @@ public final class Vec2 implements java.io.Serializable, Cloneable {
 		this.y = (1-alpha)*this.y + alpha*t1.y;
 	} 
 
+
 	/**
 	 * Computes the dot product of the this vector and vector v1.
 	 * @param v1 the other vector

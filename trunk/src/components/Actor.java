@@ -87,8 +87,11 @@ public class Actor {
 					if( (event & Record.gunShot) > 0 && Component.gun.get(me) != null ) {
 						Component.gun.get(me).Shoot();
 					}
-					else if( (event & Record.shield) > 0 && Component.shield.get(me) != null ) {
+					if( (event & Record.shield) > 0 && Component.shield.get(me) != null ) {
 						Component.shield.get(me).Raise();
+					}
+					if( (event & Record.rotation) > 0 ) {
+						Component.placement.get(me).angle.set( prevSnap.rotation );
 					}
 				}
 				else {
@@ -104,6 +107,7 @@ public class Actor {
 			// Move our actor according to our data
 			float alpha = Actor.interpolateNow( prevSnap.getTime(), nextSnap.getTime() );
 			Component.placement.get(me).position.interpolate( prevSnap.position, nextSnap.position, alpha );
+			
 			// Add trace
 			addTrace();
 		}

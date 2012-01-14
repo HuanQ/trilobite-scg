@@ -38,5 +38,12 @@
 				</Text>
 			</Shape>
 		</Planet>
+		
+		<RoundChoice>
+			<Point x="0.85" y="0.85" side="full"/>
+			<Arc>1.57</Arc>
+			<Direction>-2.35</Direction>
+			<Distance>0.17</Distance>
+		</RoundChoice>
 	</Menu>>
 </Trilobite>

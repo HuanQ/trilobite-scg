@@ -35,6 +35,8 @@ public class Sprite {
 	 * @param sprite to copy
 	 */
 	static public final String getRect( final Vec2 size ) {
+		//TODO: Afegir tecnologia per a girar els grafics 90º, 180º i 270º (amb la rodeta?) per a tenir nomes les carpetes 1x1, 2x1, 3x1, 4x1
+		
 		int proportion = (int) (Math.max(size.x, size.y) / Math.min(size.x, size.y));
 		proportion = Math.max(proportion, 1);
 		proportion = Math.min(proportion, 4);
@@ -108,13 +110,14 @@ public class Sprite {
 	 * @param x The x location at which to draw this sprite
 	 * @param y The y location at which to draw this sprite
 	 */
-	public final void Draw(float x, float y, float z, float rot) {
+	public final void Draw( Vec2 pos, float layer, Vec2 offset, float rot ) {
 		// bind to the appropriate texture for this sprite
 		texture.bind();
 
 		// translate to the right location and prepare to draw
-		glTranslatef(x, y, z);
+		glTranslatef(pos.x, pos.y, layer);
 		glRotatef( (float) Math.toDegrees(rot), 0, 0, 1 );
+		glTranslatef(offset.x, offset.y, 0);
 
 		// draw a quad textured to match the sprite
 		glBegin(GL_QUADS);

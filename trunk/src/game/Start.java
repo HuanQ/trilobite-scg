@@ -1,5 +1,7 @@
 package game;
 
+import managers.Constant;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -20,6 +22,7 @@ public class Start {
 	static private Menu										menu;
 	static private Game										game;
 	static private Editor									editor;
+	static public String									nextship;
 	
 	public final void start() {
 		Start.initGraphics();
@@ -34,6 +37,7 @@ public class Start {
 				break;
 				
 			case Start.gameMenu:
+				nextship = Constant.GliderShip;
 				menu = new Menu("ingame" );
 				menu.start();
 				menu = null;
@@ -53,7 +57,7 @@ public class Start {
 				
 			case Start.startGame:
 				game = new Game();
-				game.start();
+				game.start( nextship );
 				game = null;
 				break;
 				
@@ -119,7 +123,7 @@ public class Start {
 			//dm = Display.getDesktopDisplayMode();
 			dm = new DisplayMode(1024, 800);
 			Display.setDisplayMode(dm);
-			Display.setFullscreen(false);
+			Display.setFullscreen(true);
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();

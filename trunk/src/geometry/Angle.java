@@ -22,7 +22,10 @@ public class Angle {
 	}
 	
 	public final void set( final Vec2 dir ) {
-		set( (float) Math.atan(dir.y/dir.x) );
+		float f = (float) Math.atan(dir.y/dir.x);
+		if( dir.x < 0 )
+			f += Math.PI;
+		set(f);
 	}
 	
 	public final void set( float r ) {
@@ -31,8 +34,8 @@ public class Angle {
 	}
 	
 	public final void add( float r ) {
-		float turns = (float) Math.floor(r + rotation / (2 * Math.PI));
-		rotation +=  r - turns * (2 * (float) Math.PI);
+		rotation += r;
+		set(rotation);
 	}
 	
 	public final Vec2 getDirection() {
@@ -41,5 +44,9 @@ public class Angle {
 	
 	public final String toString() {
 		return String.valueOf(rotation);
+	}
+	
+	public final boolean isZero() {
+		return rotation == 0;
 	}
 }

@@ -52,7 +52,7 @@
 			</Shape>
 		</Button>
 	</Tools>
-	
+
 	<Commands zone="left">
 		<Button>
 			<Point x="0.7625" y="0.75"/>
