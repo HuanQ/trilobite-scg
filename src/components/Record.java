@@ -18,10 +18,10 @@ import managers.Clock;
 
 public class Record {
 	// Event types
-	static final int													positionChange = 1;
 	static final int													movement = 1;
-	static final int													gunShot = 2;
-	static final int													shield = 4;
+	static final int													rotation = 2;
+	static final int													gunShot = 4;
+	static final int													shield = 8;
 	
 	private final int													me;
 	// Internal data
@@ -33,21 +33,18 @@ public class Record {
 	private float														tickAccumulatedTime = 0;
 	private File														file;
 	
-	public Record( int m, final String path ) {
+	public Record( int m, final String path, int num, final String sp ) {
 		me = m;
-		int i = 1;
-		do {
-			file = new File(path + i + ".dat");
-			i++;
-		} while( file.exists() );		
+		file = new File(path + num + "." + sp);
 	}
 	
-	public final void addEvent( int event, int[] data ) {
+	public final void addEvent( int event ) {
 		eventsThisFrame = eventsThisFrame | event;
 		switch(event) {
 		case movement:
 			break;
 			
+		case rotation:
 		case gunShot:
 		case shield:
 			needUpdate = true;
@@ -57,7 +54,7 @@ public class Record {
 	
 	public final void Save() {
 		// Save last position
-		recordedData.add( new Snapshot(Clock.getTime(Clock.game), eventsThisFrame, new Vec2(Component.placement.get(me).position)) );
+		recordedData.add( new Snapshot(Clock.getTime(Clock.game), eventsThisFrame, new Vec2(Component.placement.get(me).position), Component.placement.get(me).angle.get()) );
 		ObjectOutputStream outputStream = null;
 		try {
 	        FileOutputStream fileoutputstream = new FileOutputStream( file );
@@ -109,7 +106,7 @@ public class Record {
 			
 			if( needUpdate && dt > 0) {
 				// TODO: Quan has fet un canvi el que has de grabar, en realitat, és lastposition, no myPos! (ojo que si tens event has de grabar també mypos amb l'event)
-				recordedData.add( new Snapshot(Clock.getTime(Clock.game), eventsThisFrame, new Vec2(myPos) ) );
+				recordedData.add( new Snapshot(Clock.getTime(Clock.game), eventsThisFrame, new Vec2(myPos), Component.placement.get(me).angle.get() ) );
 				
 				// Prepare the data for the next frame
 				eventsThisFrame = 0;

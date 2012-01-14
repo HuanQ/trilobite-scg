@@ -39,13 +39,13 @@ public abstract class Polygon {
 	// TODO: Estalviar-se aixo per a poder afegir formes mes facilment
 	public abstract int whoAmI();
 	
-	public abstract void multSize( float m );
+	public abstract void Scale( float m );
 	
 	public abstract void WriteXML( Document doc, Element root );
 	
-	public abstract void Draw( final Vec2 pos, final Vec3 defColor, final Angle rot);
+	public abstract void Draw( final Vec2 pos, final Vec3 defColor, final Angle rot );
 	
-	public abstract boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos);
+	public abstract boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos, final Angle myRot, final Angle hisRot );
 	
 	public final float getSqRadius() {
 		return sqradius;

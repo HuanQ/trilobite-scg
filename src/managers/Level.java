@@ -89,6 +89,17 @@ public class Level {
 							speed
 							);
 				}
+				else if(nextType.getNodeName() == "Decoration") {
+					NamedNodeMap attr2 = nextType.getAttributes();
+					float speed = 1;
+					if( attr2.getNamedItem("speed") != null ) {
+						speed = Float.valueOf( attr2.getNamedItem("speed").getTextContent() );
+					}
+					AddDecoration( NodeReader.readPlace( readNodes.get("Point"), zone ),
+							NodeReader.readShape( readNodes.get("Shape"), zone ),
+							speed
+							);
+				}
 				else if(nextType.getNodeName() == "Spawner") {
 					Sequence seq = getSequence( NodeReader.readString(readNodes.get("Sequence")) );
 					Shape shp = NodeReader.readShape( readNodes.get("Shape"), zone );
@@ -110,6 +121,13 @@ public class Level {
 					AddPlanet( NodeReader.readPlace( readNodes.get("Point"), zone ),
 							NodeReader.readShape( readNodes.get("Shape"), zone ),
 							NodeReader.readString( readNodes.get("Function") )
+							);
+				}
+				else if(nextType.getNodeName() == "RoundChoice") {
+					AddRoundChoice( NodeReader.readPlace( readNodes.get("Point"), zone ),
+							NodeReader.readFloat( readNodes.get("Direction") ),
+							NodeReader.readFloat( readNodes.get("Arc") ),
+							NodeReader.readFloat( readNodes.get("Distance") )
 							);
 				}
 				else if(nextType.getNodeName() == "Image") {
@@ -170,23 +188,55 @@ public class Level {
 		return pos;
 	}
 	
-	static public final Integer AddPlayer( final String path, int number) {
+	static public final Integer AddPlayer( final String path, int number, final String shipType ) {
 		Integer playerID = Component.getID();
-		Component.input.put( playerID, new Input(playerID, Input.playerKeyboard) );
-		Component.placement.put( playerID, new Placement(getSpawnPoint(number-1)) );
-		Component.drawer.put( playerID, new Drawer(playerID ) );
-		Component.gun.put( playerID, new Gun(playerID, Constant.getPoint("Ship_Point")) );
-		Component.shield.put( playerID, new Shield(playerID, Constant.getFloat("Ship_ShieldTime")) );
-		Component.mover.put( playerID, new Mover(playerID, Constant.getFloat("Ship_Speed"), true, Clock.game) );
-		Component.shape.put( playerID, Constant.getShape("Ship_Shape") );
-		Component.killable.put( playerID, new Killable(playerID, Killable.playerTeam) );
-		Component.record.put( playerID, new Record(playerID, path) );
-		Component.sticky.put( playerID, new Sticky(playerID) );
-		Component.shield.get(playerID).Raise();
-		Component.energybar.Exhaust();
 		
+		Component.placement.put( playerID, new Placement(getSpawnPoint(number-1)) );
+		
+		Input ip;
+		Mover mv;
+		Gun gn;
+		Shield sh;
+		//TODO: Aixo ha de venir per el xml?
+		if( shipType == Constant.AgileShip || shipType == Constant.DefendShip ) {
+			mv = new Mover(playerID, Constant.getFloat(shipType + "_Speed"), Constant.getFloat(shipType + "_RotationSpeed"), true, Clock.play);
+			if( shipType == Constant.AgileShip ) {
+				gn = new GunAimed(playerID, Constant.getFloat(shipType + "_GunDist"), Constant.getFloat(shipType + "_BulletSpeed") );
+				sh = new ShieldSlowmotion(playerID, Constant.getFloat(shipType + "_ShieldTime"));
+				ip  = new InputShipFixed(playerID, Constant.getFloat(shipType + "_GunCooldown"), Constant.getFloat(shipType + "_ShieldCooldown"));
+			}
+			else {
+				gn = new GunLaser(playerID, Constant.getFloat(shipType + "_GunDist"), Constant.getFloat(shipType + "_DamagePerSecond") );
+				sh = new ShieldWings(playerID, Constant.getFloat(shipType + "_ShieldTime"));
+				ip  = new InputShipFixed(playerID, Constant.getFloat("Performance_LaserCooldown"), Constant.getFloat(shipType + "_ShieldCooldown"));
+			}
+		}
+		else {
+			ip  = new InputShipFree(playerID, Constant.getFloat(shipType + "_GunCooldown"), Constant.getFloat(shipType + "_ShieldCooldown"));
+			mv = new Mover(playerID, Constant.getFloat(shipType + "_Speed"), 0, true, Clock.play);
+			gn = new GunNormal( playerID, Constant.getFloat(shipType + "_GunDist"), Constant.getFloat(shipType + "_BulletSpeed"), Constant.getFloat(shipType + "_GunSeparation"), (int) Constant.getFloat(shipType + "_GunShots") );
+			if(shipType == Constant.TankShip) {
+				sh = new ShieldBomb(playerID, Constant.getFloat(shipType + "_ShieldTime"));
+			}
+			else {
+				sh = new ShieldInvulnerable(playerID, Constant.getFloat(shipType + "_ShieldTime"));
+			}
+		}
+		
+		Component.input.put( playerID, ip );
+		Component.drawer.put( playerID, new Drawer(playerID ) );
+		Component.gun.put( playerID, gn );
+		Component.shield.put( playerID, sh );
+		
+		Component.mover.put( playerID, mv );
+		Component.shape.put( playerID, Constant.getShape(shipType + "_Shape") );
+		Component.killable.put( playerID, new Killable(playerID, Killable.playerTeam) );
+		Component.record.put( playerID, new Record(playerID, path, number, shipType) );
+
 		Text t = Component.shape.get(playerID).getText();
 		t.setText(Integer.toString(number));
+		Component.energybar.Exhaust( Constant.getFloat(shipType + "_ShieldCooldown") );
+		//TODO: Invul inicial -> Component.shield.get(playerID).Raise();
 
 		return playerID;
 	}
@@ -203,29 +253,51 @@ public class Level {
 	
 	static public final void AddEditorControls() {
 		Integer id = Component.getID();
-		Component.input.put(id, new Input(id, Input.editorKeyboard) );
+		Component.input.put(id, new InputEditor(id) );
 	}
 	
-	static public final void AddActor( final String path, int number ) {
+	static public final void AddActor( final String path, int number, final String shipType ) {
 		Integer id = Component.getID();
+		
 		Component.placement.put( id, new Placement() );
+		
+		Gun gn;
+		Shield sh;
+		if( shipType == Constant.AgileShip ) {
+			gn = new GunAimed(id, Constant.getFloat(shipType + "_GunDist"), Constant.getFloat(shipType + "_BulletSpeed") );
+			sh = new ShieldSlowmotion(id, Constant.getFloat(shipType + "_ShieldTime"));
+		}
+		else if( shipType == Constant.DefendShip ) {
+			gn = new GunLaser(id, Constant.getFloat(shipType + "_GunDist"), Constant.getFloat(shipType + "_DamagePerSecond") );
+			sh = new ShieldWings(id, Constant.getFloat(shipType + "_ShieldTime"));
+		}
+		else {
+			gn = new GunNormal(id, Constant.getFloat(shipType + "_GunDist"), Constant.getFloat(shipType + "_BulletSpeed"), Constant.getFloat(shipType + "_GunSeparation"), (int) Constant.getFloat(shipType + "_GunShots") );
+			if(shipType == Constant.TankShip) {
+				sh = new ShieldBomb(id, Constant.getFloat(shipType + "_ShieldTime"));
+			}
+			else {
+				sh = new ShieldInvulnerable(id, Constant.getFloat(shipType + "_ShieldTime"));
+			}
+		}
+		
 		Component.actor.put( id, new Actor(id, path, true) );
 		Component.drawer.put( id, new Drawer(id, Constant.getVector("Actor_Color") ) );
-		Component.gun.put( id, new Gun(id, Constant.getPoint("Ship_Point")) );
-		Component.shield.put( id, new Shield(id, Constant.getFloat("Ship_ShieldTime")) );
-		Component.shape.put( id, new Shape(Constant.getShape("Ship_Shape")) );
+		Component.gun.put( id, gn );
+		Component.shield.put( id, sh );
+		Component.shape.put( id, new Shape(Constant.getShape(shipType + "_Shape")) );
 		Component.killable.put( id, new Killable(id, Killable.playerTeam) );
 		
 		Text t = Component.shape.get(id).getText();
 		t.setText(Integer.toString(number));
-		Component.shield.get(id).Raise();
+		//TODO: Invul inicial -> Component.shield.get(playerID).Raise();
 	}
 	
 	static public final void AddProgressBar( final Vec2 pos, final Shape shp, final Vec3 color ) {
 		Integer id = Component.getID();
 		Component.placement.put( id, new Placement(pos) );
 		Component.shape.put( id, shp );
-		Component.progressbar = new ProgressBar(id, color);
+		Component.progressbar = new Progress(id, color);
 		Component.drawer.put( id, new Drawer(id) );
 		Component.sticky.put( id, new Sticky(id) );
 	}
@@ -234,7 +306,7 @@ public class Level {
 		Integer id = Component.getID();
 		Component.placement.put( id, new Placement(pos) );
 		Component.shape.put( id, shp );
-		Component.energybar = new EnergyBar(id, empty, full);
+		Component.energybar = new Energy(id, empty, full);
 		Component.drawer.put( id, new Drawer(id) );
 		Component.sticky.put( id, new Sticky(id) );
 	}
@@ -250,7 +322,7 @@ public class Level {
 	static private final void AddActorPanel( final Vec2 pos, final Shape shp ) {
 		Integer id = Component.getID();
 		Component.shape.put( id, shp );
-		Component.actorpanel = new ActorPanel(id);
+		Component.actorpanel = new PanelActors(id);
 		Component.placement.put( id, new Placement(pos) );
 		Component.drawer.put( id, new Drawer(id) );
 		Component.sticky.put( id, new Sticky(id) );
@@ -274,6 +346,13 @@ public class Level {
 		Component.shape.put( id, shp );
 		Component.clickable.put(id, new Clickable(id, func) );
 		Component.sticky.put( id, new Sticky(id) );
+	}
+	
+	static private final void AddRoundChoice( final Vec2 pos, float dir, float arc, float dist ) {
+		Integer id = Component.getID();
+		Component.placement.put( id, new Placement(pos) );
+		Component.drawer.put( id, new Drawer(id) );
+		Component.roundChoice.put( id, new ChoiceShip(id, dir, arc, dist) );
 	}
 	
 	static private final void AddPlanet( final Vec2 pos, final Shape shp, final String func ) {
@@ -303,9 +382,14 @@ public class Level {
 		Component.shape.put( id, shp );
 		Component.killable.put( id, new Killable(id, Killable.terrain) );
 		Component.xml.put( id, new Xml(id) );
+		
+		// Add to the progressbar
+		if( Component.progressbar != null ) {
+			Component.progressbar.addWall( new Vec2(pos), new Shape(shp) );
+		}
 	}
 	
-	static private final Sequence getSequence( final String seqName ) {
+	static public final Sequence getSequence( final String seqName ) {
 		Sequence ret = null;
 		if( Constant.getString(seqName + "_Type").equals("SimpleDumb") ) {
 			ret = new SimpleDumb(seqName);
@@ -330,7 +414,7 @@ public class Level {
 
 	static public final void AddTrace( final Vec2 pos, float duration, final Shape shp, float rot ) {
 		Integer id = Component.getID();
-		Component.timedObject.put( id, new TimedObject(id, duration, Clock.game) );
+		Component.timedObject.put( id, new Timed(id, duration, Clock.game) );
 		Component.placement.put( id, new Placement(pos) );
 		Component.drawer.put( id, new Drawer(id) );
 		Component.shape.put( id, shp );
@@ -347,7 +431,7 @@ public class Level {
 	
 	static public final void AddAnnoyingCircle( final Vec2 pos, float blinkTime ) {
 		Integer id = Component.getID();
-		Component.timedObject.put( id, new TimedObject(id, blinkTime, Clock.ui) );
+		Component.timedObject.put( id, new Timed(id, blinkTime, Clock.ui) );
 		Component.placement.put( id, new Placement(new Vec2(pos)) );
 		Component.drawer.put( id, new Drawer(id, Constant.getVector("Helper_Color")) );
 		Component.shape.put( id, Constant.getShape("Helper_Shape")  );
@@ -356,7 +440,7 @@ public class Level {
 	
 	static public final void AddEffect( final Vec2 pos, final String name ) {
 		Integer id = Component.getID();
-		Component.timedObject.put( id, new TimedObject(id, Constant.getFloat(name + "_Duration"), Clock.game) );
+		Component.timedObject.put( id, new Timed(id, Constant.getFloat(name + "_Duration"), Clock.game) );
 		Component.placement.put( id, new Placement( new Vec2(pos)) );
 		Component.drawer.put( id, new Drawer(id) );
 		Component.shape.put( id, Constant.getShape(name + "_Shape")  );

@@ -15,21 +15,24 @@ public class Snapshot implements Serializable {
 	private final int											time;
 	private final int											events;
 	public final Vec2											position;
+	public final float											rotation;
 	
-	public Snapshot( int t, int ev, Vec2 pos) {
+	public Snapshot( int t, int ev, Vec2 pos, float rot) {
 		time = t;
 		events = ev;
 		position = pos;
+		rotation = rot;
 	}
 	
 	public Snapshot(Snapshot snp) {
 		time = snp.getTime();
 		events = snp.getEvent();
 		position = snp.position;
+		rotation = snp.rotation;
 	}
 
 	public final String toString() {
-		return "(" + time + ", " + events + ", " + position + ")";
+		return "(" + time + ", " + events + ", " + position + ", " + rotation + ")";
 	}
 
 	public final boolean isDone() {

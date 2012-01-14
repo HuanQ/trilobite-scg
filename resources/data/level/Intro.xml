@@ -4,7 +4,7 @@
          <Direction>0.15</Direction>
          <Sequence>Blaster30</Sequence>
          <Wait>0.5</Wait>
-         <Point x="0.16625" y="-0.36624968"/>
+         <Point x="0.16625" y="-0.375"/>
          <Shape>
             <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
                <Color b="0.0" g="0.5" r="1.0"/>

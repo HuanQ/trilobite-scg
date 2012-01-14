@@ -45,9 +45,10 @@ public class Circle extends Polygon {
 		return radius;
 	}
 	
-	public final void multSize( float m ) {
+	public final void Scale( float m ) {
 		radius *= m;
 		sqradius = radius*radius;
+		offset.scale(m);
 	}
 	
 	public final int whoAmI() {
@@ -56,10 +57,13 @@ public class Circle extends Polygon {
 	
 	public final void Draw( final Vec2 pos, final Vec3 defColor, final Angle rot ) {
 
-		Vec2 realPos = new Vec2(pos.x+offset.x, pos.y+offset.y);
+		Vec2 realPos = new Vec2(pos);
+		Vec2 offsetSize = new Vec2(offset.x, offset.y);
+		realPos.add(offsetSize);
 		if( Screen.inScreen(realPos, radius) ) {
 			// Final position
-			Vec2 screenPos = Screen.coords(realPos);
+			Vec2 screenPos = Screen.coords(pos);
+			Vec2 screenOffset = Screen.coords(offsetSize, false);
 			// Final color
 			Vec3 finalColor = new Vec3(defColor);
 			finalColor.mult(color);
@@ -74,6 +78,7 @@ public class Circle extends Polygon {
 				glDisable(GL_TEXTURE_2D);
 				glTranslatef(screenPos.x, screenPos.y, layer);
 				glRotatef( (float) Math.toDegrees(rot.get()), 0, 0, 1 );
+				glTranslatef(screenOffset.x, screenOffset.y, layer);
 
 				glBegin(GL_TRIANGLE_FAN);
 				glVertex2f(0, 0);
@@ -94,12 +99,12 @@ public class Circle extends Polygon {
 		    	glEnable(GL_TEXTURE_2D);
 		    	texture.setWidth( (int) screenRadius*2 );
 				texture.setHeight( (int) screenRadius*2 );
-		    	texture.Draw(screenPos.x, screenPos.y, layer, rot.get());
+		    	texture.Draw(screenPos, layer, screenOffset, rot.get());
 		    }
 		}
 	}
 	
-	public final boolean Collides(final Vec2 myPos, final Polygon p, final Vec2 hisPos) {
+	public final boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos, final Angle myRot, final Angle hisRot ) {
 		Vec2 myAbsPos = new Vec2( myPos.x+offset.x, myPos.y+offset.y);
 		if(p == null) {
 			return myAbsPos.distanceSquared(hisPos) < sqradius;

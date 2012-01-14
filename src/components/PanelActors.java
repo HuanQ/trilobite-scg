@@ -10,7 +10,7 @@ import managers.Component;
 import managers.Constant;
 import managers.Level;
 
-public class ActorPanel {
+public class PanelActors {
 	private final int										me;
 	private final Rectangle									myRectangle;
 	private final int										levelTime;
@@ -20,7 +20,7 @@ public class ActorPanel {
 	private boolean											reload = false;
 	private boolean											victory = false;
 
-	public ActorPanel( int m ) {
+	public PanelActors( int m ) {
 		me = m;
 		levelTime = (int) (Constant.getFloat(Level.lvlname + "_Time") * Constant.timerResolution);
 		myRectangle = Component.shape.get(me).getRectangle();
@@ -57,18 +57,20 @@ public class ActorPanel {
 		
 		// Load Actors
 		String nextFileName;
-		File actorFile;
 		boolean newline = true;
 		int highestLife = 0;
+		int shownPosition = 1;
 		for(int i=1; i<Constant.getFloat("Rules_MaxActors"); ++i) {
-			nextFileName = "resources/games/" + Level.lvlname + "/" + i + ".dat";
-			actorFile = new File(nextFileName);
-			if( actorFile.exists() ) {
+			String base = "resources/games/" + Level.lvlname + "/" + i;
+			String extension = getFileName(base);
+			if(extension != null) {
+				nextFileName = base + "." + extension;
+				
 				// Load
 				Actor act = new Actor(0, nextFileName, false);
 				int life = 100 * act.getLifeLength() / levelTime;
 				life = Math.min(life, 100);
-				Shape shp = new Shape(Constant.getShape("Ship_Shape"));
+				Shape shp = new Shape(Constant.getShape(extension + "_Shape"));
 				shp.getText().setText(Integer.toString(i));
 				if(life > highestLife) {
 					highestLife = life;
@@ -83,7 +85,7 @@ public class ActorPanel {
 				shp.add( new Shape(Constant.getShape("Delete_Shape")) );
 				Vec2 insertPos = new Vec2(Component.placement.get(me).position);
 
-				if(i == 1) {
+				if(shownPosition == 1) {
 					if(newline) {
 						nextPlaceOffset.x += shp.getRadius()/2;
 					}
@@ -91,6 +93,7 @@ public class ActorPanel {
 				}
 				insertPos.add(nextPlaceOffset);
 				shownActors.add( Level.AddActorIndicator(insertPos, shp, i) );
+				++shownPosition;
 				
 				// Move nextplace
 				nextPlaceOffset.x += shp.getRadius();
@@ -105,4 +108,30 @@ public class ActorPanel {
 		victory = highestLife >= 100;
 	}
 	
+	static public final String getFileName( final String base ) {
+		String nextFileName;
+		File actorFile;
+		
+		nextFileName = base + "." + Constant.GliderShip;
+		actorFile = new File(nextFileName);
+		if( actorFile.exists() )
+			return Constant.GliderShip;
+		
+		nextFileName = base + "." + Constant.AgileShip;
+		actorFile = new File(nextFileName);
+		if( actorFile.exists() )
+			return Constant.AgileShip;
+		
+		nextFileName = base + "." + Constant.TankShip;
+		actorFile = new File(nextFileName);
+		if( actorFile.exists() )
+			return Constant.TankShip;
+		
+		nextFileName = base + "." + Constant.DefendShip;
+		actorFile = new File(nextFileName);
+		if( actorFile.exists() )
+			return Constant.DefendShip;
+		
+		return null;
+	}
 }

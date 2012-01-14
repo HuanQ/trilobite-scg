@@ -10,7 +10,6 @@ import managers.Screen;
 
 import static org.lwjgl.opengl.GL11.*;
 
-
 public class Drawer {
 	private final int											me;
 	private Vec3												color;
@@ -65,4 +64,5 @@ public class Drawer {
 			}
 		}
 	}
+
 }

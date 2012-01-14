@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import managers.Component;
+import managers.Constant;
 
 
 public class Shape {
@@ -63,35 +64,48 @@ public class Shape {
 		}
 	}
 
-	public final boolean Collides( int me, int him ) {
-		float hisRadius = Component.shape.get(him) == null ? 0 : Component.shape.get(him).radius;
+	// Collision with a point
+	public final boolean Collides( int me, final Vec2 point ) {
 		
 		Vec2 myPos = Component.placement.get(me).position;
-		Vec2 hisPos = Component.placement.get(him).position;
 		
 		// Envolving circle check
-		if( myPos.distanceSquared(hisPos) > Math.pow(radius + hisRadius, 2) ) {
+		if( myPos.distanceSquared(point) - Constant.getFloat("Performance_CollisionEpsilon") > radius*radius ) {
 			return false;
 		}
 
-
-		// Check shape to shape
-		if(radius == 0) {
-			// I am shapeless
-			if(hisRadius != 0) {
-				// Check my position to all his shapes
-				for(Polygon p : Component.shape.get(him).polygons) {
-					if( p.Collides(myPos, null, hisPos) ) {
-						return true;
-					}
+		// Check shape by shape
+		if(radius != 0) {
+			// Check his position to all my shapes
+			for(Polygon p : polygons) {
+				if( p.Collides(myPos, null, point, Component.placement.get(me).angle, null) ) {
+					return true;
 				}
 			}
 		}
+		return false;
+	}
+
+	// Collision with a shape
+	public final boolean Collides( int me, int him ) {
+		if( Component.shape.get(him) == null || Component.shape.get(him).radius == 0) {
+			return Collides(me, Component.placement.get(him).position);
+		}
 		else {
-			if(hisRadius == 0) {
-				// Check his position to all my shapes
-				for(Polygon p : polygons) {
-					if( p.Collides(myPos, null, hisPos) ) {
+			Vec2 myPos = Component.placement.get(me).position;
+			Vec2 hisPos = Component.placement.get(him).position;
+			float hisRadius = Component.shape.get(him).radius;
+			
+			// Envolving circle check
+			if( myPos.distanceSquared(hisPos) > Math.pow(radius + hisRadius, 2) ) {
+				return false;
+			}
+
+			// Check shape to shape
+			if(radius == 0) {
+				// I am shapeless, check my position to all his shapes
+				for(Polygon p : Component.shape.get(him).polygons) {
+					if( p.Collides(myPos, null, hisPos, Component.placement.get(me).angle, Component.placement.get(him).angle) ) {
 						return true;
 					}
 				}
@@ -100,14 +114,14 @@ public class Shape {
 				// Check all my shapes to all his shapes
 				for(Polygon myP : polygons) {
 					for(Polygon hisP : Component.shape.get(him).polygons) {
-						if( myP.Collides(myPos, hisP, hisPos) ) {
+						if( myP.Collides(myPos, hisP, hisPos, Component.placement.get(me).angle, Component.placement.get(him).angle) ) {
 							return true;
 						}
 					}
 				}
 			}
+			return false;
 		}
-		return false;
 	}
 	
 	public final void WriteXML( Document doc, Element root ) {
@@ -125,6 +139,12 @@ public class Shape {
 			}
 		}
 		return null;
+	}
+	
+	public final void Scale( float m ) {
+		for(Polygon p : polygons) {
+			p.Scale(m);
+		}
 	}
 	
 	public final Text getText() {

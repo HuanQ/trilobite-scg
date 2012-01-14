@@ -19,10 +19,10 @@ import sequences.Sequence;
 public class Spawner {
 	private final int											me;
 	// Behaviour
-	private final Angle											spawnDirection;
+	private Angle												spawnDirection;
 	private int													wait = 0;
 	private float												totalWait;
-	private final Sequence										mySeq;
+	private Sequence											mySeq;
 	// Internal data
 	private int													phase = 0;
 	private int													hitTime;
@@ -95,7 +95,16 @@ public class Spawner {
 		}
 	}
 	
+	public final void setSequence( Sequence s ) {
+		mySeq = s;
+	}
+	
+	public final void setDirection( Angle d ) {
+		spawnDirection = d;
+	}
+	
 	public final void Hit() {
+		//TODO: Fer-ho amb health regen? Mes dificil de balancejar? CREC QUE NO CAL
 		if(phase != 3) {
 			if(phase != 2) {
 				lastPhase = phase;

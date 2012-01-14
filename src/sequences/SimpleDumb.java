@@ -40,11 +40,11 @@ public class SimpleDumb implements Sequence {
 			counter--;
 			
 			Integer id = Component.getID();
-			Component.mover.put( id, new Mover(id, Constant.getFloat("Dumb_Speed"), false, Clock.game ) );
+			Component.mover.put( id, new Mover(id, Constant.getFloat("Dumb_Speed"), 0, false, Clock.game ) );
 			Component.placement.put( id, new Placement( new Vec2(spawnPoint) ) );
 			Component.drawer.put( id, new Drawer(id) );
 			Component.shape.put( id, Constant.getShape("Dumb_Shape") );
-			Component.dumb.put( id, new Dumb(id, rotationSpeed, direction, Dumb.normal, rotateGoal, wait ) );
+			Component.dumb.put( id, new Dumb(id, rotationSpeed, direction, Dumb.normal, rotateGoal, wait, Constant.getFloat("Dumb_Health") ) );
 			Component.killable.put( id, new Killable(id, Killable.enemyTeam) );
 		}
 		

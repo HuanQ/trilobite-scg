@@ -1,38 +1,24 @@
 package components;
 
-import geometry.Vec2;
-
 import managers.Component;
-import managers.Constant;
-import managers.Level;
-import managers.Sound;
 
-
-public class Gun {
-	private final int											me;
-	private final Vec2											gunPoint;
+public abstract class Gun {
+	protected final int											me;
+	// Internal data
+	protected float												gunDist;
 	
-	public Gun( int m, final Vec2 p ) {
+	protected Gun( int m, float gd ) {
 		me = m;
-		gunPoint = p;
+		gunDist = gd;
 	}
 	
-	public final void Shoot() {
-		Vec2 exitPoint = new Vec2(Component.placement.get(me).position);
-		exitPoint.add(gunPoint);
-
-		//TODO: S'ha de grabar la direcció perquè cada actor tindrà direccions diferents
+	protected void Shoot() {
+	
 		// Record
 		Record rec = Component.record.get(me);
 		if( rec != null) {
-			rec.addEvent( Record.gunShot, null );
+			rec.addEvent(Record.gunShot);
 		}
-		
-		// Create a bullet
-		Vec2 bulletDirection = new Vec2(0, -Constant.getFloat("Ship_BulletSpeed"));
-		Level.AddBullet(bulletDirection, exitPoint, Killable.playerTeam);
-		
-		Sound.Play(Sound.shoot);
 	}
-
+	
 }

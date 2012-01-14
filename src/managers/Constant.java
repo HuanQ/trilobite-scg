@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Vector;
 
 import geometry.Vec2;
 import geometry.Vec3;
@@ -33,9 +34,16 @@ public class Constant {
 	static private Map<String, Shape>							myShapes;
 	static private Map<String, String>							myStrings;
 	
+	static public Vector<String>								sequenceList;
+	
 	static public int											timerResolution;
 	static public Random										rnd;
 	static public TrueTypeFont									font[];
+	
+	static public final String								GliderShip = "Glider";
+	static public final String								AgileShip = "Agile";
+	static public final String								TankShip = "Tank";
+	static public final String								DefendShip = "Defend";
 	
 	static public final void Init() {
 		myFloats = new HashMap<String, Float>();
@@ -43,6 +51,9 @@ public class Constant {
 		myVectors = new HashMap<String, Vec3>();
 		myShapes = new HashMap<String, Shape>();
 		myStrings = new HashMap<String, String>();
+		
+		sequenceList = new Vector<String>();
+		
 		rnd = new Random();
 		font = new TrueTypeFont[4];
 		font[0] = loadFont("HEMIHEAD.TTF", 64);
@@ -70,23 +81,24 @@ public class Constant {
 			Node nextSection = section.item(s);
 			if(nextSection.getNodeType() != Node.ELEMENT_NODE)
 				continue;
-			
-			// World Player Ships Effects nodes
+			String sectionName = nextSection.getNodeName();
+			// World Player Ships Effects... nodes
 			NodeList type = nextSection.getChildNodes();
 			for(int t = 0; t < type.getLength(); ++t) {
 				Node nextType = type.item(t);
 				if(nextType.getNodeType() != Node.ELEMENT_NODE)
 					continue;
-				
 			    String typeName = nextType.getNodeName() + "_";
 			    
+			    if(sectionName.equals("Sequences")) {
+			    	sequenceList.add(nextType.getNodeName());
+			    }
 			    // Render Wall Dumb Spawner Explosion... nodes
 			    NodeList property = nextType.getChildNodes();
 			    for(int p = 0; p < property.getLength(); ++p) {
 			    	Node nextProperty = property.item(p);
 			    	if(nextProperty.getNodeType() != Node.ELEMENT_NODE)
 						continue;
-			    	
 				    // Add the read nodes to each Map
 				    if(nextProperty.getNodeName().equals("Color")) {
 				    	myVectors.put( typeName + nextProperty.getNodeName(), NodeReader.readColor(nextProperty) );

@@ -4,16 +4,20 @@ import managers.Component;
 import managers.Constant;
 import managers.Clock;
 
-public class TimedObject {
+public class Timed {
 
 	private final int											me;
-	private final int											duration;
+	private int													duration;
 	private final int											timerType;
 	
-	public TimedObject( int m, float dur, int timerty) {
+	public Timed( int m, float dur, int timerty) {
 		me = m;
 		duration = Clock.getTime(timerty) + (int) (dur * Constant.timerResolution );
 		timerType = timerty;
+	}
+	
+	public final void Extend( float ext ) {
+		duration += (int) (ext * Constant.timerResolution );
 	}
 	
 	public final void Update() {

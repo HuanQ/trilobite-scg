@@ -15,17 +15,17 @@ import managers.Constant;
 import managers.Clock;
 import managers.Level;
 
-public class ProgressBar {
+public class Progress {
 	private final int										me;
 	private final Vec3										color;
 	// Internal data
-	private final int										levelTime;	
+	private final float										levelTime;
 	private final Vector<Float>								bestTimes;
 	private Rectangle										myRectangle;
 	private Text											myText;
 	private Rectangle										myBar;
 
-	public ProgressBar( int m, final Vec3 col ) {
+	public Progress( int m, final Vec3 col ) {
 		me = m;
 		color = col;
 		levelTime = (int) (Constant.getFloat(Level.lvlname + "_Time") * Constant.timerResolution);
@@ -52,6 +52,10 @@ public class ProgressBar {
 		}
 	}
 	
+	public final void addWall( final Vec2 pos, final Shape shp ) {
+		//TODO: Afegir les walls a la barra de progres
+	}
+	
 	public final void addActors() {
 		for(Actor a : Component.actor.values()) {
 			float life = (float) a.getLifeLength() / levelTime;
@@ -68,7 +72,7 @@ public class ProgressBar {
 			Vec2 pos = new Vec2();
 			pos.x = -myRectangle.size.x / 2 + margin;
 			pos.y = myRectangle.size.y / 2 - margin;
-			float layer = myRectangle.layer + 0.01f;
+			float layer = myRectangle.layer + 0.02f;
 			
 			float barWidth = -2 * pos.x / bestTimes.size();
 			float barMaxHeight = 2 * pos.y;

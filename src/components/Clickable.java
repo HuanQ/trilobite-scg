@@ -17,6 +17,7 @@ import org.w3c.dom.Element;
 
 import managers.Clock;
 import managers.Component;
+import managers.Constant;
 import managers.Level;
 import managers.Screen;
 import managers.Sound;
@@ -33,9 +34,9 @@ public class Clickable {
 	
 	private final int										me;
 	private final String									function;
-	private final int										param;							
+	private final int										param;
 	private int												state = on;
-		
+
 	//TODO: Millorar aquest component, no se com
 	public Clickable( int m, final String fun ) {
 		me = m;
@@ -82,7 +83,8 @@ public class Clickable {
 			doClick();
 		}
 	}
-	
+
+	//TODO: Comprovar si alguns dels .equals que faig servir podiren ser ==
 	private final void doClick() {
 		boolean clicked = true;
 		if( function.equals("START") ) {
@@ -110,7 +112,7 @@ public class Clickable {
 		}
 		else if( function.equals("PLAY") ) {
 			Screen.up.zero();
-			Clock.unpause(Clock.game);
+			Clock.Unpause(Clock.game);
 			setEditorButtons(Clickable.off);
 			setState(Clickable.selected);
 			for(Clickable c : Component.clickable.values()) {
@@ -164,6 +166,22 @@ public class Clickable {
 			Cleaner.DeleteActor(param);
 			Component.actorpanel.Reload();
 		}
+		else if( function.contains("SHIP_") ) {
+			resetShips();
+			Component.drawer.get(me).setColor(Vec3.white);
+			if( function.contains(Constant.GliderShip) ) {
+				Start.nextship = Constant.GliderShip;
+			}
+			else if( function.contains(Constant.AgileShip) ) {
+				Start.nextship = Constant.AgileShip;
+			}
+			else if( function.contains(Constant.TankShip) ) {
+				Start.nextship = Constant.TankShip;
+			}
+			else if( function.contains(Constant.DefendShip) ) {
+				Start.nextship = Constant.DefendShip;
+			}
+		}
 		else {
 			clicked = false;
 		}
@@ -185,6 +203,14 @@ public class Clickable {
 					|| c.getFunction().equals("RELOAD")
 					) {
 				c.setState(state);
+			}
+		}
+	}
+	
+	static private final void resetShips() {
+		for(Integer i : Component.clickable.keySet()) {
+			if( Component.clickable.get(i).getFunction().contains("SHIP_") ) {
+				Component.drawer.get(i).setColor( Vec3.darkgray );
 			}
 		}
 	}

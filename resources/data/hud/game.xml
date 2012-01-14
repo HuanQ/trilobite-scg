@@ -11,24 +11,33 @@
 		</Image>
 		
 		<EnergyBar>
-			<Point x="0.7" y="0.85"/>
+			<Point x="0.8" y="0.775"/>
 			<Shape>
-				<Rectangle x="0" y="0" z="6.5" sizex="0.125" sizey="0.185" stretch="true"/>
-				<Text x="0" y="0.5" z="9" txt="Shield" size="3">
+				<Rectangle x="0" y="0" z="6.5" sizex="0.125" sizey="0.3" stretch="true"/>
+				<Text x="0" y="0.65" z="9" txt="Energy" size="3">
 					<Color r="0.5" g="0.5" b="1"/>
 				</Text>
 			</Shape>
 			<Empty r="0" g="0" b="1"/>
-			<Full r="0.5" g="0.5" b="1"/>
+			<Full r="0.65" g="0.65" b="1"/>
 		</EnergyBar>
 		
-		<ProgressBar>
-			<Point x="0.5" y="0.45"/>
+		<Image>
+			<Point x="0.8" y="0.775"/>
 			<Shape>
-				<Rectangle x="0" y="0" z="6.5" sizex="0.45" sizey="0.4" stretch="true">
+				<Rectangle x="0" y="0" z="6.4" sizex="0.125" sizey="0.3" stretch="true">
 					<Color r="0" g="0" b="0"/>
 				</Rectangle>
-				<Text x="0" y="-1.8" z="7" size="1" txt="0%">
+			</Shape>
+		</Image>
+		
+		<ProgressBar>
+			<Point x="0.35" y="0.6"/>
+			<Shape>
+				<Rectangle x="0" y="0" z="6.5" sizex="0.4" sizey="0.75" stretch="true">
+					<Color r="0" g="0" b="0"/>
+				</Rectangle>
+				<Text x="0.175" y="-1.77" z="7" size="1" txt="0%">
 					<Color r="1" g="1" b="0"/>
 				</Text>
 			</Shape>
@@ -36,7 +45,7 @@
 		</ProgressBar>
 		
 		<Image>
-			<Point x="0.5" y="0.05"/>
+			<Point x="0.5" y="0.1"/>
 			<Shape>
 				<Rectangle x="0" y="0" z="6.5" sizex="0.85" sizey="0.06" stretch="true">
 					<Color r="0" g="0" b="0"/>

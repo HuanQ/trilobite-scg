@@ -53,7 +53,7 @@ public class Editor {
 			}
 		}
 		
-		Clock.pause(Clock.game);
+		Clock.Pause(Clock.game);
 	}
 	
 	public final void start() {

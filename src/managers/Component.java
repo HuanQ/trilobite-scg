@@ -23,6 +23,7 @@ public class Component {
 	static public Map<Integer, Shape>						shape = new HashMap<Integer, Shape>();
 	static public Map<Integer, Clickable>					clickable = new HashMap<Integer, Clickable>();
 	static public Map<Integer, Xml>							xml = new HashMap<Integer, Xml>();
+	static public Map<Integer, Choice>						roundChoice = new HashMap<Integer, Choice>();
 	// Render
 	static public Map<Integer, Drawer>						drawer = new HashMap<Integer, Drawer>();
 	// Update
@@ -32,7 +33,7 @@ public class Component {
 	static public Map<Integer, Mover>						mover = new HashMap<Integer, Mover>();
 	static public Map<Integer, Dumb>						dumb = new HashMap<Integer, Dumb>();
 	static public Map<Integer, Killable>					killable = new HashMap<Integer, Killable>();
-	static public Map<Integer, TimedObject>					timedObject = new HashMap<Integer, TimedObject>();
+	static public Map<Integer, Timed>						timedObject = new HashMap<Integer, Timed>();
 	static public Map<Integer, Spawner>						spawner = new HashMap<Integer, Spawner>();
 	static public Map<Integer, Record>						record = new HashMap<Integer, Record>();
 	static public Map<Integer, Actor>						actor = new HashMap<Integer, Actor>();
@@ -40,9 +41,9 @@ public class Component {
 	static public Map<Integer, Helper>						helper = new HashMap<Integer, Helper>();
 	static public Map<Integer, Sticky>						sticky = new HashMap<Integer, Sticky>();
 	// Global
-	static public EnergyBar									energybar;
-	static public ProgressBar								progressbar;
-	static public ActorPanel								actorpanel;
+	static public Energy									energybar;
+	static public Progress									progressbar;
+	static public PanelActors								actorpanel;
 	static public Pointer									mouse;
 	static public Fader										fader = new Fader();
 		
@@ -79,6 +80,7 @@ public class Component {
 		helper.clear();
 		sticky.clear();
 		xml.clear();
+		roundChoice.clear();
 		
 		fader.set(Vec3.white);
 		mouse = null;
@@ -92,7 +94,7 @@ public class Component {
 		
 		// Screen
 		Screen.up.add(0.f, Clock.getDelta(Clock.game) * Constant.getFloat("Rules_ScreenSpeed"));
-		
+
 		// Update the components
 		fader.Update();
 		if(mouse != null) {
@@ -113,7 +115,7 @@ public class Component {
 		}
 		for(Input k : input.values()) {
 			k.Update();
-		}		
+		}
 		for(Spawner s : spawner.values()) {
 			s.Update();
 		}
@@ -138,7 +140,7 @@ public class Component {
 		for(Killable k : killable.values()) {
 			k.Update();
 		}
-		for(TimedObject t : timedObject.values()) {
+		for(Timed t : timedObject.values()) {
 			t.Update();
 		}
 		
@@ -193,6 +195,7 @@ public class Component {
 		   clickable.remove(id);
 		   sticky.remove(id);
 		   xml.remove(id);
+		   roundChoice.remove(id);
 		}
 		deadObjects.clear();
 	}
