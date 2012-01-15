@@ -53,7 +53,7 @@ public class Progress {
 	}
 	
 	public final void addWall( final Vec2 pos, final Shape shp ) {
-		//TODO: Afegir les walls a la barra de progres
+		//TODO Afegir les walls a la barra de progres
 	}
 	
 	public final void addActors() {

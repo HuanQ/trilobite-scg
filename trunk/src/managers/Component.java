@@ -166,8 +166,34 @@ public class Component {
 	    }
 	}
 	
+	static public final int CopyObject( int id ) {
+		Integer newID = getID();
+
+		//TODO Aixo nomes funciona amb els objectes de l'editor. Fer-ho funcionar amb els objectes amb herencia es perillos
+		if( placement.get(id) != null ) {
+			placement.put( newID, new Placement(placement.get(id)) );
+		}
+		if( shape.get(id) != null ) {
+			shape.put( newID, new Shape(shape.get(id)) );
+		}
+		if( xml.get(id) != null ) {
+			xml.put( newID, new Xml(newID) );
+		}
+		if( drawer.get(id) != null ) {
+			drawer.put( newID, new Drawer(newID, drawer.get(id)) );
+		}
+		if( killable.get(id) != null ) {
+			killable.put( newID, new Killable(newID, killable.get(id)) );
+		}
+		if( spawner.get(id) != null ) {
+			spawner.put( newID, new Spawner(newID, spawner.get(id)) );
+		}
+
+		return newID;
+	}
+	
 	static private final void DestroyObjects() {
-		//TODO: Destruir d'ofici els elements que estiguin fora de pantalla (U tots, O bullets, etc...) Ojo, pero nomes en game, en editor no!
+		//TODO Destruir d'ofici els elements que estiguin fora de pantalla (U tots, O bullets, etc...) Ojo, pero nomes en game, en editor no! (En editor si que s'han de destruir les bales i les naus per a no petar el play)
 		
 		for(Integer id : deadObjects) {
 		   // Save to file

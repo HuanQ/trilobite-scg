@@ -92,7 +92,7 @@ public class Circle extends Polygon {
 				glLoadIdentity();
 			}
 			else {
-				//TODO: Dibuixar com a rectangle
+				//TODO Dibuixar com a rectangle
 				//Vec2 screenSize = Screen.coords( new Vec2(radius, radius), false );
 				float screenRadius = Screen.coords(radius);
 				// Draw sprites
@@ -103,7 +103,8 @@ public class Circle extends Polygon {
 		    }
 		}
 	}
-	
+
+	//TODO Les colisions dels Circles estan axatades
 	public final boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos, final Angle myRot, final Angle hisRot ) {
 		Vec2 myAbsPos = new Vec2( myPos.x+offset.x, myPos.y+offset.y);
 		if(p == null) {

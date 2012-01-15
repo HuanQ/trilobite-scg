@@ -94,7 +94,7 @@ public class Game {
 		}
 		else {
 			// Max actors reached
-			//TODO: Carregar tots els arxius de la carpeta (agafant el llistat i posar spawnpoints dinamics fent screenups positius per a fer espai -> NO REAL ACTOR LIMIT
+			//TODO Carregar tots els arxius de la carpeta (agafant el llistat i posar spawnpoints dinamics fent screenups positius per a fer espai -> NO REAL ACTOR LIMIT
 		}
 		
 		// Clean up

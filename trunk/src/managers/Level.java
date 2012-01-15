@@ -71,7 +71,7 @@ public class Level {
 			    	readNodes.put(nextProperty.getNodeName(), nextProperty);
 			    }
 
-			    //TODO: Podem fer un tag d'afegir altres XML aixi un nivell carrega els seus backgrounds, etc
+			    //TODO Podem fer un tag d'afegir altres XML aixi un nivell carrega els seus backgrounds, etc
 			    // Add the items with the read nodes they need 
 				if(nextType.getNodeName() == "Wall") {
 					AddWall( NodeReader.readPlace( readNodes.get("Point"), zone ),
@@ -198,7 +198,7 @@ public class Level {
 		Mover mv;
 		Gun gn;
 		Shield sh;
-		//TODO: Aixo ha de venir per el xml?
+		//TODO Aixo ha de venir per el xml?
 		if( shipType == Constant.AgileShip || shipType == Constant.DefendShip ) {
 			mv = new Mover(playerID, Constant.getFloat(shipType + "_Speed"), Constant.getFloat(shipType + "_RotationSpeed"), true, Clock.play);
 			if( shipType == Constant.AgileShip ) {
@@ -237,7 +237,6 @@ public class Level {
 		Text t = Component.shape.get(playerID).getText();
 		t.setText(Integer.toString(number));
 		Component.energybar.Exhaust( Constant.getFloat(shipType + "_ShieldCooldown") );
-		//TODO: Invul inicial -> Component.shield.get(playerID).Raise();
 
 		return playerID;
 	}
@@ -291,7 +290,7 @@ public class Level {
 		
 		Text t = Component.shape.get(id).getText();
 		t.setText(Integer.toString(number));
-		//TODO: Invul inicial -> Component.shield.get(playerID).Raise();
+		//TODO Invul inicial -> Component.shield.get(playerID).Raise();
 	}
 	
 	static public final void AddProgressBar( final Vec2 pos, final Shape shp, final Vec3 color ) {

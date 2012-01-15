@@ -25,13 +25,16 @@ public class SimpleBlaster implements Sequence {
 	// 0: Not shooting yet
 	// 1: Shooting
 
-
 	public SimpleBlaster( final String nm ) {
 		name = nm;
 		shootRate = (int) (Constant.getFloat(name + "_Frequency") * Constant.timerResolution);;
 		shootingTime = (int) (Constant.getFloat(name + "_Time") * Constant.timerResolution);
 		shootingArc = Constant.getFloat(name + "_Arc");
 		numBullets = (int) Constant.getFloat(name + "_NumBullets");
+	}
+	
+	public final SimpleBlaster getCopy() {
+		return new SimpleBlaster(name);
 	}
 	
 	public final boolean Spawn( final Angle direction, final Vec2 spawnPoint ) {

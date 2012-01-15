@@ -15,18 +15,27 @@ public class Drawer {
 	private Vec3												color;
 	private boolean												visible = true;
 	
-	public Drawer( int m) {
+	public Drawer( int m, final Drawer d ) {
+		me = m;
+		color = new Vec3(d.getColor());
+	}
+	
+	public Drawer( int m ) {
 		me = m;
 		color = Vec3.white;
 	}
 	
-	public Drawer( int m, final Vec3 c) {
+	public Drawer( int m, final Vec3 c ) {
 		me = m;
 		color = c;
 	}
 	
 	public final void setVisible( boolean b ) {
 		visible = b;
+	}
+	
+	public final Vec3 getColor() {
+		return color;
 	}
 	
 	public final void setColor( Vec3 col ) {
@@ -43,7 +52,7 @@ public class Drawer {
 					Vec2 screenPos = Screen.coords(Component.placement.get(me).position);
 					
 					// Default placeholder
-					//TODO: tambe cal dibuixar el sprite si no te shape, pero no se on guardar-lo
+					//TODO tambe cal dibuixar el sprite si no te shape, pero no se on guardar-lo
 					float size = Constant.getFloat("Render_DefaultUnscaledSize");
 					float layer = Constant.getFloat("Render_DefaultLayer");
 					glDisable(GL_TEXTURE_2D);

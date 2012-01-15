@@ -103,7 +103,7 @@ public class Actor {
 				}
 			}
 			
-			//TODO: final a les locals
+			//TODO final a les locals
 			// Move our actor according to our data
 			float alpha = Actor.interpolateNow( prevSnap.getTime(), nextSnap.getTime() );
 			Component.placement.get(me).position.interpolate( prevSnap.position, nextSnap.position, alpha );

@@ -47,7 +47,7 @@ public class Planet {
 			}
 			myFuturePos.interpolate(mousePos, originalPos, Math.min(Math.max(dist,0),1) );
 			
-			//TODO: Usar el mover per a fer aixo
+			//TODO Usar el mover per a fer aixo
 			float speed = (float) Math.min(myFuturePos.distance(myPos), 0.4f);
 			Vec2 floatMov = new Vec2(myFuturePos);
 			floatMov.sub(myPos);
