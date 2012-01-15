@@ -127,7 +127,8 @@ public class Level {
 					AddRoundChoice( NodeReader.readPlace( readNodes.get("Point"), zone ),
 							NodeReader.readFloat( readNodes.get("Direction") ),
 							NodeReader.readFloat( readNodes.get("Arc") ),
-							NodeReader.readFloat( readNodes.get("Distance") )
+							NodeReader.readFloat( readNodes.get("Distance") ),
+							NodeReader.readString( readNodes.get("Type") )
 							);
 				}
 				else if(nextType.getNodeName() == "Image") {
@@ -348,19 +349,27 @@ public class Level {
 		Component.sticky.put( id, new Sticky(id) );
 	}
 	
-	static private final void AddRoundChoice( final Vec2 pos, float dir, float arc, float dist ) {
+	static private final void AddRoundChoice( final Vec2 pos, float dir, float arc, float dist, final String type ) {
 		Integer id = Component.getID();
 		Component.placement.put( id, new Placement(pos) );
 		Component.drawer.put( id, new Drawer(id) );
-		Component.roundChoice.put( id, new ChoiceShip(id, dir, arc, dist) );
+		
+		Choice chc = null;
+		if( type.equals("Ships") ) {
+			chc = new ChoiceShip(id, dir, arc, dist);
+		}
+		else if( type.equals("Levels") ) {
+			chc = new ChoiceLevel(id, dir, arc, dist);
+		}
+		Component.roundChoice.put( id, chc );
 	}
 	
 	static private final void AddPlanet( final Vec2 pos, final Shape shp, final String func ) {
 		Integer id = Component.getID();
 		Component.placement.put( id, new Placement(pos) );
 		Component.drawer.put( id, new Drawer(id) );
-		Component.planet.put( id, new Planet(id) );
 		Component.shape.put( id, shp );
+		Component.planet.put( id, new Planet(id) );
 		Component.clickable.put(id, new Clickable(id, func) );
 	}
 	

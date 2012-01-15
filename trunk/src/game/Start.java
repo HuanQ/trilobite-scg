@@ -1,6 +1,7 @@
 package game;
 
 import managers.Constant;
+import managers.Level;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
@@ -38,19 +39,20 @@ public class Start {
 				
 			case Start.gameMenu:
 				nextship = Constant.GliderShip;
-				menu = new Menu("ingame" );
+				menu = new Menu("ingame");
 				menu.start();
 				menu = null;
 				break;
 				
 			case Start.mainMenu:
+				Level.lvlname = "Intro";
 				menu = new Menu("main");
 				menu.start();
 				menu = null;
 				break;
 			
 			case Start.startEditor:
-				editor = new Editor("Intro");
+				editor = new Editor(Level.lvlname);
 				editor.start();
 				editor = null;
 				break;
@@ -67,12 +69,13 @@ public class Start {
 				menu = null;
 			}
 		}
+		
 		Display.destroy();
 	}
 	
 	static public final void quitProgram() {
-		option = Start.quitProgram;
 		menu.end();
+		option = Start.quitProgram;
 	}
 	
 	static public final void gameMenu() {

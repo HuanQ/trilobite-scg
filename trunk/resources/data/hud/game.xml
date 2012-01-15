@@ -14,7 +14,7 @@
 			<Point x="0.8" y="0.775"/>
 			<Shape>
 				<Rectangle x="0" y="0" z="6.5" sizex="0.125" sizey="0.3" stretch="true"/>
-				<Text x="0" y="0.65" z="9" txt="Energy" size="3">
+				<Text x="0" y="0.65" z="9" txt="Energy" size="4">
 					<Color r="0.5" g="0.5" b="1"/>
 				</Text>
 			</Shape>

@@ -55,17 +55,26 @@ public class Constant {
 		sequenceList = new Vector<String>();
 		
 		rnd = new Random();
-		font = new TrueTypeFont[4];
+		font = new TrueTypeFont[5];
 		font[0] = loadFont("HEMIHEAD.TTF", 64);
 		font[1] = loadFont("HEMIHEAD.TTF", 48);
-		font[2] = loadFont("HEMIHEAD.TTF", 18);
-		font[3] = loadFont("Stereofunk.ttf", 14);
-		
+		font[2] = loadFont("HEMIHEAD.TTF", 36);
+		font[3] = loadFont("HEMIHEAD.TTF", 18);
+		font[4] = loadFont("Stereofunk.ttf", 14);
+
 		try {
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc;
 			
-			doc = (Document) db.parse( new File("resources/data/constants.xml") );
+			doc = (Document) db.parse( new File("resources/data/game/constants.xml") );
+			doc.getDocumentElement().normalize();
+			loadXML( doc.getDocumentElement().getChildNodes() );
+			
+			doc = (Document) db.parse( new File("resources/data/game/ia.xml") );
+			doc.getDocumentElement().normalize();
+			loadXML( doc.getDocumentElement().getChildNodes() );
+			
+			doc = (Document) db.parse( new File("resources/data/game/fx.xml") );
 			doc.getDocumentElement().normalize();
 			loadXML( doc.getDocumentElement().getChildNodes() );
 		} catch (Exception e) {

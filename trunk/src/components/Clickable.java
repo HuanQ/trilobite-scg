@@ -88,8 +88,6 @@ public class Clickable {
 	private final void doClick() {
 		boolean clicked = true;
 		if( function.equals("START") ) {
-			//TODO: Level selection al main menu
-			Level.lvlname = "Intro";
 			Start.gameMenu();
 		}
 		else if( function.equals("QUIT") ) {
@@ -107,7 +105,6 @@ public class Clickable {
 			Start.gameMenu();
 		}
 		else if( function.equals("EDITOR") ) {
-			Level.lvlname = "Intro";
 			Start.startEditor();
 		}
 		else if( function.equals("PLAY") ) {
@@ -167,7 +164,13 @@ public class Clickable {
 			Component.actorpanel.Reload();
 		}
 		else if( function.contains("SHIP_") ) {
-			resetShips();
+			// Reset all ships
+			for(Integer i : Component.clickable.keySet()) {
+				if( Component.clickable.get(i).getFunction().contains("SHIP_") ) {
+					Component.drawer.get(i).setColor( Vec3.darkgray );
+				}
+			}
+			
 			Component.drawer.get(me).setColor(Vec3.white);
 			if( function.contains(Constant.GliderShip) ) {
 				Start.nextship = Constant.GliderShip;
@@ -181,6 +184,16 @@ public class Clickable {
 			else if( function.contains(Constant.DefendShip) ) {
 				Start.nextship = Constant.DefendShip;
 			}
+		}
+		else if( function.contains("LEVEL_") ) {
+			// Reset all levels
+			for(Integer i : Component.clickable.keySet()) {
+				if( Component.clickable.get(i).getFunction().contains("LEVEL_") ) {
+					Component.drawer.get(i).setColor( Vec3.darkgray );
+				}
+			}
+			Component.drawer.get(me).setColor(Vec3.white);
+			Level.lvlname = function.substring(6, function.length());
 		}
 		else {
 			clicked = false;
@@ -203,14 +216,6 @@ public class Clickable {
 					|| c.getFunction().equals("RELOAD")
 					) {
 				c.setState(state);
-			}
-		}
-	}
-	
-	static private final void resetShips() {
-		for(Integer i : Component.clickable.keySet()) {
-			if( Component.clickable.get(i).getFunction().contains("SHIP_") ) {
-				Component.drawer.get(i).setColor( Vec3.darkgray );
 			}
 		}
 	}

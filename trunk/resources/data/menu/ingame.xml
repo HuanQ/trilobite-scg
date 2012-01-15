@@ -1,6 +1,6 @@
 <Trilobite>
 	<Menu zone="full">
-		<ActorPanel zone="full">
+		<ActorPanel>
 			<Point x="0.4" y="0.3"/>
 			<Shape>
 				<Rectangle x="0" y="0" z="8" sizex="0.7" sizey="0.45">
@@ -14,7 +14,7 @@
 		</ActorPanel>
 		
 		<Planet>
-			<Point x="0.05" y="1.05" side="full"/>
+			<Point x="0.05" y="1.05"/>
 			<Function>BACK</Function>
 			<Shape>
 				<Circle x="0" y="0" z="6.1" radius="0.45">
@@ -27,7 +27,7 @@
 		</Planet>
 		
 		<Planet>
-			<Point x="0.85" y="0.85" side="full"/>
+			<Point x="0.85" y="0.85"/>
 			<Function>STARTPLAY</Function>
 			<Shape>
 				<Circle x="0" y="0" z="7" radius="0.12">
@@ -40,7 +40,8 @@
 		</Planet>
 		
 		<RoundChoice>
-			<Point x="0.85" y="0.85" side="full"/>
+			<Point x="0.85" y="0.85"/>
+			<Type>Ships</Type>
 			<Arc>1.57</Arc>
 			<Direction>-2.35</Direction>
 			<Distance>0.17</Distance>

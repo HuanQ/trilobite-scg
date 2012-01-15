@@ -34,7 +34,7 @@ public class Game {
 		Clock.Init();
 		Level.Init( "resources/data/hud/game.xml" );
 		Level.Init( "resources/data/level/" + Level.lvlname + ".xml" );
-		Level.Init( "resources/data/level/Background.xml" );
+		Level.Init( "resources/data/hud/Background.xml" );
 		
 		// Helpers pop up the first time we play the Intro level 
 		if( firstPlay && Level.lvlname.equals("Intro") ) {
@@ -77,7 +77,7 @@ public class Game {
 				Component.Update();
 				Component.Render();
 				Display.update();
-				Display.sync(60);
+				Display.sync(100);
 				if(startPaused && Component.fader.isDone()) {
 					Clock.Unpause(Clock.game);
 					startPaused = false;
