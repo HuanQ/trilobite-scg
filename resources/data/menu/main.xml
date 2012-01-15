@@ -10,9 +10,9 @@
 		</Image>
 		
 		<Image>
-			<Point x="0.275" y="0.275"/>
+			<Point x="0.225" y="0.225"/>
 			<Shape>
-				<Rectangle x="0" y="0" z="6.2" sizex="0.5" sizey="0.5" stretch="true">
+				<Rectangle x="0" y="0" z="6.2" sizex="0.4" sizey="0.4" stretch="true">
 					<Texture>title.gif</Texture>
 				</Rectangle>
 			</Shape>
@@ -20,8 +20,8 @@
 	</Background>
 	
 	<Menu zone="full">
-		<Planet zone="full">
-			<Point x="0.05" y="1.05"/>
+		<Planet>
+			<Point x="0.2" y="0.9"/>
 			<Function>NONE</Function>
 			<Shape>
 				<Circle x="0" y="0" z="6.1" radius="0.45">
@@ -30,8 +30,16 @@
 			</Shape>
 		</Planet>
 		
-		<Planet zone="full">
-			<Point x="0.35" y="0.55"/>
+		<RoundChoice>
+			<Point x="0.2" y="0.9"/>
+			<Type>Levels</Type>
+			<Arc>1.25</Arc>
+			<Direction>-1.2</Direction>
+			<Distance>0.4</Distance>
+		</RoundChoice>
+		
+		<Planet>
+			<Point x="0.8" y="0.3"/>
 			<Function>START</Function>
 			<Shape>
 				<Circle x="0" y="0" z="8" radius="0.135">
@@ -43,8 +51,8 @@
 			</Shape>
 		</Planet>
 
-		<Planet zone="full">
-			<Point x="0.7" y="0.9"/>
+		<Planet>
+			<Point x="0.75" y="0.9"/>
 			<Function>QUIT</Function>
 			<Shape>
 				<Circle x="0" y="0" z="8" radius="0.048">
@@ -56,8 +64,8 @@
 			</Shape>
 		</Planet>
 		
-		<Planet zone="full">
-			<Point x="0.85" y="0.7"/>
+		<Planet>
+			<Point x="0.85" y="0.65"/>
 			<Function>EDITOR</Function>
 			<Shape>
 				<Circle x="0" y="0" z="8" radius="0.07">
@@ -68,19 +76,5 @@
 				</Text>
 			</Shape>
 		</Planet>
-		<!-- 
-		<Planet zone="full">
-			<Point x="0.8" y="0.475"/>
-			<Function>EDITOR</Function>
-			<Shape>
-				<Circle x="0" y="0" z="8" radius="0.06">
-					<Texture>Planet1.gif</Texture>
-				</Circle>
-				<Text x="0" y="0" z="9" txt="Level editor" size="1">
-					<Color r="1" g="0.5" b="0"/>
-				</Text>
-			</Shape>
-		</Planet>
-		 -->
 	</Menu>
 </Trilobite>

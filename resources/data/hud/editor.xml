@@ -7,7 +7,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Circle" size="2">
+				<Text x="0" y="0" z="9" txt="Circle" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -20,7 +20,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Square" size="2">
+				<Text x="0" y="0" z="9" txt="Square" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -33,7 +33,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Spawner" size="2">
+				<Text x="0" y="0" z="9" txt="Spawner" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -46,7 +46,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Move" size="2">
+				<Text x="0" y="0" z="9" txt="Move" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -61,7 +61,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Up" size="2">
+				<Text x="0" y="0" z="9" txt="Up" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -74,7 +74,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Down" size="2">
+				<Text x="0" y="0" z="9" txt="Down" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -89,7 +89,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Reload" size="2">
+				<Text x="0" y="0" z="9" txt="Reload" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -102,7 +102,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Save" size="2">
+				<Text x="0" y="0" z="9" txt="Save" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -115,7 +115,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Stop" size="2">
+				<Text x="0" y="0" z="9" txt="Stop" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -128,7 +128,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Play" size="2">
+				<Text x="0" y="0" z="9" txt="Play" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -143,7 +143,7 @@
 				<Rectangle x="0" y="0" z="8" sizex="0.8" sizey="0.065">
 					<Texture>base/rect3x1.gif</Texture>
 				</Rectangle>
-				<Text x="0" y="0" z="9" txt="Back" size="1">
+				<Text x="0" y="0" z="9" txt="Back" size="2">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>

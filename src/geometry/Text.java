@@ -13,9 +13,11 @@ import org.w3c.dom.Element;
 import geometry.Vec3;
 
 public class Text extends Polygon {
-	public static final int												bigFont = 0;
-	public static final int												mediumFont = 1;
-	public static final int												smallFont = 2;
+	public static final int												hugeFont = 0;
+	public static final int												bigFont = 1;
+	public static final int												mediumFont = 2;
+	public static final int												smallFont = 3;
+	public static final int												littleFont = 4;
 	private String														text;
 	private int															size;
 	

@@ -1,0 +1,221 @@
+<Trilobite>
+   <Generated zone="game">
+      <Spawner>
+         <Direction>0.15</Direction>
+         <Sequence>Blaster30</Sequence>
+         <Wait>0.5</Wait>
+         <Point x="0.16625" y="-0.375"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="0.0" g="0.5" r="1.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Spawner>
+         <Direction>0.0</Direction>
+         <Sequence>Blaster0</Sequence>
+         <Wait>0.0</Wait>
+         <Point x="0.04875" y="0.3387503"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="0.0" g="0.5" r="1.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Wall>
+         <Point x="0.6775" y="-0.46250018"/>
+         <Shape>
+            <Rectangle sizex="0.2" sizey="0.1" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect2x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.03625" y="-0.2862498"/>
+         <Shape>
+            <Rectangle sizex="0.2" sizey="0.1" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect2x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Spawner>
+         <Direction>4.71</Direction>
+         <Sequence>UpDumb</Sequence>
+         <Wait>4.0</Wait>
+         <Point x="0.7975" y="-0.6200017"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="1.0" g="0.5" r="0.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Wall>
+         <Point x="0.11375" y="0.37375015"/>
+         <Shape>
+            <Rectangle sizex="0.045" sizey="0.06249994" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.88625" y="-0.46125004"/>
+         <Shape>
+            <Rectangle sizex="0.2" sizey="0.1" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect2x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.69875" y="-0.6137509"/>
+         <Shape>
+            <Rectangle sizex="0.1" sizey="0.19750023" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x2.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Spawner>
+         <Direction>3.14</Direction>
+         <Sequence>LeftDumb</Sequence>
+         <Wait>0.0</Wait>
+         <Point x="0.8275" y="0.21624799"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="1.0" g="0.5" r="0.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Spawner>
+         <Direction>0.0</Direction>
+         <Sequence>Blaster0</Sequence>
+         <Wait>0.0</Wait>
+         <Point x="0.04625" y="0.26375"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="0.0" g="0.5" r="1.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Wall>
+         <Point x="0.87125" y="0.32125044"/>
+         <Shape>
+            <Rectangle sizex="0.25" sizey="0.125" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect2x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.895" y="-0.6187508"/>
+         <Shape>
+            <Rectangle sizex="0.1" sizey="0.21499944" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x2.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.11375" y="0.30124995"/>
+         <Shape>
+            <Rectangle sizex="0.0425" sizey="0.057500005" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.24625" y="-0.23499979"/>
+         <Shape>
+            <Rectangle sizex="0.1" sizey="0.2" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x2.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.11375" y="0.22875029"/>
+         <Shape>
+            <Rectangle sizex="0.04" sizey="0.060000032" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Spawner>
+         <Direction>3.14</Direction>
+         <Sequence>Blaster0</Sequence>
+         <Wait>-1.0</Wait>
+         <Point x="0.925" y="-1.1687509"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="0.0" g="0.5" r="1.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Spawner>
+         <Direction>0.0</Direction>
+         <Sequence>Blaster0</Sequence>
+         <Wait>-1.0</Wait>
+         <Point x="0.06875" y="-1.1324992"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="0.0" g="0.5" r="1.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Wall>
+         <Point x="0.0" y="-1.1312488"/>
+         <Shape>
+            <Rectangle sizex="0.075" sizey="0.07250142" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.99625" y="-1.1700008"/>
+         <Shape>
+            <Rectangle sizex="0.075" sizey="0.07499981" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.06" y="-1.2062502"/>
+         <Shape>
+            <Rectangle sizex="0.075" sizey="0.07250047" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Spawner>
+         <Direction>0.0</Direction>
+         <Sequence>Blaster0</Sequence>
+         <Wait>-1.0</Wait>
+         <Point x="0.1275" y="-1.2087502"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="0.0" g="0.5" r="1.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Wall>
+         <Point x="0.0675" y="0.42875037"/>
+         <Shape>
+            <Rectangle sizex="0.1375" sizey="0.05249995" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect2x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Decoration>
+         <Point x="0.5" y="-1.4"/>
+         <Shape>
+            <Rectangle sizex="1.0" sizey="0.03" x="0.0" y="0.0" z="0.5">
+               <Color b="0.0" g="0.0" r="1.0"/>
+            </Rectangle>
+            <Text size="0.0" txt="Victory!" x="0.0" y="-0.18626451" z="0.5"/>
+         </Shape>
+      </Decoration>
+   </Generated>
+</Trilobite>

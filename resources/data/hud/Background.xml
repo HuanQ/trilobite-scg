@@ -1,0 +1,13 @@
+<Trilobite>
+	<Standard zone="game">
+		<Decoration speed="0.6">
+			<Point x="0.5" y="0"/>
+			<Shape>
+				<Rectangle sizex="1" sizey="2" x="0.0" y="0.0" z="-9.5" stretch="true">
+					<Color b="0.5" g="0.5" r="0.5"/>
+					<Texture>space.gif</Texture>
+					</Rectangle>
+			</Shape>
+		</Decoration>
+	</Standard>
+</Trilobite>

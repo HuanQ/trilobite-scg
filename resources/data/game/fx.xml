@@ -1,0 +1,97 @@
+<Trilobite>
+	<Effects>
+		<Shield>
+			<Layer>-1</Layer>
+			<Size>1.3</Size>
+			<Color r="0.25" g="0.6" b="1"/>
+		</Shield>
+		
+		<Laser>
+			<Margin>0.1</Margin>
+			<Shape zone="game">
+				<Rectangle x="0.5" y="0" z="-1" sizex="1" sizey="0.005">
+					<Color r="1" g="1" b="1"/>
+				</Rectangle>
+			</Shape> 
+		</Laser>
+		
+		<Bomb>
+			<Shape zone="game">
+				<Circle x="0" y="0" z="-1" radius="0.12">
+					<Color r="0.6" g="0.6" b="1"/>
+					<Texture>base/circle.gif</Texture>
+				</Circle>
+			</Shape> 
+		</Bomb>
+		
+		<Wings>
+			<Shape zone="game">
+				<Rectangle x="0.075" y="0" z="-1" sizex="0.1" sizey="0.02">
+					<Color r="0" g="0" b="1"/>
+				</Rectangle>
+				<Rectangle x="-0.075" y="0" z="-1" sizex="0.1" sizey="0.02">
+					<Color r="0" g="0" b="1"/>
+				</Rectangle>
+			</Shape> 
+		</Wings>
+		
+		<Helper>
+			<Duration>1.5</Duration>
+			<BlinkTime>0.5</BlinkTime>
+			<Color r="0.65" g="0.65" b="1"/>
+			<Shape zone="game">
+				<Circle x="0" y="0" z="7.9" radius="0.125">
+					<Texture>base/circle.gif</Texture>
+				</Circle>
+			</Shape> 
+		</Helper>
+		
+		<Fader>
+			<Speed>2.5</Speed>
+			<Color r="0" g="0" b="0"/>
+		</Fader>
+		
+		<Bullet>
+			<Speed>0.525</Speed>
+			<Damage>1</Damage>
+			<Color r="1" g="1" b="0"/>
+		</Bullet>
+		
+		<Spark>
+			<Duration>0.25</Duration>
+			<Shape zone="game">
+				<Circle x="0" y="0" z="3" radius="0.01">
+					<Color r="0" g="0" b="1"/>
+				</Circle>
+			</Shape> 
+		</Spark>
+		
+		<Explosion>
+			<Duration>0.25</Duration>
+			<Shape zone="game">
+				<Circle x="0" y="0" z="3" radius="0.02">
+					<Color r="1" g="0" b="0"/>
+				</Circle>
+			</Shape> 
+		</Explosion>
+		
+		<Phase>
+			<Duration>0.5</Duration>
+			<Shape zone="game">
+				<Circle x="0" y="0" z="3" radius="0.02">
+					<Color r="0" g="0" b="1"/>
+				</Circle>
+			</Shape> 
+		</Phase>
+
+		<Trace>
+			<Ahead>1.2</Ahead>
+			<Width>0.0075</Width>
+			<Shape zone="game">
+				<Rectangle x="0" y="0" z="-1" sizex="0.01" sizey="0.01">
+					<Color r="0.8" g="0.8" b="1.0"/>
+				</Rectangle>
+			</Shape> 
+		</Trace>
+	</Effects>
+</Trilobite>

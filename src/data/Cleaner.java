@@ -25,7 +25,7 @@ public class Cleaner {
 	
 	static public final void CleanAll() {
 		// Set up directory if needed
-		File directory = new File( "resources/games/");
+		File directory = new File("resources/games/");
 		File files[] = directory.listFiles();
 		for(File f : files) {
 			if(f.getName().equals(".svn"))

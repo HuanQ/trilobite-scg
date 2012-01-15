@@ -21,6 +21,8 @@ public class Pointer {
 	static public final int									addcircle = 2;
 	static public final int									addspawner = 3;
 	static public final int									move = 4;
+	//TODO: Fer boto de copy
+	static public final int									copy = 5;
 	
 	private final int										me;
 	private boolean											active = true;
@@ -138,6 +140,8 @@ public class Pointer {
 					firstClick = null;
 					secondClick = null;
 					Component.deadObjects.add(currentID);
+					setSave(Clickable.on);
+					setPlay(Clickable.off);
 				}
 			}
 		}

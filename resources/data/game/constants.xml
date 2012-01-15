@@ -42,7 +42,7 @@
 				<Rectangle x="0" y="-0.03" z="8.5" sizex="0.03" sizey="0.01" stretch="false">
 					<Color r="0" g="0" b="0"/>
 				</Rectangle>
-				<Text x="0" y="-0.03" z="8.6" size="3" txt="0%">
+				<Text x="0" y="-0.03" z="8.6" size="4" txt="0%">
 					<Color r="1" g="1" b="1"/>
 				</Text>
 			</Shape>
@@ -62,7 +62,7 @@
 				<Rectangle x="0" y="0.04" z="8.5" sizex="0.06" sizey="0.02" stretch="false">
 					<Color r="0" g="0" b="0"/>
 				</Rectangle>
-				<Text x="0" y="0.05" z="8.6" size="3" txt="DELETE">
+				<Text x="0" y="0.05" z="8.6" size="4" txt="DELETE">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
@@ -80,6 +80,9 @@
 		<Intro>
 			<Time>47.5</Time>
 		</Intro>
+		<Hardcore>
+			<Time>47.5</Time>
+		</Hardcore>
 	</Levels>
 	
 	<Player>
@@ -174,195 +177,4 @@
 		</Defend>
 		
 	</Player>
-	
-	<Sequences>
-		<Blaster0>
-			<Type>SimpleBlaster</Type>
-			<Arc>0</Arc>
-			<Frequency>0.2</Frequency>
-			<Time>60.0</Time>
-			<NumBullets>1</NumBullets>
-			<Shape zone="game">
-				<Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
-					<Color b="0.0" g="0.5" r="1.0"/>
-					<Texture>base/circle.gif</Texture>
-            	</Circle>
-			</Shape>
-		</Blaster0>
-		
-		<Blaster30>
-			<Type>SimpleBlaster</Type>
-			<Arc>0.25</Arc>
-			<Frequency>0.5</Frequency>
-			<Time>60.0</Time>
-			<NumBullets>2</NumBullets>
-			<Shape zone="game">
-				<Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
-					<Color b="0.0" g="0.5" r="1.0"/>
-					<Texture>base/circle.gif</Texture>
-            	</Circle>
-			</Shape>
-		</Blaster30>
-
-		<LeftDumb>
-			<Type>SimpleDumb</Type>
-			<MaxRotate>4.71</MaxRotate>
-			<RotationSpeed>-1</RotationSpeed>
-			<Wait>3.5</Wait>
-			<Frequency>0.8</Frequency>
-			<Count>6.0</Count>
-			<Shape zone="game">
-				<Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
-					<Color b="1.0" g="0.5" r="0.0"/>
-					<Texture>base/circle.gif</Texture>
-				</Circle>
-			</Shape>
-		</LeftDumb>
-		
-		<UpDumb>
-			<Type>SimpleDumb</Type>
-			<MaxRotate>0</MaxRotate>
-			<RotationSpeed>0</RotationSpeed>
-			<Wait>3</Wait>
-			<Frequency>2.5</Frequency>
-			<Count>6.0</Count>
-			<Shape zone="game">
-				<Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
-					<Color b="1.0" g="0.5" r="0.0"/>
-					<Texture>base/circle.gif</Texture>
-				</Circle>
-			</Shape>
-		</UpDumb>
-	</Sequences>
-	
-	<Ships>
-	
-		<Wall>
-			<Gravity>0</Gravity>
-			<Color r="1" g="1" b="1"/>
-		</Wall>
-		
-		<Spawner>
-			<DisableTime>1.25</DisableTime>
-		</Spawner>
-		
-		<Blaster>
-			<BulletSpeed>0.2</BulletSpeed>
-		</Blaster>
-		
-		<Dumb>
-			<Speed>0.1</Speed>
-			<Rotation>4.71</Rotation>
-			<Acceleration>0.1</Acceleration>
-			<KillDistance>0.5</KillDistance>
-			<StopDistance>0.015</StopDistance>
-			<StopWait>0.1</StopWait>
-			<NumBullets>4</NumBullets>
-			<BulletSpeed>0.1</BulletSpeed>
-			<Health>3</Health>
-			<Shape zone="game">
-				<Circle x="0" y="0" z="1" radius="0.018">
-					<Color r="0.4" g="0.2" b="0.85"/>
-					<Texture>dumb.gif</Texture>
-				</Circle>
-			</Shape>
-		</Dumb>
-		
-	</Ships>
-	
-	<Effects>
-		<Shield>
-			<Layer>-1</Layer>
-			<Size>1.3</Size>
-			<Color r="0.25" g="0.6" b="1"/>
-		</Shield>
-		
-		<Laser>
-			<Margin>0.1</Margin>
-			<Shape zone="game">
-				<Rectangle x="0.5" y="0" z="-1" sizex="1" sizey="0.005">
-					<Color r="1" g="1" b="1"/>
-				</Rectangle>
-			</Shape> 
-		</Laser>
-		
-		<Bomb>
-			<Shape zone="game">
-				<Circle x="0" y="0" z="-1" radius="0.12">
-					<Color r="0.6" g="0.6" b="1"/>
-					<Texture>base/circle.gif</Texture>
-				</Circle>
-			</Shape> 
-		</Bomb>
-		
-		<Wings>
-			<Shape zone="game">
-				<Rectangle x="0.075" y="0" z="-1" sizex="0.1" sizey="0.02">
-					<Color r="0" g="0" b="1"/>
-				</Rectangle>
-				<Rectangle x="-0.075" y="0" z="-1" sizex="0.1" sizey="0.02">
-					<Color r="0" g="0" b="1"/>
-				</Rectangle>
-			</Shape> 
-		</Wings>
-		
-		<Helper>
-			<Duration>1.5</Duration>
-			<BlinkTime>0.5</BlinkTime>
-			<Color r="0.65" g="0.65" b="1"/>
-			<Shape zone="game">
-				<Circle x="0" y="0" z="7.9" radius="0.125">
-					<Texture>base/circle.gif</Texture>
-				</Circle>
-			</Shape> 
-		</Helper>
-		
-		<Fader>
-			<Speed>2.5</Speed>
-			<Color r="0" g="0" b="0"/>
-		</Fader>
-		
-		<Bullet>
-			<Speed>0.525</Speed>
-			<Damage>1</Damage>
-			<Color r="1" g="1" b="0"/>
-		</Bullet>
-		
-		<Spark>
-			<Duration>0.25</Duration>
-			<Shape zone="game">
-				<Circle x="0" y="0" z="3" radius="0.01">
-					<Color r="0" g="0" b="1"/>
-				</Circle>
-			</Shape> 
-		</Spark>
-		
-		<Explosion>
-			<Duration>0.25</Duration>
-			<Shape zone="game">
-				<Circle x="0" y="0" z="3" radius="0.02">
-					<Color r="1" g="0" b="0"/>
-				</Circle>
-			</Shape> 
-		</Explosion>
-		
-		<Phase>
-			<Duration>0.5</Duration>
-			<Shape zone="game">
-				<Circle x="0" y="0" z="3" radius="0.02">
-					<Color r="0" g="0" b="1"/>
-				</Circle>
-			</Shape> 
-		</Phase>
-
-		<Trace>
-			<Ahead>1.2</Ahead>
-			<Width>0.0075</Width>
-			<Shape zone="game">
-				<Rectangle x="0" y="0" z="-1" sizex="0.01" sizey="0.01">
-					<Color r="0.8" g="0.8" b="1.0"/>
-				</Rectangle>
-			</Shape> 
-		</Trace>
-	</Effects>
 </Trilobite>
