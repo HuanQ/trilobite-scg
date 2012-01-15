@@ -40,6 +40,13 @@ public class Spawner {
 		mySeq = seq;
 	}
 	
+	public Spawner( int m, final Spawner s  ) {
+		me = m;
+		spawnDirection = new Angle( s.getDirection() );
+		totalWait = s.getWait();
+		mySeq = s.getSequence().getCopy();
+	}
+	
 	public final void Update() {
 		Vec2 myPos = Component.placement.get(me).position;
 		int time = Clock.getTime(Clock.game);
@@ -94,9 +101,21 @@ public class Spawner {
 			break;
 		}
 	}
+
+	public final float getWait() {
+		return totalWait;
+	}
+	
+	public final Sequence getSequence() {
+		return mySeq;
+	}
 	
 	public final void setSequence( Sequence s ) {
 		mySeq = s;
+	}
+
+	public final Angle getDirection() {
+		return spawnDirection;
 	}
 	
 	public final void setDirection( Angle d ) {
@@ -104,7 +123,6 @@ public class Spawner {
 	}
 	
 	public final void Hit() {
-		//TODO: Fer-ho amb health regen? Mes dificil de balancejar? CREC QUE NO CAL
 		if(phase != 3) {
 			if(phase != 2) {
 				lastPhase = phase;

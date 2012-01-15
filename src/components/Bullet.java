@@ -17,7 +17,7 @@ public class Bullet {
 		Screen.rescale("game", v, false);
 	}
 	
-	//TODO: Bullet strength per a cada ship
+	//TODO Bullet strength per a cada ship
 	public final void Update() {
 		Vec2 mov = new Vec2(direction);
 		mov.scale(Clock.getDelta(Clock.game));

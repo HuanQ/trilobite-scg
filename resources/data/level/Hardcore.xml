@@ -214,8 +214,76 @@
             <Rectangle sizex="1.0" sizey="0.03" x="0.0" y="0.0" z="0.5">
                <Color b="0.0" g="0.0" r="1.0"/>
             </Rectangle>
-            <Text size="0.0" txt="Victory!" x="0.0" y="-0.18626451" z="0.5"/>
+            <Text size="0.0" txt="Victory!" x="0.0" y="-0.025849395" z="0.5"/>
          </Shape>
       </Decoration>
+      <Wall>
+         <Point x="0.565" y="0.25750005"/>
+         <Shape>
+            <Rectangle sizex="0.06" sizey="0.11749995" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x2.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.43" y="0.34249985"/>
+         <Shape>
+            <Circle radius="0.10519017" x="0.0" y="0.0" z="2.0">
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.395" y="0.612501"/>
+         <Shape>
+            <Rectangle sizex="0.13" sizey="0.10250056" x="0.0" y="0.0" z="1.0">
+               <Texture>base/rect1x1.gif</Texture>
+            </Rectangle>
+         </Shape>
+      </Wall>
+      <Wall>
+         <Point x="0.26" y="0.5425004"/>
+         <Shape>
+            <Circle radius="0.086414814" x="0.0" y="0.0" z="2.0">
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Wall>
+      <Spawner>
+         <Direction>2.365613</Direction>
+         <Sequence>Blaster0</Sequence>
+         <Wait>0.0</Wait>
+         <Point x="0.71" y="0.6412512"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="0.0" g="0.5" r="1.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Spawner>
+         <Direction>2.365613</Direction>
+         <Sequence>Blaster0</Sequence>
+         <Wait>0.0</Wait>
+         <Point x="0.7375" y="0.5424995"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="0.0" g="0.5" r="1.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
+      <Spawner>
+         <Direction>2.365613</Direction>
+         <Sequence>Blaster0</Sequence>
+         <Wait>0.0</Wait>
+         <Point x="0.75625" y="0.45249945"/>
+         <Shape>
+            <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+               <Color b="0.0" g="0.5" r="1.0"/>
+               <Texture>base/circle.gif</Texture>
+            </Circle>
+         </Shape>
+      </Spawner>
    </Generated>
 </Trilobite>

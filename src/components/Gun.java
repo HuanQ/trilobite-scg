@@ -7,6 +7,7 @@ public abstract class Gun {
 	// Internal data
 	protected float												gunDist;
 	
+	//TODO I si fem qye els components no tinguin mai herencia, pero algun membre en composicio si? Pot simplificar-ne la manipulacio
 	protected Gun( int m, float gd ) {
 		me = m;
 		gunDist = gd;

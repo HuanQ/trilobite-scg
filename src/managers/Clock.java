@@ -84,7 +84,7 @@ public class Clock {
 
 	static public final void Update() {
 		
-		//TODO: Fer sistema de fixedframes on tot passa 50 cops per segon independentment de framerate. Si baixa n'esquipejem un (potser error) o simplement anulem la partida. Un sistema dinamic podria canviar 50 per un numero adecuat.
+		//TODO Fer sistema de fixedframes on tot passa 50 cops per segon independentment de framerate. Si baixa n'esquipejem un (potser error) o simplement anulem la partida. Un sistema dinamic podria canviar 50 per un numero adecuat.
 		float slowmo = Constant.getFloat("Rules_SlowMotion");
 		// Real time
 		time[real] = (int) (Sys.getTime() * Constant.timerResolution
@@ -128,7 +128,7 @@ public class Clock {
 		}
 		fps++;
 		
-		//TODO: Calibrar la consistencia del temps amb aquest codi i screenshots 
+		//TODO Calibrar la consistencia del temps amb aquest codi i screenshots 
 		/*if ( time[game] > 13000 && !isPaused(game) ) {
 			Pause(game);
 			System.out.println(time[game]);

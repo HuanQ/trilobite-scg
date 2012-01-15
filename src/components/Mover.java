@@ -53,7 +53,7 @@ public class Mover {
 		// Move
 		if(!nextMovement.isZero())
 		{
-			//TODO: Ship es mou clarament mes lent en fullscreen (prova d'anar enrrere, o es screenup que va mes rapid?)
+			//TODO Ship es mou clarament mes lent en fullscreen (prova d'anar enrrere, o es screenup que va mes rapid?)
 			nextMovement.normalize();
 			nextMovement.scale(speed * dt);
 			Component.placement.get(me).position.add(nextMovement);
@@ -77,7 +77,7 @@ public class Mover {
 		}
 		nextRotation = 0;
 
-		//TODO: Repassar tots els news i veure quins no fan falta (potser nomes new Vec2)
+		//TODO Repassar tots els news i veure quins no fan falta (potser nomes new Vec2)
 		// Stay in screen
 		if(stayInScreeen) {
 			Vec2 myTopLeft = new Vec2(Vec2.topLeft); 

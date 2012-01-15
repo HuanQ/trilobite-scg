@@ -37,7 +37,7 @@ public class Clickable {
 	private final int										param;
 	private int												state = on;
 
-	//TODO: Millorar aquest component, no se com
+	//TODO NOW Millorar aquest component, no se com. Monster class!
 	public Clickable( int m, final String fun ) {
 		me = m;
 		function = fun;
@@ -84,7 +84,7 @@ public class Clickable {
 		}
 	}
 
-	//TODO: Comprovar si alguns dels .equals que faig servir podiren ser ==
+	//TODO Comprovar si alguns dels .equals que faig servir podiren ser ==
 	private final void doClick() {
 		boolean clicked = true;
 		if( function.equals("START") ) {
@@ -111,7 +111,9 @@ public class Clickable {
 			Screen.up.zero();
 			Clock.Unpause(Clock.game);
 			setEditorButtons(Clickable.off);
+			
 			setState(Clickable.selected);
+			
 			for(Clickable c : Component.clickable.values()) {
 				if(c.getFunction().equals("STOP")) {
 					c.setState(Clickable.on);
@@ -130,8 +132,8 @@ public class Clickable {
 			}
 		}
 		else if( function.equals("SAVE") ) {
-			Component.mouse.setSave(Clickable.off);
-			Component.mouse.setPlay(Clickable.on);
+			Clickable.setSave(Clickable.off);
+			Clickable.setPlay(Clickable.on);
 			doLevel();
 			for(Clickable c : Component.clickable.values()) {
 				if(c.getFunction().equals("PLAY")) {
@@ -147,17 +149,26 @@ public class Clickable {
 				Screen.up.add(0, 0.25f);
 			}
 		}
-		else if( function.equals("ADDCIRCLE") ) {
-			Component.mouse.SelectTool(me, Pointer.addcircle);
-		}
-		else if( function.equals("ADDSQUARE") ) {
-			Component.mouse.SelectTool(me, Pointer.addsquare);
-		}
-		else if( function.equals("ADDSPAWNER") ) {
-			Component.mouse.SelectTool(me, Pointer.addspawner);
-		}
-		else if( function.equals("MOVE") ) {
-			Component.mouse.SelectTool(me, Pointer.move);
+		else if ( function.contains("TOOL_") ) {
+			
+			if( function.equals("TOOL_CIRCLE") ) {
+				Component.mouse.SelectTool( Pointer.circle );
+			}
+			else if( function.equals("TOOL_SQUARE") ) {
+				Component.mouse.SelectTool( Pointer.square );
+			}
+			else if( function.equals("TOOL_SPAWNER") ) {
+				Component.mouse.SelectTool( Pointer.spawner );
+			}
+			else if( function.equals("TOOL_MOVE") ) {
+				Component.mouse.SelectTool( Pointer.move );
+			}
+			else if( function.equals("TOOL_COPY") ) {
+				Component.mouse.SelectTool( Pointer.copy );
+			}
+			
+			// Make me active
+			Component.clickable.get(me).setState(Clickable.selected);
 		}
 		else if( function.equals("DELETEACTOR") ) {
 			Cleaner.DeleteActor(param);
@@ -204,12 +215,42 @@ public class Clickable {
 		}
 	}
 	
+	static public final void setTools( int state ) {
+		for(Clickable c : Component.clickable.values()) {
+			if(c.getFunction().equals("TOOL_CIRCLE")
+					|| c.getFunction().equals("TOOL_SQUARE")
+					|| c.getFunction().equals("TOOL_SPAWNER")
+					|| c.getFunction().equals("TOOL_MOVE")
+					|| c.getFunction().equals("TOOL_COPY")
+					) {
+				c.setState(state);
+			}
+		}
+	}
+	
+	static public final void setPlay( int state ) {
+		for(Clickable c : Component.clickable.values()) {
+			if( c.getFunction().equals("PLAY") ) {
+				c.setState(state);
+			}
+		}
+	}
+	
+	static public final void setSave( int state ) {
+		for(Clickable c : Component.clickable.values()) {
+			if( c.getFunction().equals("RELOAD") || c.getFunction().equals("SAVE") ) {
+				c.setState(state);
+			}
+		}
+	}
+	
 	static private final void setEditorButtons( int state ) {
 		for(Clickable c : Component.clickable.values()) {
-			if(c.getFunction().equals("ADDCIRCLE")
-					|| c.getFunction().equals("ADDSQUARE")
-					|| c.getFunction().equals("ADDSPAWNER")
-					|| c.getFunction().equals("MOVE")
+			if(c.getFunction().equals("TOOL_CIRCLE")
+					|| c.getFunction().equals("TOOL_SQUARE")
+					|| c.getFunction().equals("TOOL_SPAWNER")
+					|| c.getFunction().equals("TOOL_MOVE")
+					|| c.getFunction().equals("TOOL_COPY")
 					|| c.getFunction().equals("EDITORUP")
 					|| c.getFunction().equals("EDITORDOWN")
 					|| c.getFunction().equals("SAVE")

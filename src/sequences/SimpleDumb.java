@@ -13,7 +13,6 @@ import components.Mover;
 import components.Drawer;
 import components.Placement;
 
-
 public class SimpleDumb implements Sequence {
 	private final float											spawnRate;
 	private int													counter;
@@ -31,6 +30,10 @@ public class SimpleDumb implements Sequence {
 		rotationSpeed = Constant.getFloat(name + "_RotationSpeed");
 		rotateGoal = Constant.getFloat(name + "_MaxRotate");
 		wait = Constant.getFloat(name + "_Wait");
+	}
+	
+	public final SimpleDumb getCopy() {
+		return new SimpleDumb(name);
 	}
 	
 	public final boolean Spawn( final Angle direction, final Vec2 spawnPoint ) {

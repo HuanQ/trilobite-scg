@@ -34,6 +34,7 @@ public class Dumb {
 	// 2: Stopping and spinning
 	// 3: Explode and shoot bullets everywhere
 
+	//TODO Fer un enemic diferent al Dumb (que sempre vagi disparant) i més dur de matar
 	public Dumb( int m, float rspeed, final Angle rstart, int rt, float rg, float wt, float ht ) {
 		me = m;
 		rotSpeed = rspeed;
@@ -46,14 +47,14 @@ public class Dumb {
 		health = ht;
 	}
 	
-	//TODO: Health (hits) als dumb i spawners (amb un so al tocar)
+	//TODO Health (hits) als dumb i spawners (amb un so al tocar)
 	public final void Update() {
 		float dt = Clock.getDelta(Clock.game);
 		Component.placement.get(me).angle.add( selfRotate*dt );
 		
 		switch(phase) {
 		case 0:
-			//TODO: Els dumbs es veuen mes petits a 1920x1080
+			//TODO Els dumbs es veuen mes petits a 1920x1080
 			Component.mover.get(me).Move( movementRotation.getDirection() );
 			if( Clock.getTime(Clock.game) > wait) {
 				phase = 1;

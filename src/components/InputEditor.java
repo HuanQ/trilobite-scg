@@ -10,7 +10,7 @@ public class InputEditor extends Input {
 	
 	public final void Update() {
 		if( Keyboard.isKeyDown(Keyboard.KEY_UP) ) {
-			//TODO: fer editor controls de teclat	
+			//TODO fer editor controls de teclat	
 			/*else if( function.equals("EDITORUP") ) {
 			Screen.up.add(0, -0.25f);
 		}

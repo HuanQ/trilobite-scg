@@ -13,13 +13,14 @@ import managers.Screen;
 import org.lwjgl.opengl.Display;
 
 import components.Clickable;
+import components.Pointer;
 
 public class Editor {
 	private boolean												active = true;
 	private boolean												play = false;
 	// Move the screen
 	
-	//TODO: Mostrar un contador de temps per l'editor (per posar el final i les musiques!)
+	//TODO Mostrar un contador de temps per l'editor (per posar el final i les musiques!)
 	public Editor( final String name ) {
 		// Create the file if it does not exist
 		File file = new File( "resources/data/level/" + name + ".xml" );
@@ -46,7 +47,8 @@ public class Editor {
 		Level.AddEditorControls();
 		
 		// Menus
-		Component.mouse.UnselectTool();
+		Component.mouse.SelectTool(Pointer.mouse);
+
 		for(Clickable c : Component.clickable.values()) {
 			if( c.getFunction().equals("STOP") || c.getFunction().equals("RELOAD") || c.getFunction().equals("SAVE") ) {
 				c.setState(Clickable.off);
@@ -56,6 +58,9 @@ public class Editor {
 		Clock.Pause(Clock.game);
 	}
 	
+	//TODO Funcionalitat per l'editor: Grid
+	//TODO Funcionalitat per l'editor: End line i header als nivells (i a les naus? crec que no cal, nomes solucionar nivells)
+	//TODO Crear nivells nous (un xml buit i que posin el nom... no se com)
 	public final void start() {
 		// Run the game 
 		while ( active || !Component.fader.isDone() ) {

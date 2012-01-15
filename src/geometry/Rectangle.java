@@ -39,14 +39,14 @@ public class Rectangle extends Polygon {
 	}
 
 	public final void Draw( final Vec2 pos, final Vec3 defColor, final Angle rot ) {
-		//TODO: Draw amb rounded edges
+		//TODO Draw amb rounded edges
 		Vec2 realPos = new Vec2(pos);
 		Vec2 offsetSize = new Vec2(offset.x, offset.y);
 		realPos.add(offsetSize);
 		if( Screen.inScreen(realPos, (float) Math.sqrt(sqradius)) ) {
 			// Final position
 			Vec2 screenPos = Screen.coords(pos);
-			//TODO: Verificar aquest stretch
+			//TODO Verificar aquest stretch
 			Vec2 screenOffset = Screen.coords(offsetSize, stretch);
 			Vec2 screenSize = Screen.coords( size, stretch );
 			// Final color
@@ -82,7 +82,7 @@ public class Rectangle extends Polygon {
 		}
 	}
 
-	//TODO: Colisions amb rotacio a shape contra shape (R->R, R->C, C->R, C->C)
+	//TODO Colisions amb rotacio a shape contra shape (R->R, R->C, C->R, C->C)
 	public final boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos, final Angle myRot, final Angle hisRot ) {
 		Vec2 myAbsPos = new Vec2(myPos);
 		myAbsPos.add(offset);
@@ -139,7 +139,7 @@ public class Rectangle extends Polygon {
 	}
 	
 	private final boolean doFourPointsPointCollision( final Vec2 myPos, final Vec2 hisPos, final Angle myRot) {
-		//TODO: Optimitzar els calculs
+		//TODO Optimitzar els calculs
 		Vec2 rotX1 = new Vec2(offset);
 		rotX1.x += size.x/2;
 		rotX1.y += size.y/2;

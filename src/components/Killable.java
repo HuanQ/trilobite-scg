@@ -23,6 +23,11 @@ public class Killable {
 	private int													type;
 	private Collection<Integer>									noKill = new HashSet<Integer>();
 	
+	public Killable( int m, final Killable k) {
+		me = m;
+		type = k.getType();
+	}
+	
 	public Killable( int m, int typ ) {
 		me = m;
 		type = typ;

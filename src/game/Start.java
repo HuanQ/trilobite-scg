@@ -120,7 +120,7 @@ public class Start {
 	}
 	
 	static private final void initGraphics() {
-		//TODO: Crear un manager de graphics i potser fins i tot buidar tot el reste del codi de OpenGL
+		//TODO Crear un manager de graphics i potser fins i tot buidar tot el reste del codi de OpenGL
 		DisplayMode dm = null;
 		try {
 			//dm = Display.getDesktopDisplayMode();

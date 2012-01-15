@@ -35,7 +35,7 @@ public class Sprite {
 	 * @param sprite to copy
 	 */
 	static public final String getRect( final Vec2 size ) {
-		//TODO: Afegir tecnologia per a girar els grafics 90º, 180º i 270º (amb la rodeta?) per a tenir nomes les carpetes 1x1, 2x1, 3x1, 4x1
+		//TODO Afegir tecnologia per a girar els grafics 90º, 180º i 270º (amb la rodeta?) per a tenir nomes les carpetes 1x1, 2x1, 3x1, 4x1
 		
 		int proportion = (int) (Math.max(size.x, size.y) / Math.min(size.x, size.y));
 		proportion = Math.max(proportion, 1);
