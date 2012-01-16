@@ -14,7 +14,6 @@ import org.w3c.dom.Element;
 import managers.Component;
 import managers.Constant;
 
-
 public class Shape {
 	Vector<Polygon>												polygons;
 	// Internal data
@@ -49,7 +48,7 @@ public class Shape {
 		for(Polygon p : shp.polygons) {
 			add(p);
 			float newMaxRadius = p.offset.length() + (float) Math.sqrt(p.getSqRadius());
-			if(radius < newMaxRadius) {
+			if(newMaxRadius > radius) {
 				radius = newMaxRadius;
 			}
 		}
@@ -59,7 +58,7 @@ public class Shape {
 		polygons.add(p);
 		
 		float newMaxRadius = p.offset.length() + (float) Math.sqrt(p.getSqRadius());
-		if(radius < newMaxRadius) {
+		if(newMaxRadius > radius) {
 			radius = newMaxRadius;
 		}
 	}

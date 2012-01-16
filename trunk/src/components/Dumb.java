@@ -47,11 +47,11 @@ public class Dumb {
 		health = ht;
 	}
 	
-	//TODO Health (hits) als dumb i spawners (amb un so al tocar)
+	//TODO NOW Health (hits) als dumb i spawners (amb un so al tocar) -> aixo no esta fet ja? Costen 3 hits!
 	public final void Update() {
 		float dt = Clock.getDelta(Clock.game);
 		Component.placement.get(me).angle.add( selfRotate*dt );
-		
+		//TODO NOW Alguns Dumb no detecten els hits o passa algo que costen 5 impactes de matar
 		switch(phase) {
 		case 0:
 			//TODO Els dumbs es veuen mes petits a 1920x1080

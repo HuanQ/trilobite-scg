@@ -36,7 +36,7 @@ public class Laser {
 					// Something has been hit
 					if( Killable.Kills(killType, hisType) ) {
 						// Kill it
-						//TODO Sempre toca? Segur? No sembla que faci 5 dmg/sec
+						//TODO NOW Sempre toca? Segur? No sembla que faci 5 dmg/sec. Posar contador i calcular-ho
 						thingsHit.add(i);
 					}
 					else if( hisType == Killable.terrain ) {

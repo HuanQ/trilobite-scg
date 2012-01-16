@@ -14,21 +14,25 @@ import components.Placement;
 
 
 public class SimpleBlaster implements Sequence {
-	private final int											shootRate;
-	private int													shootingTime;
+	static public final int										shooting = 0;
+	static public final int										paused = 1;
+	
+	private final float											shootRate;
+	private float												shootingTime;
+	private float												pausingTime;
 	private final float											shootingArc;
 	private final String										name;
 	private final int											numBullets;
 	// Internal data
-	private int													lastTime = 0;
+	private float												time = 0;
+	private float												lastShot = 0;
 	private int													phase = 0;
-	// 0: Not shooting yet
-	// 1: Shooting
 
 	public SimpleBlaster( final String nm ) {
 		name = nm;
-		shootRate = (int) (Constant.getFloat(name + "_Frequency") * Constant.timerResolution);;
-		shootingTime = (int) (Constant.getFloat(name + "_Time") * Constant.timerResolution);
+		shootRate = Constant.getFloat(name + "_Frequency");
+		shootingTime = Constant.getFloat(name + "_Shooting");
+		pausingTime = Constant.getFloat(name + "_Pause");
 		shootingArc = Constant.getFloat(name + "_Arc");
 		numBullets = (int) Constant.getFloat(name + "_NumBullets");
 	}
@@ -38,28 +42,30 @@ public class SimpleBlaster implements Sequence {
 	}
 	
 	public final boolean Spawn( final Angle direction, final Vec2 spawnPoint ) {
-		int time = Clock.getTime(Clock.game);
+		time += Clock.getDelta(Clock.game);
+		
 		switch(phase) {
-		case 0:
-			phase = 1;
-			shootingTime += time;
-			return false;
-			
-		case 1:
-			if(time < shootingTime) {
-				if( time > lastTime + shootRate) {
-					doShoot(direction, spawnPoint);
-					lastTime = time;
+			case shooting:
+				if(time < shootingTime) {
+					if( time > lastShot + shootRate) {
+						doShoot(direction, spawnPoint);
+						lastShot = time;
+					}
 				}
-				return false;
-			}
-			else {
-				return true;
-			}
+				else {
+					phase = paused;
+					time = 0;
+				}
+			break;
 			
-		default:
-			return true;
+			case paused:
+				if(time > pausingTime) {
+					phase = shooting;
+					time = 0;
+				}
+			break;
 		}
+		return false;
 	}
 	
 	public final String getName() {

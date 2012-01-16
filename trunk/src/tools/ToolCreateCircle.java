@@ -27,7 +27,15 @@ public class ToolCreateCircle extends ToolCreate {
 		}
 		else {
 			SecondClick();
-			// Leave the object as it is
+			
+			// Overwrite the temporary Shape
+			Shape shp = new Shape();
+			shp.add( myPoly );
+			
+			Component.shape.remove(currentID);
+			Component.shape.put( currentID, shp );
+			
+
 			currentID = Integer.MIN_VALUE;
 			firstClick = null;
 			myPoly = null;

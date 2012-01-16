@@ -133,7 +133,6 @@ public class Clickable {
 		}
 		else if( function.equals("SAVE") ) {
 			Clickable.setSave(Clickable.off);
-			Clickable.setPlay(Clickable.on);
 			doLevel();
 			for(Clickable c : Component.clickable.values()) {
 				if(c.getFunction().equals("PLAY")) {
@@ -228,18 +227,17 @@ public class Clickable {
 		}
 	}
 	
-	static public final void setPlay( int state ) {
-		for(Clickable c : Component.clickable.values()) {
-			if( c.getFunction().equals("PLAY") ) {
-				c.setState(state);
-			}
-		}
-	}
 	
 	static public final void setSave( int state ) {
 		for(Clickable c : Component.clickable.values()) {
 			if( c.getFunction().equals("RELOAD") || c.getFunction().equals("SAVE") ) {
 				c.setState(state);
+			}
+		}
+		int inverseState = state == Clickable.on ? Clickable.off : Clickable.on;
+		for(Clickable c : Component.clickable.values()) {
+			if( c.getFunction().equals("PLAY") ) {
+				c.setState(inverseState);
 			}
 		}
 	}

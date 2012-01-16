@@ -1,9 +1,9 @@
 <Trilobite>
    <Generated zone="game">
       <Spawner>
-         <Direction>0.15</Direction>
-         <Sequence>Blaster30</Sequence>
-         <Wait>0.5</Wait>
+         <Direction>0</Direction>
+         <Sequence>Blaster0</Sequence>
+         <Wait>0.25</Wait>
          <Point x="0.16625" y="-0.375"/>
          <Shape>
             <Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">

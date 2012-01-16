@@ -27,7 +27,6 @@ public class ToolEditMove extends ToolEdit {
 			firstClick = null;
 			secondClick = null;
 			Clickable.setSave(Clickable.on);
-			Clickable.setPlay(Clickable.off);
 		}
 	}
 	

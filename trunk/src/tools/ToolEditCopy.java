@@ -12,7 +12,6 @@ public class ToolEditCopy extends ToolEdit {
 	}
 	
 	public final void LeftButton() {
-		//TODO NOW Els objectes molt grans nomes colisionen amb el mouse al bell mig de la figura
 		if(firstClick == null) {
 			for(Integer i : Component.shape.keySet()) {
 				if( pointerID != i && Component.shape.get(i).Collides(i, pointerID) ) {
@@ -28,9 +27,7 @@ public class ToolEditCopy extends ToolEdit {
 			currentID = Integer.MIN_VALUE;
 			firstClick = null;
 			secondClick = null;
-			//TODO NOW Arreglar redundancies setSave i setPlay
 			Clickable.setSave(Clickable.on);
-			Clickable.setPlay(Clickable.off);
 		}
 	}
 	

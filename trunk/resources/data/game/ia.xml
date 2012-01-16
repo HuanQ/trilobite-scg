@@ -3,8 +3,9 @@
 		<Blaster0>
 			<Type>SimpleBlaster</Type>
 			<Arc>0</Arc>
-			<Frequency>0.2</Frequency>
-			<Time>60.0</Time>
+			<Frequency>0.25</Frequency>
+			<Shooting>60</Shooting>
+			<Pause>0</Pause>
 			<NumBullets>1</NumBullets>
 			<Shape zone="game">
 				<Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
@@ -18,7 +19,8 @@
 			<Type>SimpleBlaster</Type>
 			<Arc>0.25</Arc>
 			<Frequency>0.5</Frequency>
-			<Time>60.0</Time>
+			<Shooting>60</Shooting>
+			<Pause>0</Pause>
 			<NumBullets>2</NumBullets>
 			<Shape zone="game">
 				<Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
@@ -71,7 +73,7 @@
 		</Spawner>
 		
 		<Blaster>
-			<BulletSpeed>0.2</BulletSpeed>
+			<BulletSpeed>0.15</BulletSpeed>
 		</Blaster>
 		
 		<Dumb>

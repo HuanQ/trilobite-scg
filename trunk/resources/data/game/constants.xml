@@ -99,7 +99,7 @@
 			<GunSeparation>0.0175</GunSeparation>
 			<GunShots>2</GunShots>
 			<ShieldTime>3</ShieldTime>
-			<ShieldCooldown>4.5</ShieldCooldown>
+			<ShieldCooldown>45</ShieldCooldown>
 			<Shape zone="game">
 				<Circle x="0" y="0" z="9.7" radius="0.0175">
 					<Color r="0.3" g="1" b="0.6"/>
@@ -118,11 +118,11 @@
 		<Agile>
 			<Speed>0.26</Speed>
 			<RotationSpeed>3.14</RotationSpeed>
-			<BulletSpeed>1</BulletSpeed>
+			<BulletSpeed>1.5</BulletSpeed>
 			<GunCooldown>0.6</GunCooldown>
 			<GunDist>0.02</GunDist>
 			<ShieldTime>4</ShieldTime>
-			<ShieldCooldown>2.0</ShieldCooldown>
+			<ShieldCooldown>30</ShieldCooldown>
 			<Shape zone="game">
 				<Circle x="0" y="0" z="9.7" radius="0.025">
 					<Color r="0.3" g="0.5" b="1"/>
@@ -142,7 +142,7 @@
 			<GunSeparation>0.025</GunSeparation>
 			<GunShots>4</GunShots>
 			<ShieldTime>5</ShieldTime>
-			<ShieldCooldown>3.0</ShieldCooldown>
+			<ShieldCooldown>60</ShieldCooldown>
 			<Shape zone="game">
 				<Circle x="0" y="0.0175" z="9.6" radius="0.035">
 					<Color r="0.85" g="0.4" b="0.3"/>
@@ -164,7 +164,7 @@
 			<DamagePerSecond>5</DamagePerSecond>
 			<GunDist>0.04</GunDist>
 			<ShieldTime>5</ShieldTime>
-			<ShieldCooldown>0.6</ShieldCooldown>
+			<ShieldCooldown>60</ShieldCooldown>
 			<Shape zone="game">
 				<Circle x="0" y="0" z="9.7" radius="0.0325">
 					<Color r="0.7" g="0.7" b="1"/>

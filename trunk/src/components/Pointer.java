@@ -114,7 +114,6 @@ public class Pointer {
 					// Right click
 					SelectTool(mouse);
 					Clickable.setSave(Clickable.on);
-					Clickable.setPlay(Clickable.off);
 				}
 			}
 		}
