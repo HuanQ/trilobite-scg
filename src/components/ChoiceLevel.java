@@ -27,7 +27,7 @@ public class ChoiceLevel extends Choice {
 	}
 
 	private final void addLevel( Angle dir, float dist, final String name ) {
-		float radius = name.length() * 0.002f + 0.03f;
+		float radius = name.length() * 0.002f + 0.04f;
 		String texture = "Procedural/planet" + (name.hashCode() % 19 + 1) + ".png";
 		
 		Vec2 butPos = dir.getDirection();

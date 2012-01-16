@@ -47,6 +47,10 @@ public abstract class Polygon {
 	
 	public abstract boolean Collides( final Vec2 myPos, final Polygon p, final Vec2 hisPos, final Angle myRot, final Angle hisRot );
 	
+	public final void setSqRadius( float r ) {
+		sqradius = r;
+	}
+	
 	public final float getSqRadius() {
 		return sqradius;
 	}

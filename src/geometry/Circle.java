@@ -38,6 +38,7 @@ public class Circle extends Polygon {
 	}
 
 	public final void setRadius( float r ) {
+		sqradius = r*r;
 		radius = r;
 	}
 	

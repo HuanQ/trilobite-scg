@@ -31,7 +31,6 @@ public abstract class ToolCreate extends Tool {
 	
 	public final void SecondClick() {
 		Clickable.setSave(Clickable.on);
-		Clickable.setPlay(Clickable.off);
 	}
 	
 	public abstract void LeftButton();

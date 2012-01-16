@@ -20,6 +20,7 @@ public class ToolCreateSquare extends ToolCreate {
 		if( FirstClick() ) {
 			Component.killable.put( currentID, new Killable(currentID, Killable.terrain) );
 			
+			// Temporary shape
 			Shape shp = new Shape();
 			myPoly = new Rectangle(new Vec2(0.000001f, 0.000001f), new Vec2(), 1, true);
 			myPoly.setTexture("base/rect1x1.gif");
@@ -28,7 +29,12 @@ public class ToolCreateSquare extends ToolCreate {
 		}
 		else {
 			SecondClick();
-			// Leave the object as it is
+			
+			// Overwrite the temporary Shape
+			Shape shp = new Shape();
+			shp.add( myPoly );
+			Component.shape.put( currentID, shp );
+			
 			currentID = Integer.MIN_VALUE;
 			firstClick = null;
 			myPoly = null;
@@ -53,6 +59,7 @@ public class ToolCreateSquare extends ToolCreate {
 			r.size.x = (float) Math.abs(firstClick.x - Component.placement.get(pointerID).position.x)*2;
 			r.size.y = (float) Math.abs(firstClick.y - Component.placement.get(pointerID).position.y)*2;
 			
+			myPoly.setSqRadius( (float) Math.pow(r.size.length()/2, 2) );
 			myPoly.setTexture( Sprite.getRect(r.size) );
 		}
 	}
