@@ -47,7 +47,6 @@ public class Dumb {
 		health = ht;
 	}
 	
-	//TODO NOW Health (hits) als dumb i spawners (amb un so al tocar) -> aixo no esta fet ja? Costen 3 hits!
 	public final void Update() {
 		float dt = Clock.getDelta(Clock.game);
 		Component.placement.get(me).angle.add( selfRotate*dt );
