@@ -71,7 +71,7 @@ public class Spawner {
 			
 		case 1:
 			Vec2 spawnPoint = Component.placement.get(me).position;
-			if( mySeq.Spawn( spawnDirection, spawnPoint ) ) {
+			if( mySeq.Spawn(spawnDirection, spawnPoint) ) {
 				phase = 3;
 			}
 			break;

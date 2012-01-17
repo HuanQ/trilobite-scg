@@ -1,6 +1,6 @@
 <Trilobite>
 	<Sequences>
-		<Blaster0>
+		<Blaster_wall>
 			<Type>SimpleBlaster</Type>
 			<Arc>0</Arc>
 			<Frequency>0.25</Frequency>
@@ -13,7 +13,37 @@
 					<Texture>base/circle.gif</Texture>
             	</Circle>
 			</Shape>
-		</Blaster0>
+		</Blaster_wall>
+		
+		<Blaster_onoff>
+			<Type>SimpleBlaster</Type>
+			<Arc>0</Arc>
+			<Frequency>0.3</Frequency>
+			<Shooting>1.4</Shooting>
+			<Pause>0.6</Pause>
+			<NumBullets>1</NumBullets>
+			<Shape zone="game">
+				<Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+					<Color b="0.0" g="0.5" r="1.0"/>
+					<Texture>base/circle.gif</Texture>
+            	</Circle>
+			</Shape>
+		</Blaster_onoff>
+		
+		<Blaster_rain>
+			<Type>SimpleBlaster</Type>
+			<Arc>2</Arc>
+			<Frequency>2</Frequency>
+			<Shooting>60</Shooting>
+			<Pause>0</Pause>
+			<NumBullets>5</NumBullets>
+			<Shape zone="game">
+				<Circle radius="0.029999997" x="0.0" y="0.0" z="2.0">
+					<Color b="0.0" g="0.5" r="1.0"/>
+					<Texture>base/circle.gif</Texture>
+            	</Circle>
+			</Shape>
+		</Blaster_rain>
 		
 		<Blaster30>
 			<Type>SimpleBlaster</Type>

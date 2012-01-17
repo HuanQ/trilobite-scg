@@ -2,7 +2,7 @@
    <Generated zone="game">
       <Spawner>
          <Direction>0</Direction>
-         <Sequence>Blaster0</Sequence>
+         <Sequence>Blaster_onoff</Sequence>
          <Wait>0.25</Wait>
          <Point x="0.16625" y="-0.375"/>
          <Shape>
@@ -94,7 +94,7 @@
       </Wall>
       <Spawner>
          <Direction>0.0</Direction>
-         <Sequence>Blaster0</Sequence>
+         <Sequence>Blaster_onoff</Sequence>
          <Wait>-1.0</Wait>
          <Point x="0.06875" y="-1.1324992"/>
          <Shape>
@@ -106,7 +106,7 @@
       </Spawner>
       <Spawner>
          <Direction>3.14</Direction>
-         <Sequence>Blaster0</Sequence>
+         <Sequence>Blaster_onoff</Sequence>
          <Wait>-1.0</Wait>
          <Point x="0.925" y="-1.1687509"/>
          <Shape>
@@ -134,7 +134,7 @@
       </Wall>
       <Spawner>
          <Direction>0.0</Direction>
-         <Sequence>Blaster0</Sequence>
+         <Sequence>Blaster_onoff</Sequence>
          <Wait>-1.0</Wait>
          <Point x="0.1275" y="-1.2087502"/>
          <Shape>

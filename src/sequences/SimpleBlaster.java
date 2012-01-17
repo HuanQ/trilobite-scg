@@ -6,6 +6,7 @@ import geometry.Vec2;
 import managers.Component;
 import managers.Constant;
 import managers.Clock;
+import managers.Debug;
 
 import components.Bullet;
 import components.Killable;
@@ -43,7 +44,7 @@ public class SimpleBlaster implements Sequence {
 	
 	public final boolean Spawn( final Angle direction, final Vec2 spawnPoint ) {
 		time += Clock.getDelta(Clock.game);
-		
+
 		switch(phase) {
 			case shooting:
 				if(time < shootingTime) {
@@ -53,6 +54,7 @@ public class SimpleBlaster implements Sequence {
 					}
 				}
 				else {
+					lastShot = 0;
 					phase = paused;
 					time = 0;
 				}

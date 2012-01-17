@@ -40,7 +40,7 @@
 		</Button>
 		
 		<Button>
-			<Point x="0.7625" y="0.11"/>
+			<Point x="0.2875" y="0.2"/>
 			<Function>TOOL_MOVE</Function>
 			<Shape>
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
@@ -53,13 +53,39 @@
 		</Button>
 		
 		<Button>
-			<Point x="0.2875" y="0.17"/>
+			<Point x="0.7625" y="0.2"/>
 			<Function>TOOL_COPY</Function>
 			<Shape>
 				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
 					<Texture>base/rect2x1.gif</Texture>
 				</Rectangle>
 				<Text x="0" y="0" z="9" txt="Copy" size="3">
+					<Color r="1" g="0" b="0"/>
+				</Text>
+			</Shape>
+		</Button>
+		
+		<Button>
+			<Point x="0.2875" y="0.26"/>
+			<Function>TOOL_EDIT</Function>
+			<Shape>
+				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
+					<Texture>base/rect2x1.gif</Texture>
+				</Rectangle>
+				<Text x="0" y="0" z="9" txt="Edit" size="3">
+					<Color r="1" g="0" b="0"/>
+				</Text>
+			</Shape>
+		</Button>
+		
+		<Button>
+			<Point x="0.2875" y="0.35"/>
+			<Function>TOOL_GRID</Function>
+			<Shape>
+				<Rectangle x="0" y="0" z="8" sizex="0.375" sizey="0.045">
+					<Texture>base/rect2x1.gif</Texture>
+				</Rectangle>
+				<Text x="0" y="0" z="9" txt="Grid" size="3">
 					<Color r="1" g="0" b="0"/>
 				</Text>
 			</Shape>
